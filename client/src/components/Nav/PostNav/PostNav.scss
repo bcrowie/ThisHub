@@ -1,0 +1,12 @@
+@import '../../../styles/variables.scss';
+
+.post-nav {
+    @include default-container;
+
+    justify-content: unset;
+    font-size: $small-font;
+    a {
+        margin: $spacing-small
+    }
+
+}

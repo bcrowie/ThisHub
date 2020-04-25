@@ -1,0 +1,17 @@
+@import "./styles/variables.scss";
+
+* {
+  box-sizing: border-box;
+  font-family: $font-family;
+  letter-spacing: 0.65px;
+  margin: 0;
+  outline: none;
+  padding: 0;
+  text-shadow: 0px 1px 1px rgba(150, 150, 150, 0.6);
+}
+
+.main-container {
+  border-radius: $border-radius;
+  margin: $spacing-medium auto;
+  max-width: 1100px;
+}

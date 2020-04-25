@@ -1,0 +1,19 @@
+@import '../../styles/variables.scss';
+
+.main-nav {
+    @include default-container;
+
+    .nav-buttons {
+        margin: $spacing-large;
+        a {
+            @include default-button;
+        }
+    }
+    .nav-buttons.account a {
+        margin: auto $spacing-small;
+    }
+}
+
+.login-modal {
+    @include modal;
+}

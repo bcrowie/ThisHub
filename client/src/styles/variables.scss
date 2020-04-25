@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap');
+
+/* Colors */
+$background-color: white;
+$primary-color: rgb(14, 170, 232);
+$secondary-color: rgb(255, 156, 36);
+$dark-grey: rgb(38, 38, 38);
+$light-grey: rgb(204, 204, 204);
+$like-color: rgb(204, 97, 31);
+$dislike-color: rgb(110, 102, 255);
+
+/* Spacing */
+$spacing-small: 0.25rem;
+$spacing-medium: 0.50rem;
+$spacing-large: 0.75rem;
+$spacing-reg: 1rem;
+$spacing-xlarge: 1.25rem;
+
+/* Borders */
+$border-radius: 6px;
+$thin-border: 1px $light-grey solid;
+$thick-border: 2px  $light-grey solid;
+$thin-border-active: 1px $primary-color solid;
+$thick-border-active: 2px $primary-color solid;
+
+/* Fonts */
+$font-family: 'Lato', sans-serif;
+$small-font: 0.75rem;
+
+/* Transitions */
+$default-transition: 85ms ease-in;
+
+/* Mixins */
+@mixin default-button {
+    border: $thick-border-active;
+    border-radius: $border-radius;
+    color: $primary-color;
+    font-weight: bold;
+    padding: $spacing-medium $spacing-xlarge;
+    text-decoration: none;
+    transition: $default-transition;
+    &:hover {
+        background-color: $primary-color;
+        color: $background-color;
+        cursor: pointer;
+    }
+}
+
+@mixin default-container {
+    display: flex;
+    padding: $spacing-medium;
+    justify-content: space-between;
+    border-bottom: $thin-border;
+    transition: $default-transition;
+    &:hover {
+        border-bottom: $thin-border-active;
+    }
+}
+
+@mixin input {
+    border-radius: $border-radius;
+    border: $thick-border;
+    outline: none;
+    padding: $spacing-medium;
+    transition: $default-transition;
+
+    &:hover, &:active {
+        border: $thick-border-active;
+    }
+}
+
+@mixin modal {
+    background: linear-gradient(rgba(0,0,0,0.75), rgba(50,50,50,0.75));
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    .modal-content {
+        background-color: white;
+        border-radius: $border-radius;
+        box-shadow: 0px 10px 15px 5px rgba(0,0,0,0.50);
+        display: flex;
+        flex-direction: column;
+        height: 60%;
+        justify-content: space-evenly;
+        align-items: center;
+        left: 0;
+        margin: 5% auto;
+        padding: $spacing-xlarge;
+        position: fixed;
+        right: 0;
+        width: 50%;
+    }
+}

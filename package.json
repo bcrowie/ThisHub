@@ -1,0 +1,40 @@
+{
+  "name": "fullstack-project",
+  "version": "1.0.0",
+  "description": "We want to create a fullstack web app using the exact same technologies you would find in a\r production application at a silicon valley tech company. The actual product can be anything you'd\r like, but we have a number of requirements regarding technology that we want to adhere to.",
+  "main": "server.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "pg": "^7.18.2",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.5",
+    "validator": "^12.2.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-sequelize": "github:tebriel/eslint-plugin-sequelize",
+    "nodemon": "^2.0.2",
+    "sequelize-cli": "^5.5.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "migrations": "npx sequelize db:migrate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcrowie/fullstack-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bcrowie/fullstack-project/issues"
+  },
+  "homepage": "https://github.com/bcrowie/fullstack-project#readme"
+}

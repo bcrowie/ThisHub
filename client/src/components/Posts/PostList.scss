@@ -1,0 +1,110 @@
+@import '../../styles/variables.scss';
+
+.post-list {
+  list-style: none;
+  margin: auto;
+  
+  li {
+    border: $thin-border;
+    border-radius: $border-radius;
+    display: flex;
+    flex-direction: column;
+    margin: $spacing-medium;
+    padding: $spacing-large;
+    transition: $default-transition;
+
+    &:hover {
+      border: $thin-border-active;
+    }
+
+    button {
+      background-color: $background-color;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      padding: $spacing-medium;
+    }
+
+    .post-info {
+      display: flex;
+      p {
+        font-size: $small-font;
+        margin-top: $spacing-medium;
+      }
+      p:first-child {
+        margin-right: $spacing-large;
+      }
+    }    
+
+    .post-title {
+      font-weight: bold;
+      color: $dark-grey;
+    }
+
+
+    .post-controls {
+      color: $dark-grey;
+      display: flex;
+      justify-content: space-between;
+
+      div {
+        display: flex;
+      }
+
+      .likes {
+        color: $dark-grey;
+        font-size: $small-font;
+        margin: $spacing-medium $spacing-large $spacing-medium 0;
+      }
+
+      button {
+        color: $dark-grey;
+      }
+
+      .menu-button {
+        transition: $default-transition;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+
+      .like-post {
+        transition: $default-transition;
+      }
+      .like-post:hover, .like-post.active {
+        color: $like-color;
+      }
+      .dislike-post {
+        transition: $default-transition;
+      }
+      .dislike-post:hover, .dislike-post.active {
+        color: $dislike-color;
+      }
+      .comments:hover {
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+// Fix This!
+.post-menu {
+  background-color: $background-color;
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  position: relative;
+  top: 100px;
+  right: 100px;
+  border: $thin-border;
+
+  a {
+    border: none;
+    margin: none;
+    padding: 0.5rem;
+    width: 100%;
+    height: 100%;
+  }
+}
