@@ -2,14 +2,24 @@ import React, { useContext, useState } from "react";
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { UserContext } from '../../../App'
+import { useEffect } from "react";
 
 const Post = (props) => {
-    const [showMenu, setShowMenu] = useState(false)
+    const [showMenu, setShowMenu] = useState()
     const User = useContext(UserContext)
 
+    useEffect(() => {
+        window.addEventListener('click', (e) => {
+            e.stopPropagation()
+            if ( e.target.className !== "post-menu" && showMenu ) {
+                setShowMenu(!showMenu)
+            }
+        })
+    }, [showMenu])
+
     const togglePostMenu = (e) => {
-        e.preventDefault()
-        setShowMenu(!showMenu)
+        e.stopPropagation()
+        setShowMenu(showMenu => !showMenu)
     }
 
     return (
@@ -27,13 +37,15 @@ const Post = (props) => {
                     <button style={{fontSize: "0.75rem"}} className="comments">Comments</button>
                 </div>
                 <div>
-                    <button className="mdi mdi-dots-vertical menu-button"onClick={(e) => togglePostMenu(e, props.data.id)}></button>
+                    <button className="mdi mdi-dots-vertical menu-button"onClick={(e) => togglePostMenu(e)}></button>
                     {showMenu && 
-                        <div className="post-menu">
-                            <Link>View Profile</Link>
-                            <Link>Report</Link>
-                            {props.data.Username === User.Username && 
-                            <Link onClick={props.delete}>Delete Post</Link> }
+                        <div className="post-menu-container">
+                            <div className="post-menu">
+                                <Link>View Profile</Link>
+                                <Link>Report</Link>
+                                {props.data.Username === User.Username && 
+                                <Link onClick={props.delete}>Delete Post</Link> }
+                            </div>
                         </div>}
                 </div>
             </div>

@@ -90,21 +90,31 @@
 }
 
 // Fix This!
-.post-menu {
-  background-color: $background-color;
-  display: flex;
-  padding: 1rem;
-  flex-direction: column;
+.post-menu-container {
+  height: 0;
   position: relative;
-  top: 100px;
-  right: 100px;
-  border: $thin-border;
+  width: 0;
 
-  a {
+  .post-menu {
+    background-color: $background-color;
     border: none;
-    margin: none;
-    padding: 0.5rem;
-    width: 100%;
-    height: 100%;
+    border-radius: $border-radius;
+    box-shadow: $default-shadow;
+    display: flex;
+    flex-direction: column;
+    left: -160px;
+    padding: $spacing-large;
+    position: absolute;
+    top: 35px;
+    width: 150px;
+
+    a {
+      @include link;
+
+      margin: none;
+      padding: 0.5rem;
+      width: 100%;
+      height: 100%;      
+    }
   }
 }
