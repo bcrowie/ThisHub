@@ -2,11 +2,10 @@ import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../App'
 import Login from './Login/Login'
-
 import './Nav.scss'
 
 const Nav = () => {
-    const [showLogin, setShowLogin] = useState(false)
+    const [ showLogin, setShowLogin ] = useState(false)
     const User = useContext(UserContext)
 
     const closeModal = (e) => {

@@ -80,7 +80,7 @@ users.post("/register", async (req, res, next) => {
 users.post("/login", async (req, res) => {
   const { errors, isValid } = validateLogin(req.body);
   const { Email, Password } = req.body;
-  console.log(req.body)
+
   if (!isValid) {
     return response(res, errors, 400);
   }
@@ -113,18 +113,20 @@ users.post("/login", async (req, res) => {
   }
 });
 
+// Private Route: Authentication
 users.post("/auth", async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
 
   if (!token) {
     return response(res, "Unauthorized: No token provided", 401);
   } else {
-    const user = await UserModel.findOne({Where: {Username: req.body.Username}})
+    const { Username } = req.body
+    const user = await UserModel.findOne({where: { Username }})
+
     await jwt.verify(token, keys.secretOrKey, (err, decoded) => {
       if (err) {
         return response(res, "Unauthorized: Invalid token", 401);
       } else {
-          
           return response(res, {Email: user.Email, Username: user.Username, createdAt: user.createdAt, id: user.id}, 200)
       }
     });

@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { useHistory } from 'react-router-dom'
+import { Utils } from '../../../utils/utils'
 import './Login.scss'
 
 const Login = (props) => {
     const [inputs, setInputs] = useState()
+    const [errors, setErrors] = useState({ Email: null, Password: null })
+    const history = useHistory()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const login = await axios.post('/users/login', {
-            Email: inputs.Email,
-            Password: inputs.Password
-        })
-        if(login) {
-            localStorage.setItem('thishub.token', login.data.token)
-            localStorage.setItem('thishub.user', login.data.Username)
-            window.location.reload()
+        const loginResult = Utils.Users.login( inputs, history )
+
+        // Implement login error handling
+        if(loginResult){
+            setErrors({...errors, loginResult})
         }
     }
 

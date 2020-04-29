@@ -7,7 +7,7 @@ const Post = (props) => {
     const [showMenu, setShowMenu] = useState(false)
     const User = useContext(UserContext)
 
-    const togglePostMenu = (e, post) => {
+    const togglePostMenu = (e) => {
         e.preventDefault()
         setShowMenu(!showMenu)
     }

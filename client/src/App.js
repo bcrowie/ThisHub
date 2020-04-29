@@ -1,16 +1,16 @@
 import React, { createContext } from "react";
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Utils } from './utils/utils'
 import Nav from './components/Nav/Nav'
 import PostList from './components/Posts/PostList'
 import PostNav from './components/Nav/PostNav/PostNav'
 import Register from './components/Register/Register'
 import "./App.scss";
-import { useAuthentication } from "./utils/useAuthentication";
 
 export const UserContext = createContext()
 
 const App = () => {
-  const auth = useAuthentication()
+  const auth = Utils.Users.useAuthentication()
 
   return (
     <Router>
@@ -29,8 +29,8 @@ const App = () => {
         </Route>
       </UserContext.Provider>
       <Route path='/register'>
-          <Register />
-        </Route>
+        <Register />
+      </Route>
     </Router>
   );
 }
