@@ -5,7 +5,8 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID
+        type: Sequelize.DataTypes.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       FirstName: {
         type: Sequelize.STRING
@@ -35,7 +36,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       UserId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Users",
           key: "id"

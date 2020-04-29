@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   const CommentDislike = sequelize.define(
     "CommentDislike",
     {
+      id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true, allowNull: false },
       Disliked: DataTypes.BOOLEAN,
       UserId: DataTypes.INTEGER,
       CommentId: DataTypes.INTEGER,
