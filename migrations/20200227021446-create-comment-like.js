@@ -4,9 +4,8 @@ module.exports = {
     return queryInterface.createTable("CommentLikes", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID
       },
       UserId: {
         type: Sequelize.INTEGER,

@@ -5,10 +5,10 @@ import Post from './Post/Post'
 import "./PostList.scss";
 
 const Posts = (props) => {
-  const [posts, setPosts] = Utils.Posts.useFetchPosts();
-  const User = useContext(UserContext);
+  const [ posts, setPosts ] = Utils.Posts.useFetchPosts();
+  const User = useContext( UserContext );
 
-  if(!posts){
+  if(!posts.length){
     return (
       <div>
         <ul className="post-list">
@@ -24,9 +24,12 @@ const Posts = (props) => {
         <ul className="post-list">
           {posts.map((post) => (
             <Post key={post.id} data={post} 
-              delete={() => Utils.Posts.delete(User.Token, setPosts, post, posts)}
-              like={() => Utils.Posts.like(User.Token, setPosts, post, posts)}
-              dislike={() => Utils.Posts.dislike(User.Token, setPosts, post, posts)}/>
+              delete={() => Utils.Posts.delete(
+                User.Token, setPosts, post, posts)}
+              like={() => Utils.Posts.like(
+                User.Token, setPosts, post, posts)}
+              dislike={() => Utils.Posts.dislike(
+                User.Token, setPosts, post, posts)}/>
           ))}
         </ul>
       </div>

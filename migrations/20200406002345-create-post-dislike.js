@@ -4,9 +4,8 @@ module.exports = {
     return queryInterface.createTable("PostDislikes", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID
       },
       Disliked: {
         type: Sequelize.BOOLEAN,
