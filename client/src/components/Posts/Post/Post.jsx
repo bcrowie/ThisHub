@@ -44,7 +44,7 @@ const Post = (props) => {
                                 <Link>View Profile</Link>
                                 <Link>Report</Link>
                                 {props.data.Username === User.Username && 
-                                <Link onClick={props.delete}>Delete Post</Link> }
+                                <Link onClick={props.delete}>Delete Post</Link>}
                             </div>
                         </div>}
                 </div>

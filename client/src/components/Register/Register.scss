@@ -3,7 +3,7 @@
 .register-modal {
     @include modal;
 
-    background: linear-gradient($primary-color, rgb(0,0,0));
+    background: linear-gradient(to right, rgb(1, 79, 110), $primary-color, rgb(1, 79, 110));
     height: 100vh;
     margin: auto;
 
