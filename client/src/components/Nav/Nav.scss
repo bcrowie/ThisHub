@@ -5,11 +5,12 @@
 
     .nav-buttons {
         margin: $spacing-large;
-        a {
+        #logo {
             @include default-button;
         }
     }
-    .nav-buttons.account a {
+    .nav-buttons .account-link {
+        @include default-button;
         margin: auto $spacing-small;
     }
 }

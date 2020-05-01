@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../App'
+import AccountMenu from './AccountMenu/AccountMenu'
 import Login from './Login/Login'
 import './Nav.scss'
 
@@ -19,14 +20,14 @@ const Nav = () => {
         <nav>
             <div className="main-nav">
                 <div className="nav-buttons">
-                    <Link to="/">Thishub</Link>
+                    <Link id="logo" to="/">Thishub</Link>
                 </div>
                 <div className="nav-buttons account">
                     {User.Username ? 
-                        <Link to='/my-account'>{User.Username}</Link> :
+                        <AccountMenu /> :
                     <>
-                        <Link to='/register'>Register</Link>
-                        <Link onClick={() => setShowLogin(!showLogin)}>Login</Link>
+                        <Link className="account-link" to='/register'>Register</Link>
+                        <Link className="account-link" onClick={() => setShowLogin(!showLogin)}>Login</Link>
                     </>}
                 </div>
             </div>
