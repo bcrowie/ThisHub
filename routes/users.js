@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const sequelize = require('sequelize')
 const users = new Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -41,19 +42,22 @@ users.get("/:Username", async (req, res) => {
 users.post("/register", async (req, res, next) => {
   const { errors, isValid } = validateRegister(req.body);
   const { Username, Email, Password } = req.body;
-
+  
   if (!isValid) {
     return response(res, errors, 400);
   }
 
   const User = await UserModel.findOne({
-    where: { Username, Email },
+    where: sequelize.or(
+      { Username },
+      { Email }
+    )
   });
 
   if (User) {
     User.dataValues.Username === req.body.Username
-      ? (errors.Username = "Username already exists")
-      : (errors.Email = "Email already exists");
+      ? (errors.Username = `Username ${User.dataValues.Username} already exists`)
+      : (errors.Email = `Account belonging to ${User.dataValues.Email} already exists`);
     return response(res, errors, 400);
   } else {
     const newUser = {

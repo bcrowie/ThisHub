@@ -40,11 +40,18 @@ $default-transition: 85ms ease-in;
     padding: $spacing-medium $spacing-xlarge;
     text-decoration: none;
     transition: $default-transition;
-    &:hover {
+    &:hover, &:focus {
         background-color: $primary-color;
         color: $background-color;
         cursor: pointer;
     }
+}
+
+@mixin error-message {
+    color: red;
+    font-size: $small-font;
+    margin: $spacing-small;
+    
 }
 
 @mixin nav-container {
@@ -77,7 +84,7 @@ $default-transition: 85ms ease-in;
     padding: $spacing-medium;
     transition: $default-transition;
 
-    &:hover, &:active {
+    &:hover, &:active, &:focus {
         border: $thick-border-active;
     }
 }
@@ -87,7 +94,7 @@ $default-transition: 85ms ease-in;
     text-decoration: none;
     transition: $default-transition;
 
-    &:hover {
+    &:hover, &:focus {
         color: $primary-color;       
     }
 }

@@ -42,7 +42,6 @@
       color: $dark-grey;
     }
 
-
     .post-controls {
       color: $dark-grey;
       display: flex;
@@ -86,6 +85,10 @@
         color: $primary-color;
       }
     }
+  }
+
+  .owner {
+    border: 1px $secondary-color solid;
   }
 }
 

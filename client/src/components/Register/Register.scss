@@ -8,7 +8,7 @@
     margin: auto;
 
     .modal-content {
-        height: 70%;
+        height: auto;
     }
 
     h2 {
@@ -23,7 +23,7 @@
 
         label {
             font-size: $small-font;
-            margin: $spacing-small 0;
+            margin: 0.40rem 0;
         }
 
         input {
@@ -38,6 +38,10 @@
                 @include default-button;
                 margin-top: $spacing-large;
             }
+        }
+
+        p {
+            @include error-message;
         }
     }
 }

@@ -23,7 +23,7 @@ const Post = (props) => {
     }
 
     return (
-        <li key={props.data.id}>
+        <li className={`${User.Username === props.data.Username && "owner"}`} key={props.data.id}>
             <p className="post-title">{props.data.Title}</p>
             <div className="post-info">
                 <p>by: {props.data.Username}</p>

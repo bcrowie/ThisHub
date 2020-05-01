@@ -26,7 +26,7 @@ const Nav = () => {
                     {User.Username ? 
                         <AccountMenu /> :
                     <>
-                        <Link className="account-link" to='/register'>Register</Link>
+                        <Link className="register" to='/register'>Register</Link>
                         <Link className="account-link" onClick={() => setShowLogin(!showLogin)}>Login</Link>
                     </>}
                 </div>

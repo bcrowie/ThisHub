@@ -1,10 +1,17 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { Utils } from '../../utils/utils'
 import axios from 'axios'
 import './Register.scss'
 
 const Register = props => {
-    const [inputs, setInputs] = useState({})
+    const [inputs, setInputs] = useState({
+        Username: undefined,
+        Email: undefined,
+        Email2: undefined,
+        Password: undefined,
+        Password2: undefined
+    })
     const [errors, setErrors] = useState({})
     const history = useHistory()
 
@@ -32,7 +39,7 @@ const Register = props => {
     return (
         <div className="register-modal">
             <div className="modal-content">
-                <form action="">
+                <form>
                     <h2>Register for an account</h2>
                     <label htmlFor="Username">Username:</label>
                     <input type="text" onChange={(e) => setInputs({...inputs, Username: e.target.value})}/>
@@ -49,8 +56,9 @@ const Register = props => {
                     <label htmlFor="Password2">Confirm password:</label>
                     <input type="password" onChange={(e) => setInputs({...inputs, Password2: e.target.value})}/>
                     {errors.Password2 && <p className="error">{errors.Password2}</p>}
+                    <label htmlFor="AWESOMENESS"><input type="checkbox" /> I agree to be absolutely awesome!</label>
                     <div>
-                        <button onClick={(e) => submitRegister(e)}>Submit</button>
+                        <button onClick={(e) => Utils.Users.register(e, inputs, setErrors)}>Submit</button>
                         <button onClick={() => history.push('/')}>Close</button>
                     </div>
                 </form>

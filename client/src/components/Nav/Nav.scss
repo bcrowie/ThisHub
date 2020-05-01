@@ -11,7 +11,17 @@
     }
     .nav-buttons .account-link {
         @include default-button;
-        margin: auto $spacing-small;
+        margin: auto $spacing-xlarge;
+    }
+    .register {
+        @include default-button;
+        background-color: $primary-color;
+        color: $background-color;
+        &:hover {
+            background-color: $background-color;
+            border: solid 2px $secondary-color;
+            color: $secondary-color;
+        }
     }
 }
 
