@@ -47,7 +47,7 @@ $default-transition: 85ms ease-in;
     }
 }
 
-@mixin default-container {
+@mixin nav-container {
     display: flex;
     padding: $spacing-medium;
     justify-content: space-between;
@@ -55,6 +55,18 @@ $default-transition: 85ms ease-in;
     transition: $default-transition;
     &:hover {
         border-bottom: $thin-border-active;
+    }
+}
+
+@mixin default-container {
+    display: flex;
+    flex-direction: column;
+    padding: $spacing-medium;
+    justify-content: space-between;
+    border: $thin-border;
+    transition: $default-transition;
+    &:hover {
+        border: $thin-border-active;
     }
 }
 

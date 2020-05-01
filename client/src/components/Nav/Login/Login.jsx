@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Utils } from '../../../utils/utils'
 import './Login.scss'
 
@@ -31,6 +31,7 @@ const Login = (props) => {
                     <button onClick={props.hideModal}>Close</button>
                 </div>
             </form>
+            <Link to='/register'>Register for an account!</Link>
         </div>
     )
 }
