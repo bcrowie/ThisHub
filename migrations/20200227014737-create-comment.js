@@ -5,10 +5,11 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID
+        type: Sequelize.DataTypes.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       UserId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Users",
           key: "id"
@@ -23,7 +24,7 @@ module.exports = {
         }
       },
       PostId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Posts",
           key: "id"
@@ -31,14 +32,14 @@ module.exports = {
         allowNull: false
       },
       ParentId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Comments",
           key: "id"
         }
       },
       ChildId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Comments",
           key: "id"

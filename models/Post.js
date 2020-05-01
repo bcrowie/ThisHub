@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   const Post = sequelize.define(
     "Post",
     {
+      id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true, allowNull: false },
       Title: DataTypes.STRING,
       Body: DataTypes.TEXT,
       UserId: DataTypes.INTEGER,

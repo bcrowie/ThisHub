@@ -127,7 +127,7 @@ users.post("/auth", async (req, res) => {
       if (err) {
         return response(res, "Unauthorized: Invalid token", 401);
       } else {
-          return response(res, {Email: user.Email, Username: user.Username, createdAt: user.createdAt, id: user.id}, 200)
+        return response(res, {Email: user.Email, Username: user.Username, createdAt: user.createdAt, id: user.id}, 200)
       }
     });
   }

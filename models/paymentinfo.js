@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const PaymentInfo = sequelize.define(
     "PaymentInfo",
     {
+      id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true, allowNull: false },
       FirstName: DataTypes.STRING,
       LastName: DataTypes.STRING,
       StreetNumber: DataTypes.NUMBER,

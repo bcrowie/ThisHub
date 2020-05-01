@@ -5,14 +5,15 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID
+        type: Sequelize.DataTypes.UUID,
+        defaultValue: Sequelize.UUIDV4
       },
       Disliked: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },
       PostId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Posts",
           key: "id",
@@ -21,7 +22,7 @@ module.exports = {
         onDelete: "CASCADE",
       },
       UserId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Users",
           key: "id",
