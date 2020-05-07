@@ -93,7 +93,7 @@ users.post("/login", async (req, res) => {
 
   if (!User) {
     errors.Email = "Account with that email doesnt exist.";
-    return response(res, { Account: errors.Email }, 404);
+    return response(res, errors, 404);
   } else {
     const match = await bcrypt.compare(Password, User.Password);
 
