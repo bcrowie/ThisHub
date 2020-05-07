@@ -2,19 +2,10 @@ import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../App'
 import AccountMenu from './AccountMenu/AccountMenu'
-import Login from './Login/Login'
 import './Nav.scss'
 
-const Nav = () => {
-    const [ showLogin, setShowLogin ] = useState(false)
-    const User = useContext(UserContext)
-
-    const closeModal = (e) => {
-        e.preventDefault()
-        if(e.target.className === "login-modal"){
-            setShowLogin(!showLogin)
-        }
-    }
+const Nav = props => {
+    const User = useContext(UserContext);
 
     return (
         <nav>
@@ -27,14 +18,10 @@ const Nav = () => {
                         <AccountMenu /> :
                     <>
                         <Link className="register" to='/register'>Register</Link>
-                        <Link className="account-link" onClick={() => setShowLogin(!showLogin)}>Login</Link>
+                        <Link className="account-link" onClick={props.toggleModal}>Login</Link>
                     </>}
                 </div>
             </div>
-            {showLogin && 
-            <div className="login-modal" onClick={e => closeModal(e)}>
-                <Login hideModal={() => setShowLogin(!showLogin)}/>
-            </div>}
         </nav>
     )
 }

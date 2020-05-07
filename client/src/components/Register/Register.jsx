@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Utils } from '../../utils/utils'
-import axios from 'axios'
 import './Register.scss'
 
 const Register = props => {
@@ -14,27 +13,6 @@ const Register = props => {
     })
     const [errors, setErrors] = useState({})
     const history = useHistory()
-
-    const submitRegister = async (e) => {
-        e.preventDefault()
-
-        const { Username, Email, Email2, Password, Password2 } = inputs
-        const res = await axios.post('/users/register', {
-            Username,
-            Email,
-            Email2,
-            Password,
-            Password2
-        })
-
-        if(res){
-            console.log("success")
-            history.push('/')
-        } else {
-            console.log(res.data)
-            setErrors({...errors, [res.data.errors]: res.data.errors})
-        }
-    }
 
     return (
         <div className="register-modal">

@@ -6,7 +6,9 @@ export const PostConst = {
         like: "Liked",
         dislike: "Disliked",
         likedDisliked: "Liked and Disliked",
-        dislikedLiked: "Disliked and Liked"
+        dislikedLiked: "Disliked and Liked",
+        removedLike: "Removed Like",
+        removedDislike: "Removed Dislike"
     }
 }
 
@@ -20,5 +22,9 @@ export const UserConst = {
     Storage: {
         Token: "thishub.token",
         User: 'thishub.user'
-    }
+    },
+    LoginDefault: {
+        Email: null,
+        Password: null
+    },
 }

@@ -150,6 +150,7 @@ posts.post(
     if (!post) {
       return response(res, "Post not found.", 404);
     } else {
+      // PROMISE.ALL
       const PostAlreadyLiked = await PostLikeModel.findOne({
         where: { UserId, PostId },
       });
@@ -157,47 +158,51 @@ posts.post(
         where: { UserId, PostId },
       });
       let confirmDestroy = null;
-      if (Like == 1) {
-        const confirmLike = await PostLikeModel.create({
-          PostId,
-          UserId,
-          Liked: true,
-        });
 
-        if (PostAlreadyDisliked) {
-          confirmDestroy = await PostAlreadyDisliked.destroy();
-          if (confirmDestroy) {
-            return response(res, {msg:"Liked and Disliked"})
-          }
-        } else if (PostAlreadyLiked) {
-          confirmDestroy = await PostAlreadyLiked.destroy();
+      if (Like == 1) {
+        if ( PostAlreadyLiked ) {
+          confirmDestroy = await PostAlreadyLiked.destroy()
+
           if (confirmDestroy) {
             return response(res, { msg: "Removed Like" });
           }
-        }
+        } else {
+          const confirmLike = await PostLikeModel.create({
+            PostId,
+            UserId,
+            Liked: true,
+          });
 
-        if (confirmLike) {
-          return response(res, { msg: "Liked" });
+          if( PostAlreadyDisliked ) {
+            confirmDestroy = await PostAlreadyDisliked.destroy();
+            if( confirmDestroy && confirmLike ) {
+              return response( res, { msg: "Liked and Disliked" }) 
+            }
+          } else if ( confirmLike ) {
+            return response( res, { msg: "Liked" })
+          }
         }
       } else if (Like == 0) {
-        const confirmDislike = await PostDislikeModel.create({
-          PostId,
-          UserId,
-          Disliked: true,
-        });
-
-        if (PostAlreadyLiked) {
-          confirmDestroy = await PostAlreadyLiked.destroy();
-          if(confirmDestroy){
-            return response(res, { msg: "Disliked and Liked"})
+        if ( PostAlreadyDisliked ) {
+          confirmDestroy = await PostAlreadyDisliked.destroy()
+          if( confirmDestroy ) {
+            return response( res, { msg: "Removed Dislike" })
           }
-        } else if (PostAlreadyDisliked) {
-          confirmDestroy = await PostAlreadyDisliked.destroy();
-          if (confirmDestroy) {
-            return response(res, { msg: "Removed Dislike" });
+        } else {
+          const confirmDislike = await PostDislikeModel.create({
+            PostId,
+            UserId,
+            Disliked: true,
+          });
+          if ( PostAlreadyLiked ) {
+            confirmDestroy = await PostAlreadyLiked.destroy();
+            if( confirmDestroy && confirmDislike ){
+              return response( res, { msg: "Disliked and Liked" })
+            } else if ( confirmDislike ) {
+              return response( res, { msg: "Removed Dislike" })
+            }
           }
         }
-
         if (confirmDislike) {
           return response(res, { msg: "Disliked" });
         }

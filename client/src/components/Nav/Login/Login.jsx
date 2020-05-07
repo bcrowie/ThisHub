@@ -1,22 +1,12 @@
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Utils } from '../../../utils/utils'
+import { UserConst } from '../../../utils/constants'
 import './Login.scss'
 
 const Login = (props) => {
-    const [inputs, setInputs] = useState()
-    const [errors, setErrors] = useState({ Email: null, Password: null })
-    const history = useHistory()
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        const loginResult = Utils.Users.login( inputs, history )
-
-        // Implement login error handling
-        if(loginResult){
-            setErrors({...errors, loginResult})
-        }
-    }
+    const [inputs, setInputs] = useState(UserConst.LoginDefault)
+    const [errors, setErrors] = useState(UserConst.LoginDefault)
 
     return (
         <div className="modal-content">
@@ -27,7 +17,7 @@ const Login = (props) => {
                 <label htmlFor="Password">Password:</label>
                 <input type="password" onChange={(e) => setInputs({...inputs, Password: e.target.value})}/>
                 <div className="login-buttons">
-                    <button onClick={(e) => handleSubmit(e)}>Submit</button>
+                    <button onClick={(e) => Utils.Users.login( e, inputs, setErrors )}>Submit</button>
                     <button onClick={props.hideModal}>Close</button>
                 </div>
             </form>
