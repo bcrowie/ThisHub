@@ -29,14 +29,14 @@ comments.get("/:id", async (req, res) => {
   let chain = {};
   let stack = [];
 
-  const getReplies = async cmnt => {
+  const getReplies = async (cmnt) => {
     while (stack) {
       let next = stack.pop();
       const children = await CommentModel.findAll({
-        where: { id: cmnt.dataValues.ChildId }
+        where: { id: cmnt.dataValues.ChildId },
       });
       const parents = await CommentModel.findAll({
-        where: { id: cmnt.dataValues.ParentId }
+        where: { id: cmnt.dataValues.ParentId },
       });
       if (children) {
         for (let i = 0; i < children.length; i++) {
@@ -77,6 +77,7 @@ comments.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
+    console.log(req);
     const { PostId } = req.params;
     const { Body } = req.body;
     const UserId = req.user.dataValues.id;
@@ -85,18 +86,22 @@ comments.post(
     if (!post) {
       return response(res, "Post not found.", 404);
     } else {
-      const newComment = await CommentModel.create({
+      const comment = await CommentModel.create({
         Body,
         PostId,
         UserId,
-        Username
+        Username,
       });
-      await CommentLikeModel.create({
-        UserId,
-        CommentId: newComment.dataValues.id,
-        Liked: true
-      });
-      return response(res, "New post comment");
+      if (comment) {
+        await CommentLikeModel.create({
+          UserId,
+          CommentId: comment.dataValues.id,
+          Liked: true,
+        });
+        return response(res, { msg: "New post comment", comment });
+      } else {
+        return response(res, "Something went wrong");
+      }
     }
   }
 );
@@ -113,18 +118,18 @@ comments.post(
       Body,
       UserId,
       PostId,
-      ParentId
+      ParentId,
     });
     const parent = await CommentModel.findOne({ where: { id: ParentId } });
     await CommentLikeModel.create({
       UserId,
       CommentId: comment.dataValues.id,
-      Liked: true
-    }).catch(err => {
+      Liked: true,
+    }).catch((err) => {
       return response(res, err, 400);
     });
     parent.update({ ChildId: comment.dataValues.id });
-    return response(res, "Comment reply added");
+    return response(res, { msg: "Comment reply added", comment });
   }
 );
 
@@ -154,7 +159,7 @@ comments.delete(
   async (req, res) => {
     const id = req.params.CommentId;
     await CommentModel.update({ IsDeleted: true }, { where: { id } }).catch(
-      err => {
+      (err) => {
         return response(res, error, 400);
       }
     );
@@ -175,7 +180,7 @@ comments.post(
     if (!comment) return response(res, "Comment not found", 404);
     else {
       const userExists = await CommentLikeModel.findOne({
-        where: { UserId }
+        where: { UserId },
       });
       if (userExists) {
         const userLiked = userExists.dataValues.Liked;
@@ -193,7 +198,7 @@ comments.post(
         const newLike = await CommentLikeModel.create({
           CommentId,
           UserId,
-          Liked
+          Liked,
         });
         if (newLike) {
           return response(res, Liked ? "Liked comment" : "Disliked comment");

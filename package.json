@@ -8,7 +8,9 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jest": "^26.0.1",
     "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.1.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "pg": "^7.18.2",
@@ -17,12 +19,13 @@
     "validator": "^12.2.0"
   },
   "devDependencies": {
+    "axios": "^0.19.2",
     "eslint-plugin-sequelize": "github:tebriel/eslint-plugin-sequelize",
     "nodemon": "^2.0.2",
     "sequelize-cli": "^5.5.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node server.js",
     "server": "nodemon server.js",
     "migrations": "npx sequelize db:migrate"
@@ -36,5 +39,11 @@
   "bugs": {
     "url": "https://github.com/bcrowie/fullstack-project/issues"
   },
-  "homepage": "https://github.com/bcrowie/fullstack-project#readme"
+  "homepage": "https://github.com/bcrowie/fullstack-project#readme",
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  }
 }

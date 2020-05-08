@@ -6,42 +6,44 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.DataTypes.UUID,
-        defaultValue: Sequelize.UUIDV4
+        defaultValue: Sequelize.UUIDV4,
       },
       UserId: {
         type: Sequelize.UUID,
         references: {
           model: "Users",
-          key: "id"
+          key: "id",
         },
-        allowNull: false
+        allowNull: false,
+        onDelete: "CASCADE",
       },
       Username: {
         type: Sequelize.STRING,
         references: {
           model: "Users",
-          key: "Username"
-        }
+          key: "Username",
+        },
+        onDelete: "CASCADE",
       },
       Title: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       Body: {
         type: Sequelize.TEXT,
-        allowNull: false
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable("Posts");
-  }
+  },
 };

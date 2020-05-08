@@ -9,7 +9,7 @@ const PostLikeModel = models.PostLike;
 const PostDislikeModel = models.PostDislike;
 const comments = require("./comments");
 
-posts.use("/:postId/comments", comments);
+posts.use("/:PostId/comments", comments);
 
 const response = (res, msg, status = 200) => {
   return res.status(status).json(msg);
@@ -85,14 +85,18 @@ posts.post(
       Username,
     });
 
-    const postLike = await PostLikeModel.create({
-      PostId: post.dataValues.id, 
-      UserId: id, 
-      Liked: true})
+    if (post) {
+      const postLike = await PostLikeModel.create({
+        PostId: post.dataValues.id,
+        UserId: id,
+        Liked: true,
+      });
 
-    if (post && postLike) {
-      return response(res, { msg: "Post added" });
+      if (post && postLike) {
+        return response(res, { msg: "Post added", post });
+      }
     }
+
     return response(res, { msg: "Something went wrong." }, 400);
   }
 );
@@ -150,13 +154,16 @@ posts.post(
     if (!post) {
       return response(res, "Post not found.", 404);
     } else {
-      const PostAlreadyLiked = await PostLikeModel.findOne({
-        where: { UserId, PostId },
-      });
-      const PostAlreadyDisliked = await PostDislikeModel.findOne({
-        where: { UserId, PostId },
-      });
+      const [PostAlreadyLiked, PostAlreadyDisliked] = await Promise.all([
+        PostLikeModel.findOne({
+          where: { UserId, PostId },
+        }),
+        PostDislikeModel.findOne({
+          where: { UserId, PostId },
+        }),
+      ]);
       let confirmDestroy = null;
+
       if (Like == 1) {
         const confirmLike = await PostLikeModel.create({
           PostId,
@@ -167,7 +174,7 @@ posts.post(
         if (PostAlreadyDisliked) {
           confirmDestroy = await PostAlreadyDisliked.destroy();
           if (confirmDestroy) {
-            return response(res, {msg:"Liked and Disliked"})
+            return response(res, { msg: "Liked and Disliked" });
           }
         } else if (PostAlreadyLiked) {
           confirmDestroy = await PostAlreadyLiked.destroy();
@@ -188,8 +195,8 @@ posts.post(
 
         if (PostAlreadyLiked) {
           confirmDestroy = await PostAlreadyLiked.destroy();
-          if(confirmDestroy){
-            return response(res, { msg: "Disliked and Liked"})
+          if (confirmDestroy) {
+            return response(res, { msg: "Disliked and Liked" });
           }
         } else if (PostAlreadyDisliked) {
           confirmDestroy = await PostAlreadyDisliked.destroy();
