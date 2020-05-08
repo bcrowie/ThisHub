@@ -14,8 +14,10 @@ const Login = (props) => {
             <form className="login-form">
                 <label htmlFor="Email">Email:</label>
                 <input type="text" onChange={(e) => setInputs({...inputs, Email: e.target.value})}/>
+                { errors.Email && <p className="error">{ errors.Email }</p>}
                 <label htmlFor="Password">Password:</label>
                 <input type="password" onChange={(e) => setInputs({...inputs, Password: e.target.value})}/>
+                { errors.Password && <p className="error">{ errors.Password }</p>}
                 <div className="login-buttons">
                     <button onClick={(e) => Utils.Users.login( e, inputs, setErrors )}>Submit</button>
                     <button onClick={props.hideModal}>Close</button>

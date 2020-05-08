@@ -4,13 +4,7 @@ import { Utils } from '../../utils/utils'
 import './Register.scss'
 
 const Register = props => {
-    const [inputs, setInputs] = useState({
-        Username: undefined,
-        Email: undefined,
-        Email2: undefined,
-        Password: undefined,
-        Password2: undefined
-    })
+    const [inputs, setInputs] = useState({})
     const [errors, setErrors] = useState({})
     const history = useHistory()
 
