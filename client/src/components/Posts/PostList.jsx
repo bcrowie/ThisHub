@@ -4,7 +4,7 @@ import { Utils } from '../../utils/utils'
 import Post from './Post/Post'
 import "./PostList.scss";
 
-const Posts = (props) => {
+const PostList = (props) => {
   const [ posts, setPosts ] = Utils.Posts.useFetchPosts();
   const User = useContext( UserContext );
 
@@ -12,7 +12,7 @@ const Posts = (props) => {
     return (
       <div>
         <ul className="post-list">
-          <li key={0}>
+          <li key='0'>
             <p className="post-title">No posts here!</p>
           </li>
         </ul>
@@ -25,11 +25,11 @@ const Posts = (props) => {
           {posts.map((post) => (
             <Post key={post.id} data={post} 
               delete={() => Utils.Posts.delete(
-                User.Token, setPosts, post, posts)}
+                User.Token, props.showLogin, setPosts, post, posts)}
               like={() => Utils.Posts.like(
-                User.Token, setPosts, post, posts)}
+                User.Token, props.showLogin, setPosts, post, posts)}
               dislike={() => Utils.Posts.dislike(
-                User.Token, setPosts, post, posts)}/>
+                User.Token, props.showLogin, setPosts, post, posts)}/>
           ))}
         </ul>
       </div>
@@ -37,4 +37,4 @@ const Posts = (props) => {
   }
 }
 
-export default Posts;
+export default PostList;
