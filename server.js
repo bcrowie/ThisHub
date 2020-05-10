@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 db.authenticate()
   .then(() => console.log("Database Connected"))
-  .catch(err => console.log("Database connection error: " + err));
+  .catch((err) => console.log("Database connection error: " + err));
 
 app.use(passport.initialize());
 require("./config/passport")(passport);

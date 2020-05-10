@@ -6,63 +6,57 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.DataTypes.UUID,
-        defaultValue: Sequelize.UUIDV4
-      },
-      UserId: {
-        type: Sequelize.UUID,
-        references: {
-          model: "Users",
-          key: "id"
-        },
-        allowNull: false
+        defaultValue: Sequelize.UUIDV4,
       },
       Username: {
         type: Sequelize.STRING,
         references: {
           model: "Users",
-          key: "Username"
-        }
+          key: "Username",
+        },
+        onDelete: "CASCADE",
       },
       PostId: {
         type: Sequelize.UUID,
         references: {
           model: "Posts",
-          key: "id"
+          key: "id",
         },
-        allowNull: false
+        allowNull: false,
       },
       ParentId: {
         type: Sequelize.UUID,
         references: {
           model: "Comments",
-          key: "id"
-        }
+          key: "id",
+        },
       },
       ChildId: {
         type: Sequelize.UUID,
         references: {
           model: "Comments",
-          key: "id"
-        }
+          key: "id",
+        },
       },
       Body: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: false,
       },
       IsDeleted: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable("Comments");
-  }
+  },
 };
