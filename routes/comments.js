@@ -77,7 +77,6 @@ comments.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    console.log(req);
     const { PostId } = req.params;
     const { Body } = req.body;
     const UserId = req.user.dataValues.id;

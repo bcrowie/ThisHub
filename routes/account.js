@@ -37,7 +37,7 @@ account.get(
     const posts = await PostLike.findAll({
       where: { userId: req.user.id, liked: true },
       order: [["createdAt", "DESC"]],
-      limit: 20
+      limit: 20,
     });
     if (!posts) {
       return response(res, "Unable to get posts", 400);
@@ -55,7 +55,7 @@ account.get(
     const posts = await PostLike.findAll({
       where: { userId: req.user.id, liked: false },
       order: [["createdAt", "DESC"]],
-      limit: 20
+      limit: 20,
     });
     if (!posts) {
       return response(res, "Unable to get posts", 400);
@@ -73,7 +73,7 @@ account.get(
     const posts = await Post.findAll({
       where: { userId: req.user.id },
       order: [["createdAt", "DESC"]],
-      limit: 20
+      limit: 20,
     });
     if (!posts) {
       return response(res, "Unable to get posts", 400);
@@ -91,7 +91,7 @@ account.get(
     const comments = await Comment.findAll({
       where: { userId: req.user.id, isDeleted: false },
       order: [["createdAt", "DESC"]],
-      limit: 20
+      limit: 20,
     });
     if (!comments) {
       return response(res, "Unable to get comments", 400);
@@ -140,8 +140,8 @@ account.delete(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const confirm = await User.destroy({
-      where: { username: req.user.username }
-    }).catch(err => console.log(err));
+      where: { username: req.user.username },
+    });
 
     if (confirm) {
       return response(res, "Account has been deleted");
@@ -179,7 +179,7 @@ account.post(
 
     newPaymentInfo.userId = req.user.dataValues.id;
     const userExists = await Payment.findOne({
-      where: { userId: newPaymentInfo.userId }
+      where: { userId: newPaymentInfo.userId },
     });
     if (userExists) {
       await userExists.update(newPaymentInfo);
