@@ -8,15 +8,6 @@ module.exports = {
         type: Sequelize.DataTypes.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      UserId: {
-        type: Sequelize.UUID,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-        allowNull: false,
-        onDelete: "CASCADE",
-      },
       Username: {
         type: Sequelize.STRING,
         references: {

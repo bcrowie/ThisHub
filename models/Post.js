@@ -12,14 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       Title: DataTypes.STRING,
       Body: DataTypes.TEXT,
-      UserId: DataTypes.INTEGER,
       Username: DataTypes.STRING,
     },
     {}
   );
   Post.associate = function (models) {
     Post.belongsTo(models.User, {
-      key: "Username",
+      foreignKey: "Username",
       onDelete: "CASCADE",
     });
     Post.hasMany(models.Comment);

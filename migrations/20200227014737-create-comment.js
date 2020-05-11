@@ -22,6 +22,7 @@ module.exports = {
           model: "Posts",
           key: "id",
         },
+        onDelete: "CASCADE",
         allowNull: false,
       },
       ParentId: {
@@ -30,6 +31,7 @@ module.exports = {
           model: "Comments",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
       ChildId: {
         type: Sequelize.UUID,
@@ -37,6 +39,7 @@ module.exports = {
           model: "Comments",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
       Body: {
         type: Sequelize.TEXT,

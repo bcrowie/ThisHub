@@ -6,53 +6,54 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.DataTypes.UUID,
-        defaultValue: Sequelize.UUIDV4
+        defaultValue: Sequelize.UUIDV4,
       },
       FirstName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       LastName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       StreetNumber: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       StreetName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       Zip: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       City: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       State: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       CardNumber: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
       },
       Expiration: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       UserId: {
         type: Sequelize.UUID,
         references: {
           model: "Users",
-          key: "id"
-        }
+          key: "id",
+        },
+        onDelete: "CASCADE",
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable("PaymentInfos");
-  }
+  },
 };
