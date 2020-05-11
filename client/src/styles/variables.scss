@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap");
 
 /* Colors */
 $background-color: white;
@@ -11,7 +11,7 @@ $dislike-color: rgb(110, 102, 255);
 
 /* Spacing */
 $spacing-small: 0.25rem;
-$spacing-medium: 0.50rem;
+$spacing-medium: 0.5rem;
 $spacing-large: 0.75rem;
 $spacing-reg: 1rem;
 $spacing-xlarge: 1.25rem;
@@ -19,13 +19,13 @@ $spacing-xlarge: 1.25rem;
 /* Borders */
 $border-radius: 6px;
 $thin-border: 1px $light-grey solid;
-$thick-border: 2px  $light-grey solid;
+$thick-border: 2px $light-grey solid;
 $thin-border-active: 1px $primary-color solid;
 $thick-border-active: 2px $primary-color solid;
-$default-shadow: 0px 10px 15px 5px rgba(0,0,0,0.25);
+$default-shadow: 0px 10px 15px 5px rgba(0, 0, 0, 0.25);
 
 /* Fonts */
-$font-family: 'Lato', sans-serif;
+$font-family: "Lato", sans-serif;
 $small-font: 0.75rem;
 
 /* Transitions */
@@ -33,94 +33,110 @@ $default-transition: 85ms ease-in;
 
 /* Mixins */
 @mixin default-button {
-    border: $thick-border-active;
-    border-radius: $border-radius;
-    color: $primary-color;
-    font-weight: bold;
-    padding: $spacing-medium $spacing-xlarge;
-    text-decoration: none;
-    transition: $default-transition;
-    &:hover, &:focus {
-        background-color: $primary-color;
-        color: $background-color;
-        cursor: pointer;
-    }
-}
-
-@mixin error-message {
-    color: red;
-    font-size: $small-font;
-    margin: $spacing-small;
-    
-}
-
-@mixin nav-container {
-    display: flex;
-    padding: $spacing-medium;
-    justify-content: space-between;
-    border-bottom: $thin-border;
-    transition: $default-transition;
-    &:hover {
-        border-bottom: $thin-border-active;
-    }
+  border: $thick-border-active;
+  border-radius: $border-radius;
+  color: $primary-color;
+  font-weight: bold;
+  padding: $spacing-medium $spacing-xlarge;
+  text-decoration: none;
+  transition: $default-transition;
+  &:hover,
+  &:focus {
+    background-color: $primary-color;
+    color: $background-color;
+    cursor: pointer;
+  }
 }
 
 @mixin default-container {
-    display: flex;
-    flex-direction: column;
-    padding: $spacing-medium;
-    justify-content: space-between;
-    border: $thin-border;
-    transition: $default-transition;
-    &:hover {
-        border: $thin-border-active;
-    }
+  border: $thin-border;
+  border-radius: $border-radius;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: $spacing-medium;
+  transition: $default-transition;
+
+  &:hover {
+    border: $thin-border-active;
+  }
+}
+
+@mixin default-link {
+  color: $dark-grey;
+  text-decoration: none;
+  font-weight: bold;
+  transition: $default-transition;
+
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+@mixin error-message {
+  color: red;
+  font-size: $small-font;
+  margin: $spacing-small;
 }
 
 @mixin input {
-    border-radius: $border-radius;
-    border: $thick-border;
-    outline: none;
-    padding: $spacing-medium;
-    transition: $default-transition;
+  border-radius: $border-radius;
+  border: $thick-border;
+  outline: none;
+  padding: $spacing-medium;
+  transition: $default-transition;
 
-    &:hover, &:active, &:focus {
-        border: $thick-border-active;
-    }
+  &:hover,
+  &:active,
+  &:focus {
+    border: $thick-border-active;
+  }
 }
 
 @mixin link {
-    color: $dark-grey;
-    text-decoration: none;
-    transition: $default-transition;
+  color: $dark-grey;
+  text-decoration: none;
+  transition: $default-transition;
 
-    &:hover, &:focus {
-        color: $primary-color;       
-    }
+  &:hover,
+  &:focus {
+    color: $primary-color;
+  }
 }
 
 @mixin modal {
-    background: linear-gradient(rgba(0,0,0,0.75), rgba(50,50,50,0.75));
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(50, 50, 50, 0.75));
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
 
-    .modal-content {
-        background-color: white;
-        border-radius: $border-radius;
-        box-shadow: $default-shadow;
-        display: flex;
-        flex-direction: column;
-        height: 60%;
-        justify-content: space-evenly;
-        align-items: center;
-        left: 0;
-        margin: 5% auto;
-        padding: $spacing-xlarge;
-        position: fixed;
-        right: 0;
-        width: 50%;
-    }
+  .modal-content {
+    background-color: white;
+    border-radius: $border-radius;
+    box-shadow: $default-shadow;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    justify-content: space-evenly;
+    align-items: center;
+    left: 0;
+    margin: 5% auto;
+    padding: $spacing-xlarge;
+    position: fixed;
+    right: 0;
+    width: 50%;
+  }
+}
+
+@mixin nav-container {
+  display: flex;
+  padding: $spacing-medium;
+  justify-content: space-between;
+  border-bottom: $thin-border;
+  transition: $default-transition;
+  &:hover {
+    border-bottom: $thin-border-active;
+  }
 }

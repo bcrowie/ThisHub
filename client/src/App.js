@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Utils } from "./utils/utils";
-import Account from "./components/Account/Account";
+import Settings from "./components/Settings/Settings";
 import Login from "./components/Nav/Login/Login";
 import Nav from "./components/Nav/Nav";
 import PostList from "./components/Posts/PostList";
@@ -29,12 +29,17 @@ const App = () => {
         <Switch>
           <div className="main-container">
             <Route path="/new-post" render={() => <NewPost />} />
-            <Route path="/my-account" render={() => <Account />} />
             <Route
               exact
               path="/"
               render={() => <PostList showLogin={setShowLogin} />}
             />
+            <Route path="/my-account" render={() => <p>Account page</p>} />
+            <Route
+              path="/premium"
+              render={() => <p>Premium registration page</p>}
+            />
+            <Route path="/settings" render={() => <Settings />} />
           </div>
         </Switch>
       </UserContext.Provider>
