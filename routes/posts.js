@@ -74,22 +74,20 @@ posts.post(
   async (req, res, next) => {
     const { errors, isValid } = validatePost(req.body);
     const { Title, Body } = req.body;
-    const { id, Username } = req.user.dataValues;
+    const { Username } = req.user.dataValues;
 
     if (!isValid) return response(res, errors, 400);
 
     const post = await PostModel.create({
       Title,
       Body,
-      UserId: id,
       Username,
     });
 
     if (post) {
       const postLike = await PostLikeModel.create({
         PostId: post.dataValues.id,
-        UserId: id,
-        Liked: true,
+        Username,
       });
 
       if (post && postLike) {
@@ -107,10 +105,10 @@ posts.delete(
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     const { id } = req.params;
-    const UserId = req.user.dataValues.id;
+    const { Username } = req.user.dataValues;
     const post = await PostModel.findOne({ where: { id } });
 
-    if (UserId === post.dataValues.UserId) {
+    if (Username === post.dataValues.Username) {
       const confirmed = await PostModel.destroy({ where: { id } });
 
       if (confirmed) {
@@ -148,7 +146,7 @@ posts.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     const { PostId, Like } = req.params;
-    const UserId = req.user.dataValues.id;
+    const { Username } = req.user.dataValues;
     const post = await PostModel.findOne({ where: { id: PostId } });
 
     if (!post) {
@@ -156,10 +154,10 @@ posts.post(
     } else {
       const [PostAlreadyLiked, PostAlreadyDisliked] = await Promise.all([
         PostLikeModel.findOne({
-          where: { UserId, PostId },
+          where: { Username, PostId },
         }),
         PostDislikeModel.findOne({
-          where: { UserId, PostId },
+          where: { Username, PostId },
         }),
       ]);
       let confirmDestroy = null;
@@ -167,8 +165,7 @@ posts.post(
       if (Like == 1) {
         const confirmLike = await PostLikeModel.create({
           PostId,
-          UserId,
-          Liked: true,
+          Username,
         });
 
         if (PostAlreadyDisliked) {
@@ -189,8 +186,7 @@ posts.post(
       } else if (Like == 0) {
         const confirmDislike = await PostDislikeModel.create({
           PostId,
-          UserId,
-          Disliked: true,
+          Username,
         });
 
         if (PostAlreadyLiked) {

@@ -22,28 +22,37 @@ module.exports = (sequelize, DataTypes) => {
   Comment.associate = function (models) {
     Comment.belongsTo(models.User, {
       foreignKey: "Username",
-      onDelete: "CASCADE",
-    });
-    Comment.belongsTo(models.User, {
-      foreignKey: "UserId",
-      onDelete: "CASCADE",
+      onDelete: "SET NULL",
     });
     Comment.belongsTo(models.Post, {
-      foreignKey: "PostId",
+      foreignKey: "id",
       onDelete: "CASCADE",
     });
-    Comment.belongsTo(models.Comment, { foreignKey: "ParentId" });
-    Comment.belongsTo(models.Comment, { foreignKey: "ChildId" });
-    Comment.hasMany(models.CommentLike, { foreignKey: "id" });
-    Comment.hasMany(models.CommentDislike, { foreignKey: "id" });
+    Comment.belongsTo(models.Comment, {
+      foreignKey: "ParentId",
+      onDelete: "CASCADE",
+    });
+    Comment.belongsTo(models.Comment, {
+      foreignKey: "ChildId",
+      onDelete: "CASCADE",
+    });
+    Comment.hasMany(models.CommentLike, {
+      foreignKey: "id",
+      onDelete: "CASCADE",
+    });
+    Comment.hasMany(models.CommentDislike, {
+      foreignKey: "id",
+      onDelete: "CASCADE",
+    });
     Comment.hasMany(models.Comment, {
       defaultValue: null,
       foreignKey: "ChildId",
+      onDelete: "CASCADE",
     });
     Comment.hasOne(models.Comment, {
       defaultValue: null,
       foreignKey: "ParentId",
-      onDelete: "restrict",
+      onDelete: "CASCADE",
     });
   };
   return Comment;

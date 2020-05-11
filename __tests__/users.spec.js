@@ -48,8 +48,12 @@ describe("Testing Users route", () => {
     expect(response.data.Username).toBe("testaccount");
   });
   test("Should delete user 'testaccount'", async () => {
-    await axios.delete(serverString("/testaccount"), auth).then((res) => {
-      expect(res.status).toBe(200);
+    const response = await axios.delete(serverString("/my-account"), auth);
+    expect(response.status).toBe(200);
+  });
+  test("Should not find user 'testaccount'", async () => {
+    await axios.get(serverString("/testaccount")).catch((err) => {
+      expect(err.response.status).toBe(404);
     });
   });
 });

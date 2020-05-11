@@ -19,7 +19,9 @@ account.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const user = await User.findOne({ where: { username: req.user.username } });
+    const user = await User.findOne({
+      where: { Username: req.user.dataValues.Username },
+    });
 
     if (user) {
       response(res, user);
@@ -35,7 +37,7 @@ account.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const posts = await PostLike.findAll({
-      where: { userId: req.user.id, liked: true },
+      where: { Username: req.user.dataValues.Username },
       order: [["createdAt", "DESC"]],
       limit: 20,
     });
@@ -53,7 +55,7 @@ account.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const posts = await PostLike.findAll({
-      where: { userId: req.user.id, liked: false },
+      where: { Username: req.user.dataValues.Username },
       order: [["createdAt", "DESC"]],
       limit: 20,
     });
@@ -71,7 +73,7 @@ account.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const posts = await Post.findAll({
-      where: { userId: req.user.id },
+      where: { Username: req.user.dataValues.Username },
       order: [["createdAt", "DESC"]],
       limit: 20,
     });
@@ -89,7 +91,7 @@ account.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const comments = await Comment.findAll({
-      where: { userId: req.user.id, isDeleted: false },
+      where: { Username: req.user.dataValues.Username, isDeleted: false },
       order: [["createdAt", "DESC"]],
       limit: 20,
     });
@@ -106,31 +108,43 @@ account.post(
   "/change-password",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
-    const errors = {};
-    const { password, password2 } = req.body;
+    const { id } = req.user.dataValues;
+    const { Old, Password } = req.body;
+    let { errors, isValid } = validatePassword(req.body);
 
-    if (Validator.isEmpty(password) || Validator.isEmpty(password2)) {
-      errors.password = "Both fields are required";
+    if (!Old) {
+      errors.Match = "Old password is required";
+      isValid = false;
     }
-    if (!Validator.equals(password, password2)) {
-      errors.password = "Passwords do not match";
-    }
-    if (!Validator.isLength(data.password, { min: 8, max: 30 })) {
-      errors.password = "Password must be between 8 and 30 characters.";
-    }
-    if (errors) return response(res, errors, 400);
 
-    await bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, (err, hash) => {
-        if (err) return next(err);
-        User.update(
-          { password: hash },
-          { where: { username: req.user.username } }
-        ).then(() => {
-          return response(res, "Password updated successfully");
-        });
+    if (!isValid) {
+      return response(res, errors, 400);
+    }
+
+    const User = await UserModel.findOne({ where: { id } });
+
+    if (User) {
+      await bcrypt.compare(Old, User.dataValues.Password).then((isMatch) => {
+        if (isMatch) {
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(Password, salt, (err, hash) => {
+              if (err) return next(err);
+              UserModel.update(
+                { Password: hash },
+                { where: { id: req.user.dataValues.id } }
+              ).then(() => {
+                return response(res, "Password updated successfully");
+              });
+            });
+          });
+        } else {
+          errors.Match = "Old password is incorrect";
+          return response(res, errors);
+        }
       });
-    });
+    } else {
+      return response(res, { msg: "Something went wrong" });
+    }
   }
 );
 
@@ -140,7 +154,7 @@ account.delete(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const confirm = await User.destroy({
-      where: { username: req.user.username },
+      where: { Username: req.user.dataValues.Username },
     });
 
     if (confirm) {
@@ -156,8 +170,8 @@ account.get(
   "/payment-info",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const userId = req.user.dataValues.id;
-    const userExists = await Payment.findOne({ where: { userId } });
+    const { Username } = req.user.dataValues;
+    const userExists = await Payment.findOne({ where: { Username } });
     if (userExists) {
       response(res, userExists.dataValues);
     } else {
@@ -177,9 +191,9 @@ account.post(
       response(res, errors, 400);
     }
 
-    newPaymentInfo.userId = req.user.dataValues.id;
+    newPaymentInfo.Username = req.user.dataValues.Username;
     const userExists = await Payment.findOne({
-      where: { userId: newPaymentInfo.userId },
+      where: { Username: newPaymentInfo.Username },
     });
     if (userExists) {
       await userExists.update(newPaymentInfo);

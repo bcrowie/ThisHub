@@ -21,21 +21,20 @@ users.use("/my-account", account);
 
 // PUBLIC Route : Get user by username
 users.get("/:Username", async (req, res) => {
-  const User = await UserModel.findOne({
-    where: { Username: req.params.Username },
-  });
-  const Posts = await PostModel.findAll({
-    where: { Username: req.params.Username },
-  });
+  const { Username } = req.params;
+  const [User, Posts] = await Promise.all([
+    UserModel.findOne({ where: { Username } }),
+    PostModel.findAll({ where: { Username } }),
+  ]);
+
   if (User && Posts) {
     return response(res, {
-      id: User.id,
       Username: User.Username,
       createdAt: User.createdAt,
       Posts,
     });
   } else {
-    return response(res, "User not found.", 404);
+    return response(res, { msg: "User not found." }, 404);
   }
 });
 
@@ -118,22 +117,6 @@ users.post("/login", async (req, res) => {
     }
   }
 });
-
-// Private Route: Delete Account
-users.delete(
-  "/:Username",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res, next) => {
-    const { Username } = req.params;
-    const deleted = await UserModel.destroy({ where: { Username } });
-
-    if (deleted) {
-      return response(res, { msg: "Success" });
-    } else {
-      return next(deleted);
-    }
-  }
-);
 
 // Private Route: Authentication
 users.post("/auth", async (req, res) => {

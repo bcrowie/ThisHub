@@ -67,9 +67,14 @@ comments.get("/:id", async (req, res) => {
     }
     return;
   };
-  stack.push(comment.dataValues.id);
-  await getReplies(comment);
-  return response(res, chain);
+
+  if (comment) {
+    stack.push(comment.dataValues.id);
+    await getReplies(comment);
+    return response(res, chain);
+  } else {
+    return response(res, { msg: "Comment not found" }, 404);
+  }
 });
 
 //  PRIVATE : New comment
@@ -79,23 +84,21 @@ comments.post(
   async (req, res) => {
     const { PostId } = req.params;
     const { Body } = req.body;
-    const UserId = req.user.dataValues.id;
-    const Username = req.user.dataValues.Username;
+    const { Username } = req.user.dataValues;
     const post = await PostModel.findOne({ where: { id: PostId } });
+
     if (!post) {
       return response(res, "Post not found.", 404);
     } else {
       const comment = await CommentModel.create({
         Body,
         PostId,
-        UserId,
         Username,
       });
       if (comment) {
         await CommentLikeModel.create({
-          UserId,
+          Username,
           CommentId: comment.dataValues.id,
-          Liked: true,
         });
         return response(res, { msg: "New post comment", comment });
       } else {
@@ -111,17 +114,17 @@ comments.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { PostId, ParentId } = req.params;
-    const UserId = req.user.dataValues.id;
+    const { Username } = req.user.dataValues;
     const { Body } = req.body;
     const comment = await CommentModel.create({
       Body,
-      UserId,
+      Username,
       PostId,
       ParentId,
     });
     const parent = await CommentModel.findOne({ where: { id: ParentId } });
     await CommentLikeModel.create({
-      UserId,
+      Username,
       CommentId: comment.dataValues.id,
       Liked: true,
     }).catch((err) => {
@@ -172,14 +175,14 @@ comments.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { CommentId, Like } = req.params;
-    const UserId = req.user.dataValues.id;
+    const { Username } = req.user.dataValues;
     const Liked = Like == 1 ? true : false;
     const comment = await CommentModel.findOne({ where: { id: CommentId } });
 
     if (!comment) return response(res, "Comment not found", 404);
     else {
       const userExists = await CommentLikeModel.findOne({
-        where: { UserId },
+        where: { Username },
       });
       if (userExists) {
         const userLiked = userExists.dataValues.Liked;
@@ -194,9 +197,10 @@ comments.post(
           return response(res, Liked ? "Liked comment" : "Disliked comment");
         }
       } else {
+        // This needs to be updated
         const newLike = await CommentLikeModel.create({
           CommentId,
-          UserId,
+          Username,
           Liked,
         });
         if (newLike) {

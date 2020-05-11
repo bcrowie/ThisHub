@@ -15,12 +15,12 @@ let CommentId;
 let ChildId;
 
 describe("Adding user", () => {
-  test("Creating 'testaccount5'", async () => {
+  test("Creating 'testaccount3'", async () => {
     await axios
       .post(serverString("/users/register"), {
-        Username: "testaccount5",
-        Email: "testaccount5@test.com",
-        Email2: "testaccount5@test.com",
+        Username: "testaccount3",
+        Email: "testaccount3@test.com",
+        Email2: "testaccount3@test.com",
         Password: "password1234",
         Password2: "password1234",
       })
@@ -28,9 +28,9 @@ describe("Adding user", () => {
         expect(res.status).toBe(200);
       });
   });
-  test("Should login with 'testaccount5'", async () => {
+  test("Should login with 'testaccount3'", async () => {
     const response = await axios.post(serverString("/users/login"), {
-      Email: "testaccount5@test.com",
+      Email: "testaccount3@test.com",
       Password: "password1234",
     });
     auth.headers.Authorization = response.data.token;
@@ -76,6 +76,12 @@ describe(`Adding Comment to Post ${PostId}`, () => {
     ChildId = response.data.comment.id;
     expect(response.status).toBe(200);
   });
+  test(`Should get new comment reply ${ChildId}`, async () => {
+    const response = await axios.get(
+      serverString(`/posts/${PostId}/comments/${ChildId}`)
+    );
+    expect(response.status).toBe(200);
+  });
   test(`Should dislike comment ${CommentId}`, async () => {
     const response = await axios.post(
       serverString(`/posts/${PostId}/comments/${CommentId}/0`),
@@ -94,16 +100,29 @@ describe(`Adding Comment to Post ${PostId}`, () => {
   });
   test(`Should delete child comment ${ChildId}`, async () => {
     const response = await axios.delete(
-      serverString(`posts/${PostId}/comments/${ChildId}`),
+      serverString(`/posts/${PostId}/comments/${ChildId}`),
       auth
     );
     expect(response.status).toBe(200);
   });
+  test(`Should not find child comment ${ChildId}`, async () => {
+    const response = await axios.get(
+      serverString(`/posts/${PostId}/comments/${ChildId}`)
+    );
+    expect(response.data[ChildId].IsDeleted).toBe(true);
+  });
   test(`Should delete parent comment ${CommentId}`, async () => {
     const response = await axios.delete(
-      serverString(`posts/${PostId}/comments/${CommentId}`, auth)
+      serverString(`/posts/${PostId}/comments/${CommentId}`),
+      auth
     );
     expect(response.status).toBe(200);
+  });
+  test(`Should not find parent comment ${CommentId}`, async () => {
+    const response = await axios.get(
+      serverString(`/posts/${PostId}/comments/${CommentId}`)
+    );
+    expect(response.data[CommentId].IsDeleted).toBe(true);
   });
 });
 
@@ -114,12 +133,10 @@ describe("Deleting test post", () => {
   });
 });
 
-describe("Deleting 'testaccount5'", () => {
-  test("Should delete user 'testaccount5'", async () => {
-    await axios
-      .delete(serverString("/users/testaccount5"), auth)
-      .then((res) => {
-        expect(res.status).toBe(200);
-      });
+describe("Deleting 'testaccount3'", () => {
+  test("Should delete user 'testaccount3'", async () => {
+    await axios.delete(serverString("/users/my-account"), auth).then((res) => {
+      expect(res.status).toBe(200);
+    });
   });
 });

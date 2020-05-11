@@ -13,12 +13,12 @@ let auth = {
 let PostId;
 
 describe("Adding user", () => {
-  test("Creating 'testaccount3'", async () => {
+  test("Creating 'testaccount2'", async () => {
     await axios
       .post(serverString("/users/register"), {
-        Username: "testaccount3",
-        Email: "testaccount3@test.com",
-        Email2: "testaccount3@test.com",
+        Username: "testaccount2",
+        Email: "testaccount2@test.com",
+        Email2: "testaccount2@test.com",
         Password: "password1234",
         Password2: "password1234",
       })
@@ -26,9 +26,9 @@ describe("Adding user", () => {
         expect(res.status).toBe(200);
       });
   });
-  test("Should login with 'testaccount3'", async () => {
+  test("Should login with 'testaccount2'", async () => {
     const response = await axios.post(serverString("/users/login"), {
-      Email: "testaccount3@test.com",
+      Email: "testaccount2@test.com",
       Password: "password1234",
     });
     auth.headers.Authorization = response.data.token;
@@ -84,14 +84,17 @@ describe("Testing Post routes", () => {
     const response = await axios.delete(serverString(`/posts/${PostId}`), auth);
     expect(response.status).toBe(200);
   });
+  test("Should not find post", async () => {
+    await axios.get(serverString(`/posts/${PostId}`)).catch((err) => {
+      expect(err.response.status).toBe(404);
+    });
+  });
 });
 
-describe("Deleting 'testaccount3'", () => {
-  test("Should delete user 'testaccount3'", async () => {
-    await axios
-      .delete(serverString("/users/testaccount3"), auth)
-      .then((res) => {
-        expect(res.status).toBe(200);
-      });
+describe("Deleting 'testaccount2'", () => {
+  test("Should delete user 'testaccount2'", async () => {
+    await axios.delete(serverString("/users/my-account"), auth).then((res) => {
+      expect(res.status).toBe(200);
+    });
   });
 });

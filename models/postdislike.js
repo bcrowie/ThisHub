@@ -4,16 +4,26 @@ module.exports = (sequelize, DataTypes) => {
   const PostDislike = sequelize.define(
     "PostDislike",
     {
-      id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true, allowNull: false },
-      Disliked: DataTypes.BOOLEAN,
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+        allowNull: false,
+      },
       PostId: DataTypes.INTEGER,
-      UserId: DataTypes.INTEGER,
+      Username: DataTypes.STRING,
     },
     {}
   );
   PostDislike.associate = function (models) {
-    PostDislike.belongsTo(models.Post);
-    PostDislike.belongsTo(models.User);
+    PostDislike.belongsTo(models.Post, {
+      foreignKey: "id",
+      onDelete: "CASCADE",
+    });
+    PostDislike.belongsTo(models.User, {
+      foreignKey: "Username",
+      onDelete: "CASCADE",
+    });
   };
   return PostDislike;
 };
