@@ -1,12 +1,11 @@
-@import '../../../styles/variables.scss';
+@import "../../../styles/variables.scss";
 
 .post-nav {
-    @include nav-container;
+  @include nav-container;
 
-    justify-content: unset;
-    font-size: $small-font;
-    a {
-        margin: $spacing-small
-    }
-
+  justify-content: unset;
+  font-size: $small-font;
+  a {
+    margin: $spacing-small;
+  }
 }

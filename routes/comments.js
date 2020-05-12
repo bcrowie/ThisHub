@@ -2,9 +2,13 @@ const { Router } = require("express");
 const comments = new Router({ mergeParams: true });
 const passport = require("passport");
 const models = require("../models");
+const sequelize = require("sequelize");
 const CommentModel = models.Comment;
 const CommentLikeModel = models.CommentLike;
+const CommentDislikeModel = models.CommentDislike;
 const PostModel = models.Post;
+const PostLikeModel = models.PostLike;
+const PostDislikeModel = models.PostDislike;
 
 const response = (res, msg, status = 200) => {
   return res.status(status).json(msg);
@@ -13,12 +17,87 @@ const response = (res, msg, status = 200) => {
 // PUBLIC : Get all comments for post
 comments.get("/", async (req, res) => {
   const { PostId } = req.params;
-  const comments = await CommentModel.findAll({ where: { PostId } });
+  const [Post, Comments] = await Promise.all([
+    PostModel.findOne({
+      attributes: [
+        "id",
+        "Username",
+        "Title",
+        "Body",
+        "createdAt",
+        "updatedAt",
+        [sequelize.fn("COUNT", sequelize.col("PostLikes.PostId")), "LikeCount"],
+        [
+          sequelize.fn("COUNT", sequelize.col("PostDislikes.PostId")),
+          "DislikeCount",
+        ],
+      ],
+      include: [
+        {
+          model: PostLikeModel,
+          attributes: [],
+        },
+        {
+          model: PostDislikeModel,
+          attributes: [],
+        },
+      ],
+      group: ["Post.id"],
+      order: [["createdAt", "DESC"]],
+      where: { id: PostId },
+    }),
+    CommentModel.findAll({
+      attributes: [
+        "id",
+        "Username",
+        "PostId",
+        "ParentId",
+        "ChildId",
+        "Level",
+        "Body",
+        "IsDeleted",
+        "createdAt",
+        "updatedAt",
+        [
+          sequelize.fn("COUNT", sequelize.col("CommentLikes.CommentId")),
+          "LikeCount",
+        ],
+        [
+          sequelize.fn("COUNT", sequelize.col("CommentDislikes.CommentId")),
+          "DislikeCount",
+        ],
+      ],
+      where: { PostId },
+      include: [
+        {
+          model: CommentLikeModel,
+          attributes: [],
+        },
+        {
+          model: CommentDislikeModel,
+          attributes: [],
+        },
+      ],
+      group: ["Comment.id"],
+      order: [
+        ["Level", "ASC"],
+        ["createdAt", "DESC"],
+      ],
+    }),
+  ]);
 
-  if (!comments) {
-    return response(res, "Unable to get comments", 400);
+  Object.entries(Comments).forEach(([key, value]) => {
+    value.dataValues.Score =
+      value.dataValues.LikeCount - value.dataValues.DislikeCount;
+  });
+
+  Post.dataValues.Score =
+    Post.dataValues.LikeCount - Post.dataValues.DislikeCount;
+
+  if (Post && Comments) {
+    return response(res, { Post, Comments });
   } else {
-    return response(res, comments);
+    return response(res, { msg: "Unable to get comments" }, 400);
   }
 });
 
@@ -116,13 +195,18 @@ comments.post(
     const { PostId, ParentId } = req.params;
     const { Username } = req.user.dataValues;
     const { Body } = req.body;
+
+    const parent = await CommentModel.findOne({ where: { id: ParentId } });
+    let Level = parent.dataValues.Level;
+    Level += 1;
+
     const comment = await CommentModel.create({
       Body,
       Username,
       PostId,
       ParentId,
+      Level,
     });
-    const parent = await CommentModel.findOne({ where: { id: ParentId } });
     await CommentLikeModel.create({
       Username,
       CommentId: comment.dataValues.id,

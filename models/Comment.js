@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       PostId: DataTypes.INTEGER,
       ParentId: DataTypes.INTEGER,
       ChildId: DataTypes.INTEGER,
+      Level: DataTypes.INTEGER,
     },
     {}
   );

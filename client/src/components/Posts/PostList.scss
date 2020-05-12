@@ -1,9 +1,9 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
 
 .post-list {
   list-style: none;
   margin: auto;
-  
+
   li {
     border: $thin-border;
     border-radius: $border-radius;
@@ -35,14 +35,19 @@
       p:first-child {
         margin-right: $spacing-large;
       }
-    }    
+    }
 
     .post-title {
+      @include link;
       font-weight: bold;
-      color: $dark-grey;
+
+      &:hover {
+        color: $primary-color;
+      }
     }
 
     .post-controls {
+      align-items: baseline;
       color: $dark-grey;
       display: flex;
       justify-content: space-between;
@@ -72,17 +77,27 @@
       .like-post {
         transition: $default-transition;
       }
-      .like-post:hover, .like-post.active {
+      .like-post:hover,
+      .like-post.active {
         color: $like-color;
       }
       .dislike-post {
         transition: $default-transition;
       }
-      .dislike-post:hover, .dislike-post.active {
+      .dislike-post:hover,
+      .dislike-post.active {
         color: $dislike-color;
       }
-      .comments:hover {
-        color: $primary-color;
+
+      .comments {
+        align-self: center;
+        color: $dark-grey;
+        font-size: $small-font;
+        font-weight: bold;
+        text-decoration: none;
+        &:hover {
+          color: $primary-color;
+        }
       }
     }
   }
@@ -116,7 +131,7 @@
       margin: none;
       padding: 0.5rem;
       width: 100%;
-      height: 100%;      
+      height: 100%;
     }
   }
 }
