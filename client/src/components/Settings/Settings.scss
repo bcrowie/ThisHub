@@ -1,0 +1,73 @@
+@import "../../styles/variables.scss";
+
+.account-container {
+  display: flex;
+  column-gap: 20px;
+
+  .account-settings {
+    @include default-container;
+
+    max-width: 70%;
+    padding: $spacing-xlarge;
+
+    h2 {
+      margin: $spacing-xlarge 0;
+    }
+
+    div {
+      margin: $spacing-xlarge 0;
+
+      form {
+        display: flex;
+        flex-direction: column;
+        min-width: 40%;
+        max-width: 50%;
+
+        button {
+          @include default-button;
+
+          margin: $spacing-large 0;
+        }
+
+        input {
+          @include input;
+
+          display: block;
+        }
+
+        label {
+          margin: $spacing-large 0;
+        }
+      }
+
+      .errors {
+        @include error-message;
+      }
+      p {
+        margin: $spacing-large 0;
+      }
+    }
+  }
+  .account-sidebar {
+    @include default-container;
+
+    height: 200px;
+    margin: 0 $spacing-large;
+    padding: $spacing-xlarge;
+    position: sticky;
+    top: 10px;
+    min-width: 25%;
+
+    a {
+      @include default-link;
+    }
+
+    ul {
+      list-style-type: none;
+
+      li {
+        margin: $spacing-large 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+@import "../../../../styles/variables.scss";
+
+li {
+  display: flex;
+
+  .controls {
+    @include controls(comment);
+
+    align-items: center;
+    cursor: default;
+    font-size: $small-font;
+    margin: 0 $spacing-small;
+  }
+
+  .comment-content {
+    margin: 0 $spacing-small;
+    padding: $spacing-large;
+    border-bottom: $thin-border;
+    width: 100%;
+
+    button {
+      @include link;
+
+      border: none;
+      cursor: pointer;
+      font-size: $small-font;
+      font-weight: bold;
+      margin-top: $spacing-large;
+      padding-right: $spacing-large;
+    }
+  }
+}
