@@ -94,7 +94,7 @@ account.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const comments = await Comment.findAll({
-      where: { userId: req.user.id, isDeleted: false },
+      where: { Username: req.user.dataValues.Username, isDeleted: false },
       order: [["createdAt", "DESC"]],
       limit: 20,
     });
@@ -199,6 +199,7 @@ account.get(
   async (req, res) => {
     const userId = req.user.dataValues.id;
     const userExists = await PaymentModel.findOne({ where: { userId } });
+    
     if (userExists) {
       response(res, userExists.dataValues);
     } else {

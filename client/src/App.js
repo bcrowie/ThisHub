@@ -6,11 +6,13 @@ import Login from "./components/Nav/Login/Login";
 import Nav from "./components/Nav/Nav";
 import PostList from "./components/Posts/PostList";
 import PostNav from "./components/Nav/PostNav/PostNav";
+import PostView from "./components/Posts/PostView/PostView";
 import Register from "./components/Register/Register";
 import NewPost from "./components/NewPost/NewPost";
 import "./App.scss";
 
 export const UserContext = createContext();
+export const LoginContext = createContext();
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -19,29 +21,31 @@ const App = () => {
   return (
     <Router>
       <UserContext.Provider value={auth}>
-        {showLogin && (
-          <div className="login-modal">
-            <Login hideModal={() => setShowLogin((showLogin) => !showLogin)} />
-          </div>
-        )}
-        <Nav toggleModal={() => setShowLogin((showLogin) => !showLogin)} />
-        <PostNav />
-        <Switch>
-          <div className="main-container">
-            <Route path="/new-post" render={() => <NewPost />} />
-            <Route
-              exact
-              path="/"
-              render={() => <PostList showLogin={setShowLogin} />}
-            />
-            <Route path="/my-account" render={() => <p>Account page</p>} />
-            <Route
-              path="/premium"
-              render={() => <p>Premium registration page</p>}
-            />
-            <Route path="/settings" render={() => <Settings />} />
-          </div>
-        </Switch>
+        <LoginContext.Provider value={{ showLogin, setShowLogin }}>
+          {showLogin && (
+            <div className="login-modal">
+              <Login
+                hideModal={() => setShowLogin((showLogin) => !showLogin)}
+              />
+            </div>
+          )}
+          <Nav />
+          <PostNav />
+          <Switch>
+            <div className="main-container">
+              <Route path="/posts/:postId" component={PostView} />
+              <Route path="/new-post" component={NewPost} />
+              <Route path="/my-account">
+                <p>MyAccount page</p>
+              </Route>
+              <Route
+                exact
+                path="/"
+                render={() => <PostList showLogin={setShowLogin} />}
+              />
+            </div>
+          </Switch>
+        </LoginContext.Provider>
       </UserContext.Provider>
       <Route exact path="/register" render={() => <Register />} />
     </Router>

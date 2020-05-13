@@ -6,10 +6,7 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.DataTypes.UUID,
-        defaultValue: Sequelize.UUIDV4
-      },
-      Disliked: {
-        type: Sequelize.BOOLEAN,
+        defaultValue: Sequelize.UUIDV4,
       },
       CommentId: {
         type: Sequelize.UUID,
@@ -20,13 +17,14 @@ module.exports = {
         allowNull: false,
         onDelete: "CASCADE",
       },
-      UserId: {
-        type: Sequelize.UUID,
+      Username: {
+        type: Sequelize.STRING,
         references: {
           model: "Users",
-          key: "id",
+          key: "Username",
         },
         allowNull: false,
+        onDelete: "CASCADE",
       },
       createdAt: {
         allowNull: false,

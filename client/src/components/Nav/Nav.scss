@@ -1,30 +1,36 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
+nav {
+  position: sticky;
+  top: 0;
+}
 
 .main-nav {
-    @include nav-container;
+  @include nav-container;
 
-    .nav-buttons {
-        margin: $spacing-large;
-        #logo {
-            @include default-button;
-        }
+  .nav-buttons {
+    margin: $spacing-large;
+    #logo {
+      @include default-button;
+      color: $background-color;
+      background-color: $primary-color;
     }
-    .nav-buttons .account-link {
-        @include default-button;
-        margin: auto $spacing-xlarge;
+  }
+  .nav-buttons .account-link {
+    @include default-button;
+    margin: auto $spacing-xlarge;
+  }
+  .register {
+    @include default-button;
+    background-color: $primary-color;
+    color: $background-color;
+    &:hover {
+      background-color: $background-color;
+      border: $thick-border $secondary-color;
+      color: $secondary-color;
     }
-    .register {
-        @include default-button;
-        background-color: $primary-color;
-        color: $background-color;
-        &:hover {
-            background-color: $background-color;
-            border: solid 2px $secondary-color;
-            color: $secondary-color;
-        }
-    }
+  }
 }
 
 .login-modal {
-    @include modal;
+  @include modal;
 }

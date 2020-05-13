@@ -1,9 +1,10 @@
 const { Router } = require("express");
-const sequelize = require('sequelize')
+const sequelize = require("sequelize");
 const users = new Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
+const passport = require("passport");
 const validateRegister = require("../validation/register");
 const validateLogin = require("../validation/login");
 const models = require("../models");
@@ -20,21 +21,20 @@ users.use("/my-account", account);
 
 // PUBLIC Route : Get user by username
 users.get("/:Username", async (req, res) => {
-  const User = await UserModel.findOne({
-    where: { Username: req.params.Username },
-  });
-  const Posts = await PostModel.findAll({
-    where: { Username: req.params.Username },
-  });
+  const { Username } = req.params;
+  const [User, Posts] = await Promise.all([
+    UserModel.findOne({ where: { Username } }),
+    PostModel.findAll({ where: { Username } }),
+  ]);
+
   if (User && Posts) {
     return response(res, {
-      id: User.id,
       Username: User.Username,
       createdAt: User.createdAt,
       Posts,
     });
   } else {
-    return response(res, "User not found.", 404);
+    return response(res, { msg: "User not found." }, 404);
   }
 });
 
@@ -42,16 +42,13 @@ users.get("/:Username", async (req, res) => {
 users.post("/register", async (req, res, next) => {
   const { errors, isValid } = validateRegister(req.body);
   const { Username, Email, Password } = req.body;
-  
+
   if (!isValid) {
     return response(res, errors, 400);
   }
 
   const User = await UserModel.findOne({
-    where: sequelize.or(
-      { Username },
-      { Email }
-    )
+    where: sequelize.or({ Username }, { Email }),
   });
 
   if (User) {
@@ -73,7 +70,7 @@ users.post("/register", async (req, res, next) => {
         }
         newUser.Password = hash;
         UserModel.create(newUser).then(() => {
-          res.redirect("/login");
+          return response(res, { msg: "Success" }, 200);
         });
       });
     });
@@ -107,7 +104,11 @@ users.post("/login", async (req, res) => {
         keys.secretOrKey,
         { expiresIn: "12h" },
         (err, token) => {
-          res.json({ success: true, token: "Bearer " + token, Username: User.dataValues.Username });
+          res.json({
+            success: true,
+            token: "Bearer " + token,
+            Username: User.dataValues.Username,
+          });
         }
       );
     } else {
@@ -124,14 +125,23 @@ users.post("/auth", async (req, res) => {
   if (!token) {
     return response(res, "Unauthorized: No token provided", 401);
   } else {
-    const { Username } = req.body
-    const user = await UserModel.findOne({where: { Username }})
+    const { Username } = req.body;
+    const user = await UserModel.findOne({ where: { Username } });
 
     await jwt.verify(token, keys.secretOrKey, (err, decoded) => {
       if (err) {
         return response(res, "Unauthorized: Invalid token", 401);
       } else {
-        return response(res, {Email: user.Email, Username: user.Username, createdAt: user.createdAt, id: user.id}, 200)
+        return response(
+          res,
+          {
+            Email: user.Email,
+            Username: user.Username,
+            createdAt: user.createdAt,
+            id: user.id,
+          },
+          200
+        );
       }
     });
   }

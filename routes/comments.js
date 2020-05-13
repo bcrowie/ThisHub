@@ -2,9 +2,13 @@ const { Router } = require("express");
 const comments = new Router({ mergeParams: true });
 const passport = require("passport");
 const models = require("../models");
+const sequelize = require("sequelize");
 const CommentModel = models.Comment;
 const CommentLikeModel = models.CommentLike;
+const CommentDislikeModel = models.CommentDislike;
 const PostModel = models.Post;
+const PostLikeModel = models.PostLike;
+const PostDislikeModel = models.PostDislike;
 
 const response = (res, msg, status = 200) => {
   return res.status(status).json(msg);
@@ -13,12 +17,87 @@ const response = (res, msg, status = 200) => {
 // PUBLIC : Get all comments for post
 comments.get("/", async (req, res) => {
   const { PostId } = req.params;
-  const comments = await CommentModel.findAll({ where: { PostId } });
+  const [Post, Comments] = await Promise.all([
+    PostModel.findOne({
+      attributes: [
+        "id",
+        "Username",
+        "Title",
+        "Body",
+        "createdAt",
+        "updatedAt",
+        [sequelize.fn("COUNT", sequelize.col("PostLikes.PostId")), "LikeCount"],
+        [
+          sequelize.fn("COUNT", sequelize.col("PostDislikes.PostId")),
+          "DislikeCount",
+        ],
+      ],
+      include: [
+        {
+          model: PostLikeModel,
+          attributes: [],
+        },
+        {
+          model: PostDislikeModel,
+          attributes: [],
+        },
+      ],
+      group: ["Post.id"],
+      order: [["createdAt", "DESC"]],
+      where: { id: PostId },
+    }),
+    CommentModel.findAll({
+      attributes: [
+        "id",
+        "Username",
+        "PostId",
+        "ParentId",
+        "ChildId",
+        "Level",
+        "Body",
+        "IsDeleted",
+        "createdAt",
+        "updatedAt",
+        [
+          sequelize.fn("COUNT", sequelize.col("CommentLikes.CommentId")),
+          "LikeCount",
+        ],
+        [
+          sequelize.fn("COUNT", sequelize.col("CommentDislikes.CommentId")),
+          "DislikeCount",
+        ],
+      ],
+      where: { PostId },
+      include: [
+        {
+          model: CommentLikeModel,
+          attributes: [],
+        },
+        {
+          model: CommentDislikeModel,
+          attributes: [],
+        },
+      ],
+      group: ["Comment.id"],
+      order: [
+        ["Level", "ASC"],
+        ["createdAt", "DESC"],
+      ],
+    }),
+  ]);
 
-  if (!comments) {
-    return response(res, "Unable to get comments", 400);
+  Object.entries(Comments).forEach(([key, value]) => {
+    value.dataValues.Score =
+      value.dataValues.LikeCount - value.dataValues.DislikeCount;
+  });
+
+  Post.dataValues.Score =
+    Post.dataValues.LikeCount - Post.dataValues.DislikeCount;
+
+  if (Post && Comments) {
+    return response(res, { Post, Comments });
   } else {
-    return response(res, comments);
+    return response(res, { msg: "Unable to get comments" }, 400);
   }
 });
 
@@ -29,14 +108,14 @@ comments.get("/:id", async (req, res) => {
   let chain = {};
   let stack = [];
 
-  const getReplies = async cmnt => {
+  const getReplies = async (cmnt) => {
     while (stack) {
       let next = stack.pop();
       const children = await CommentModel.findAll({
-        where: { id: cmnt.dataValues.ChildId }
+        where: { id: cmnt.dataValues.ChildId },
       });
       const parents = await CommentModel.findAll({
-        where: { id: cmnt.dataValues.ParentId }
+        where: { id: cmnt.dataValues.ParentId },
       });
       if (children) {
         for (let i = 0; i < children.length; i++) {
@@ -67,9 +146,14 @@ comments.get("/:id", async (req, res) => {
     }
     return;
   };
-  stack.push(comment.dataValues.id);
-  await getReplies(comment);
-  return response(res, chain);
+
+  if (comment) {
+    stack.push(comment.dataValues.id);
+    await getReplies(comment);
+    return response(res, chain);
+  } else {
+    return response(res, { msg: "Comment not found" }, 404);
+  }
 });
 
 //  PRIVATE : New comment
@@ -79,24 +163,26 @@ comments.post(
   async (req, res) => {
     const { PostId } = req.params;
     const { Body } = req.body;
-    const UserId = req.user.dataValues.id;
-    const Username = req.user.dataValues.Username;
+    const { Username } = req.user.dataValues;
     const post = await PostModel.findOne({ where: { id: PostId } });
+
     if (!post) {
       return response(res, "Post not found.", 404);
     } else {
-      const newComment = await CommentModel.create({
+      const comment = await CommentModel.create({
         Body,
         PostId,
-        UserId,
-        Username
+        Username,
       });
-      await CommentLikeModel.create({
-        UserId,
-        CommentId: newComment.dataValues.id,
-        Liked: true
-      });
-      return response(res, "New post comment");
+      if (comment) {
+        await CommentLikeModel.create({
+          Username,
+          CommentId: comment.dataValues.id,
+        });
+        return response(res, { msg: "New post comment", comment });
+      } else {
+        return response(res, "Something went wrong");
+      }
     }
   }
 );
@@ -107,24 +193,29 @@ comments.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { PostId, ParentId } = req.params;
-    const UserId = req.user.dataValues.id;
+    const { Username } = req.user.dataValues;
     const { Body } = req.body;
+
+    const parent = await CommentModel.findOne({ where: { id: ParentId } });
+    let Level = parent.dataValues.Level;
+    Level += 1;
+
     const comment = await CommentModel.create({
       Body,
-      UserId,
+      Username,
       PostId,
-      ParentId
+      ParentId,
+      Level,
     });
-    const parent = await CommentModel.findOne({ where: { id: ParentId } });
     await CommentLikeModel.create({
-      UserId,
+      Username,
       CommentId: comment.dataValues.id,
-      Liked: true
-    }).catch(err => {
+      Liked: true,
+    }).catch((err) => {
       return response(res, err, 400);
     });
     parent.update({ ChildId: comment.dataValues.id });
-    return response(res, "Comment reply added");
+    return response(res, { msg: "Comment reply added", comment });
   }
 );
 
@@ -154,7 +245,7 @@ comments.delete(
   async (req, res) => {
     const id = req.params.CommentId;
     await CommentModel.update({ IsDeleted: true }, { where: { id } }).catch(
-      err => {
+      (err) => {
         return response(res, error, 400);
       }
     );
@@ -168,14 +259,14 @@ comments.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { CommentId, Like } = req.params;
-    const UserId = req.user.dataValues.id;
+    const { Username } = req.user.dataValues;
     const Liked = Like == 1 ? true : false;
     const comment = await CommentModel.findOne({ where: { id: CommentId } });
 
     if (!comment) return response(res, "Comment not found", 404);
     else {
       const userExists = await CommentLikeModel.findOne({
-        where: { UserId }
+        where: { Username },
       });
       if (userExists) {
         const userLiked = userExists.dataValues.Liked;
@@ -190,10 +281,11 @@ comments.post(
           return response(res, Liked ? "Liked comment" : "Disliked comment");
         }
       } else {
+        // This needs to be updated
         const newLike = await CommentLikeModel.create({
           CommentId,
-          UserId,
-          Liked
+          Username,
+          Liked,
         });
         if (newLike) {
           return response(res, Liked ? "Liked comment" : "Disliked comment");
