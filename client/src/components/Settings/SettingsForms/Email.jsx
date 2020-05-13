@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../../App";
-import { Utils } from "../../../utils/utils";
+import { Users as Utils } from "../../../utils/Users";
 
 const EmailForm = (props) => {
   const [errors, setErrors] = useState({ Email: null, Email2: null });
@@ -23,9 +23,7 @@ const EmailForm = (props) => {
           onChange={(e) => setInputs({ ...inputs, Email2: e.target.value })}
         />
         {errors.Email2 && <p className="errors">{errors.Email2}</p>}
-        <button
-          onClick={(e) => Utils.Users.updateEmail(e, setErrors, inputs, User)}
-        >
+        <button onClick={(e) => Utils.updateEmail(e, setErrors, inputs, User)}>
           Change Email
         </button>
       </form>

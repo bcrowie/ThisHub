@@ -10,7 +10,7 @@ import {
   mdiLogout,
 } from "@mdi/js";
 import { UserContext } from "../../../App";
-import { Utils } from "../../../utils/utils";
+import { Users as Utils } from "../../../utils/Users";
 import "./AccountMenu.scss";
 
 const AccountMenu = () => {
@@ -99,7 +99,7 @@ const AccountMenu = () => {
                 className={`account-menu-link ${
                   showAccountMenu && "link-active"
                 }`}
-                onClick={() => Utils.Users.logout()}
+                onClick={() => Utils.logout()}
               >
                 Logout
                 <Icon path={mdiLogout} title="logout" size={0.8} />

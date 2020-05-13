@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Utils } from "../../utils/utils";
+import { Users as Utils } from "../../utils/Users";
 import "./Register.scss";
 
 const Register = (props) => {
@@ -49,7 +49,7 @@ const Register = (props) => {
             <input type="checkbox" /> I agree to be absolutely awesome!
           </label>
           <div>
-            <button onClick={(e) => Utils.Users.register(e, inputs, setErrors)}>
+            <button onClick={(e) => Utils.register(e, inputs, setErrors)}>
               Submit
             </button>
             <button onClick={() => history.push("/")}>Close</button>

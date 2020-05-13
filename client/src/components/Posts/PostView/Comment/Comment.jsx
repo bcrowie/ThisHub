@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import moment from "moment";
 import { CommentConst } from "../../../../utils/constants";
 import { UserContext } from "../../../../App";
-import { Utils } from "../../../../utils/utils";
+import { Comments as Utils } from "../../../../utils/Comments";
 import "./Comment.scss";
 
 const Comment = (props) => {
@@ -51,7 +51,7 @@ const Comment = (props) => {
             <>
               <button
                 onClick={(e) =>
-                  Utils.Comments.delete(
+                  Utils.delete(
                     props.comment,
                     props.comments,
                     props.post,

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../../App";
-import { Utils } from "../../../utils/utils";
+import { Users as Utils } from "../../../utils/Users";
 
 const DeleteAccount = (props) => {
   const [errors, setErrors] = useState({ Email: null, Password: null });
@@ -28,7 +28,7 @@ const DeleteAccount = (props) => {
         />
         {errors.Password && <p className="errors">{errors.Password}</p>}
         <button
-          onClick={(e) => Utils.Users.deleteAccount(e, setErrors, inputs, User)}
+          onClick={(e) => Utils.deleteAccount(e, setErrors, inputs, User)}
         >
           Delete Account
         </button>

@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { UserContext } from "../../App";
-import { Utils } from "../../utils/utils";
+import { Posts as Utils } from "../../utils/Posts";
 import Post from "./Post/Post";
 import "./PostList.scss";
 
 const PostList = (props) => {
-  const [posts, setPosts] = Utils.Posts.useFetchPosts();
+  const [posts, setPosts] = Utils.useFetchPosts();
   const User = useContext(UserContext);
 
   if (!posts.length) {
@@ -27,25 +27,13 @@ const PostList = (props) => {
               key={post.id}
               data={post}
               delete={() =>
-                Utils.Posts.delete(
-                  User.Token,
-                  props.showLogin,
-                  setPosts,
-                  post,
-                  posts
-                )
+                Utils.delete(User.Token, props.showLogin, setPosts, post, posts)
               }
               like={() =>
-                Utils.Posts.like(
-                  User.Token,
-                  props.showLogin,
-                  setPosts,
-                  post,
-                  posts
-                )
+                Utils.like(User.Token, props.showLogin, setPosts, post, posts)
               }
               dislike={() =>
-                Utils.Posts.dislike(
+                Utils.dislike(
                   User.Token,
                   props.showLogin,
                   setPosts,

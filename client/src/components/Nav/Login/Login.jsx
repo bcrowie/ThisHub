@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Utils } from "../../../utils/utils";
+import { Users as Utils } from "../../../utils/Users";
 import { UserConst } from "../../../utils/constants";
 import "./Login.scss";
 

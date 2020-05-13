@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../../../App";
-import { Utils } from "../../../../utils/utils";
+import { Comments as Utils } from "../../../../utils/Comments";
 import "./CommentForm.scss";
 
 const CommentForm = (props) => {
@@ -32,7 +32,7 @@ const CommentForm = (props) => {
       </form>
       {error && <p className="error">{error}</p>}
       <div>
-        <button onClick={(e) => Utils.Comments.create(e, Args)}>Submit</button>
+        <button onClick={(e) => Utils.create(e, Args)}>Submit</button>
         <button onClick={props.showForm}>Cancel</button>
       </div>
     </div>
