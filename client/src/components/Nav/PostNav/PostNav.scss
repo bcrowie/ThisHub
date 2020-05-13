@@ -5,7 +5,9 @@
 
   justify-content: unset;
   font-size: $small-font;
+  
   a {
+    @include default-link;
     margin: $spacing-small;
   }
 }

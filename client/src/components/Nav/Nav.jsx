@@ -8,10 +8,11 @@ import "./Nav.scss";
 const Nav = (props) => {
   const User = useContext(UserContext);
   const { showLogin, setShowLogin } = useContext(LoginContext);
-
+    
   return (
     <nav>
-      <div className="main-nav">
+      <div id="nav" className="main-nav">
+
         <div className="nav-buttons">
           <Link id="logo" to="/">
             Thishub

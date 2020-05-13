@@ -1,0 +1,51 @@
+@import "../../../../styles/variables.scss";
+
+.post-main {
+  display: flex;
+  margin: 0 $spacing-small;
+  margin-bottom: $spacing-large;
+
+  .post-content {
+    margin: $spacing-large 0 $spacing-large $spacing-large;
+    padding: $spacing-large 0;
+    width: 100%;
+
+    div {
+      button {
+        @include link;
+
+        cursor: pointer;
+        border: none;
+        font-weight: bold;
+        margin-right: $spacing-large;
+        margin-top: $spacing-large;
+      }
+    }
+
+    h3 {
+      margin-bottom: $spacing-small;
+    }
+
+    p {
+      border-bottom: $thin-border;
+      font-size: $small-font;
+      padding-bottom: $spacing-large;
+      margin-bottom: $spacing-large;
+    }
+    pre {
+      margin-bottom: $spacing-large;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  }
+
+  .post-controls {
+    @include controls(post);
+    // margin: 0 $spacing-small;
+
+    .score {
+      font-size: $small-font;
+      align-self: center;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import React, { createContext, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Utils } from "./utils/utils";
+import Settings from "./components/Settings/Settings";
 import Login from "./components/Nav/Login/Login";
 import Nav from "./components/Nav/Nav";
 import PostList from "./components/Posts/PostList";

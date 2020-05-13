@@ -85,26 +85,9 @@ $default-transition: 85ms ease-in;
   }
 }
 
-@mixin error-message {
-  color: red;
-  font-size: $small-font;
-  margin: $spacing-small;
-}
-
-@mixin nav-container {
-  border-bottom: $thin-border;
-  display: flex;
-  justify-content: space-between;
-  padding: $spacing-medium;
-  transition: $default-transition;
-
-  &:hover {
-    border-bottom: $thin-border-active;
-  }
-}
-
 @mixin default-container {
   border: $thin-border;
+  border-radius: $border-radius;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -114,6 +97,23 @@ $default-transition: 85ms ease-in;
   &:hover {
     border: $thin-border-active;
   }
+}
+
+@mixin default-link {
+  color: $dark-grey;
+  text-decoration: none;
+  font-weight: bold;
+  transition: $default-transition;
+
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+@mixin error-message {
+  color: red;
+  font-size: $small-font;
+  margin: $spacing-small;
 }
 
 @mixin input {
@@ -158,11 +158,23 @@ $default-transition: 85ms ease-in;
     flex-direction: column;
     height: 60%;
     justify-content: space-evenly;
+    align-items: center;
     left: 0;
     margin: 5% auto;
     padding: $spacing-xlarge;
     position: fixed;
     right: 0;
     width: 50%;
+  }
+}
+
+@mixin nav-container {
+  display: flex;
+  padding: $spacing-medium;
+  justify-content: space-between;
+  border-bottom: $thin-border;
+  transition: $default-transition;
+  &:hover {
+    border-bottom: $thin-border-active;
   }
 }

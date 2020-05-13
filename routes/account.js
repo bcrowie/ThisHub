@@ -1,13 +1,16 @@
 const { Router } = require("express");
 const account = new Router();
 const bcrypt = require("bcryptjs");
+const isEmpty = require("../validation/isEmpty");
 const passport = require("passport");
 const models = require("../models");
+const validateEmail = require("../validation/email");
+const validatePassword = require("../validation/password");
 const validatePaymentInfo = require("../validation/payment");
-const Payment = models.paymentInfo;
-const Post = models.Post;
-const PostLike = models.PostLike;
-const User = models.User;
+const PaymentModel = models.paymentInfo;
+const PostModel = models.Post;
+const PostLikeModel = models.PostLike;
+const UserModel = models.User;
 
 const response = (res, msg, status = 200) => {
   return res.status(status).json(msg);
@@ -19,8 +22,8 @@ account.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const user = await User.findOne({
-      where: { Username: req.user.dataValues.Username },
+    const user = await UserModel.findOne({
+      where: { username: req.user.username },
     });
 
     if (user) {
@@ -36,8 +39,8 @@ account.get(
   "/likes",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const posts = await PostLike.findAll({
-      where: { Username: req.user.dataValues.Username },
+    const posts = await PostLikeModel.findAll({
+      where: { userId: req.user.id, liked: true },
       order: [["createdAt", "DESC"]],
       limit: 20,
     });
@@ -54,8 +57,8 @@ account.get(
   "/dislikes",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const posts = await PostLike.findAll({
-      where: { Username: req.user.dataValues.Username },
+    const posts = await PostLikeModel.findAll({
+      where: { userId: req.user.id, liked: false },
       order: [["createdAt", "DESC"]],
       limit: 20,
     });
@@ -72,8 +75,8 @@ account.get(
   "/posts",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const posts = await Post.findAll({
-      where: { Username: req.user.dataValues.Username },
+    const posts = await PostModel.findAll({
+      where: { userId: req.user.id },
       order: [["createdAt", "DESC"]],
       limit: 20,
     });
@@ -153,15 +156,39 @@ account.delete(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const confirm = await User.destroy({
-      where: { Username: req.user.dataValues.Username },
-    });
+    const { id } = req.user.dataValues;
+    const { Email, Password } = req.body;
+    const errors = {};
+    let isValid = true;
 
-    if (confirm) {
-      return response(res, "Account has been deleted");
-    } else {
-      return response(res, "Something went wrong.", 400);
+    if (isEmpty(Email)) {
+      errors.Email = "Email address required";
+      isValid = false;
     }
+    if (isEmpty(Password)) {
+      errors.Password = "Password is required";
+      isValid = false;
+    }
+    if (!isValid) {
+      return response(res, errors, 400);
+    }
+
+    const User = await UserModel.findOne({ where: { Email } });
+
+    if (Email !== User.dataValues.Email) {
+      errors.Email = "Email address does not match address on file";
+      return response(res, errors);
+    }
+
+    await bcrypt.compare(Password, User.dataValues.Password).then((isMatch) => {
+      if (isMatch) {
+        User.destroy();
+        return response(res, { msg: "Success" });
+      } else {
+        errors.Password = "Password is incorrect";
+        return response(res, errors, 400);
+      }
+    });
   }
 );
 
@@ -170,8 +197,9 @@ account.get(
   "/payment-info",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const { Username } = req.user.dataValues;
-    const userExists = await Payment.findOne({ where: { Username } });
+    const userId = req.user.dataValues.id;
+    const userExists = await PaymentModel.findOne({ where: { userId } });
+    
     if (userExists) {
       response(res, userExists.dataValues);
     } else {
@@ -187,20 +215,51 @@ account.post(
   async (req, res) => {
     const { errors, isValid } = validatePaymentInfo(req.body);
     const newPaymentInfo = req.body;
+
     if (!isValid) {
       response(res, errors, 400);
     }
 
-    newPaymentInfo.Username = req.user.dataValues.Username;
-    const userExists = await Payment.findOne({
-      where: { Username: newPaymentInfo.Username },
+    newPaymentInfo.userId = req.user.dataValues.id;
+    const userExists = await PaymentModel.findOne({
+      where: { userId: newPaymentInfo.userId },
     });
     if (userExists) {
       await userExists.update(newPaymentInfo);
       return response(res, "Payment Info Updated");
     } else {
-      await Payment.create(newPaymentInfo);
+      await PaymentModel.create(newPaymentInfo);
       return response(res, "Payment Info Added");
+    }
+  }
+);
+
+account.post(
+  "/change-email",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { Email, Email2 } = req.body;
+    const UserId = req.user.dataValues.id;
+    const { errors, isValid } = validateEmail(req.body);
+
+    if (!isValid) {
+      response(res, errors, 400);
+    }
+
+    const emailExists = await UserModel.findOne({ where: { Email } });
+
+    if (emailExists) {
+      errors.Email = "An account with that address exists already";
+      return response(res, errors);
+    }
+
+    const User = await UserModel.findOne({ where: { id: UserId } });
+
+    if (User && User.dataValues.id === UserId) {
+      User.update({ Email });
+      return response(res, { msg: "Email changed succesfully" });
+    } else {
+      return response(res, { msg: "Something went wrong" }, 400);
     }
   }
 );
