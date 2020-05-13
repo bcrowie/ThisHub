@@ -1,9 +1,9 @@
 const Validator = require("validator");
 const isEmpty = require("./isEmpty");
 
-const validatePaymentInfo = data => {
+const validatePaymentInfo = (data) => {
   let errors = {};
-  Object.entries(data).forEach(key => {
+  Object.entries(data).forEach((key) => {
     if (isEmpty(key[1])) data[key][1] = "";
   });
   if (Validator.isEmpty(data.FirstName)) {
@@ -38,7 +38,7 @@ const validatePaymentInfo = data => {
   }
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };
 

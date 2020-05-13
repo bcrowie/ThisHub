@@ -1,7 +1,7 @@
 const Validator = require("validator");
 const isEmpty = require("./isEmpty");
 
-const validatePost = data => {
+const validatePost = (data) => {
   let errors = {};
 
   data.Title = !isEmpty(data.Title) ? data.Title : "";
@@ -19,7 +19,7 @@ const validatePost = data => {
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };
 

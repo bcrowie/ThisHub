@@ -41,11 +41,6 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
-      Level: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-      },
       Body: {
         type: Sequelize.TEXT,
         allowNull: false,

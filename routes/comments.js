@@ -53,7 +53,6 @@ comments.get("/", async (req, res) => {
         "PostId",
         "ParentId",
         "ChildId",
-        "Level",
         "Body",
         "IsDeleted",
         "createdAt",
@@ -79,10 +78,7 @@ comments.get("/", async (req, res) => {
         },
       ],
       group: ["Comment.id"],
-      order: [
-        ["Level", "ASC"],
-        ["createdAt", "DESC"],
-      ],
+      order: [["createdAt", "DESC"]],
     }),
   ]);
 
@@ -197,15 +193,11 @@ comments.post(
     const { Body } = req.body;
 
     const parent = await CommentModel.findOne({ where: { id: ParentId } });
-    let Level = parent.dataValues.Level;
-    Level += 1;
-
     const comment = await CommentModel.create({
       Body,
       Username,
       PostId,
       ParentId,
-      Level,
     });
     await CommentLikeModel.create({
       Username,

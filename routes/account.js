@@ -199,7 +199,7 @@ account.get(
   async (req, res) => {
     const userId = req.user.dataValues.id;
     const userExists = await PaymentModel.findOne({ where: { userId } });
-    
+
     if (userExists) {
       response(res, userExists.dataValues);
     } else {
