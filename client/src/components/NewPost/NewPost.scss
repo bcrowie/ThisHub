@@ -1,67 +1,65 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
 
 .new-post {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: $spacing-xlarge;
+
+  .form-container {
+    border: $thin-border;
+    border-radius: $border-radius;
+    padding: $spacing-large;
+    width: 70%;
+    &:hover {
+      border: $thin-border-active;
+    }
+  }
+  form {
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    padding: $spacing-xlarge;
+    flex-direction: column;
 
-    .form-container {
-        border: $thin-border;
-        border-radius: $border-radius;
-        padding: $spacing-large;
-        width: 70%;
-        &:hover {
-            border: $thin-border-active;
-        }
-    }
-    form {
-        display: flex;
-        flex-direction: column;
+    .buttons {
+      margin: $spacing-large auto;
+      display: flex;
+      justify-content: center;
+      align-self: center;
+      button {
+        @include default-button;
 
-        .buttons {
-            margin: $spacing-large auto;
-            display: flex;
-            justify-content: center;
-            align-self: center;
-            button {
-                @include default-button;
-
-                margin: 0 $spacing-large;
-            }
-        }
-
-        input {
-            @include input;
-            &:active {
-                border: $thick-border-active;
-            }
-        }
-
-        label {
-            font-weight: 500;
-            margin: $spacing-medium;
-        }
-
-        p {
-            @include error-message;
-        }
-
-        textarea {
-            @include input;
-            resize: none;
-        }
+        margin: 0 $spacing-large;
+      }
     }
 
-
-
-    .side-bar {
-        width: 20%;
-        border: $thin-border;
-        border-radius: $border-radius;
-        padding: $spacing-large;
-        &:hover {
-            border: $thin-border-active;
-        }
+    input {
+      @include input;
+      &:active {
+        border: $thick-border-active;
+      }
     }
+
+    label {
+      font-weight: 500;
+      margin: $spacing-medium;
+    }
+
+    p {
+      @include error-message;
+    }
+
+    textarea {
+      @include input;
+      resize: none;
+    }
+  }
+
+  .side-bar {
+    width: 20%;
+    border: $thin-border;
+    border-radius: $border-radius;
+    padding: $spacing-large;
+    &:hover {
+      border: $thin-border-active;
+    }
+  }
 }

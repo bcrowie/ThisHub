@@ -35,9 +35,7 @@ const App = () => {
             <div className="main-container">
               <Route path="/posts/:postId" component={PostView} />
               <Route path="/new-post" component={NewPost} />
-              <Route path="/my-account">
-                <p>MyAccount page</p>
-              </Route>
+              <Route path="/my-account" component={Settings} />
               <Route
                 exact
                 path="/"

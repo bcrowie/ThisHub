@@ -1,47 +1,52 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
 
 .register-modal {
-    @include modal;
+  @include modal;
 
-    background: linear-gradient(to right, rgb(1, 79, 110), $primary-color, rgb(1, 79, 110));
-    height: 100vh;
-    margin: auto;
+  background: linear-gradient(
+    to right,
+    rgb(1, 79, 110),
+    $primary-color,
+    rgb(1, 79, 110)
+  );
+  height: 100vh;
+  margin: auto;
 
-    .modal-content {
-        height: auto;
+  .modal-content {
+    height: auto;
+  }
+
+  h2 {
+    margin-bottom: $spacing-xlarge;
+  }
+
+  form {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+
+    label {
+      font-size: $small-font;
+      margin: 0.4rem 0;
     }
 
-    h2 {
-        margin-bottom: $spacing-xlarge;
+    input {
+      @include input;
     }
 
-    form {
-        align-self: flex-start;
-        display: flex;
-        flex-direction: column;
-        width: 50%;
+    div {
+      display: flex;
+      justify-content: space-evenly;
 
-        label {
-            font-size: $small-font;
-            margin: 0.40rem 0;
-        }
-
-        input {
-            @include input;
-        }
-
-        div {
-            display: flex;
-            justify-content: space-evenly;
-
-            button {
-                @include default-button;
-                margin-top: $spacing-large;
-            }
-        }
-
-        p {
-            @include error-message;
-        }
+      button {
+        @include default-button;
+        margin-top: $spacing-large;
+      }
     }
+
+    p {
+      @include error-message;
+    }
+  }
 }

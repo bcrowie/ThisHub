@@ -1,30 +1,30 @@
-@import '../../../styles/variables.scss';
+@import "../../../styles/variables.scss";
 
-.login-form{
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    min-width: 50%;
-    max-width: 70%;
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  min-width: 50%;
+  max-width: 70%;
 
-    .error {
-        @include error-message;
+  .error {
+    @include error-message;
+  }
+  label {
+    margin: $spacing-medium 0;
+  }
+
+  input {
+    @include input;
+  }
+
+  .login-buttons {
+    margin: $spacing-large auto;
+    button {
+      @include default-button;
+
+      margin: $spacing-large;
+      cursor: pointer;
     }
-    label {
-        margin: $spacing-medium 0;
-    }
-
-    input {
-        @include input;
-    }
-
-    .login-buttons {
-        margin: $spacing-large auto;
-        button {
-            @include default-button;
-
-            margin: $spacing-large;
-            cursor: pointer;
-        }
-    }
+  }
 }
