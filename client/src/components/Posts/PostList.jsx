@@ -5,8 +5,8 @@ import Post from "./Post/Post";
 import "./PostList.scss";
 
 const PostList = (props) => {
-  const [posts, setPosts] = Utils.useFetchPosts();
   const User = useContext(UserContext);
+  const [posts, setPosts] = Utils.useFetchPosts(props.route, User.Token);
 
   if (!posts.length) {
     return (

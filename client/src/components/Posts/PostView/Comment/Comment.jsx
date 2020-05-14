@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import moment from "moment";
-import { CommentConst } from "../../../../utils/constants";
+import { Constants } from "../../../../utils/constants";
 import { UserContext } from "../../../../App";
 import { Comments as Utils } from "../../../../utils/Comments";
 import "./Comment.scss";
@@ -38,11 +38,15 @@ const Comment = (props) => {
         className="comment-content"
         style={{ borderLeft: `1px ${styleLevel(props.comment.Level)} solid` }}
       >
-        {props.comment.IsDeleted ? CommentConst.deleted : props.comment.Body}
+        <pre>
+          {props.comment.IsDeleted
+            ? Constants.Comments.deleted
+            : props.comment.Body}
+        </pre>
         <p>
           {moment(props.comment.createdAt).fromNow()} by:{" "}
           {props.comment.IsDeleted
-            ? CommentConst.deleted
+            ? Constants.Comments.deleted
             : props.comment.Username}
         </p>
         <div>
@@ -54,7 +58,7 @@ const Comment = (props) => {
                   Utils.delete(
                     props.comment,
                     props.comments,
-                    props.post,
+                    props.post.id,
                     props.setComments,
                     User
                   )

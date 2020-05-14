@@ -14,7 +14,7 @@ export const Constants = {
       Token: "thishub.token",
       User: "thishub.user",
     },
-    LoginDefault: {
+    LoginInitial: {
       Email: null,
       Password: null,
     },
@@ -36,9 +36,13 @@ export const Routes = {
     auth: `/users/auth`,
     login: `/users/login`,
     register: `/users/register`,
-    users: "/users",
     updateEmail: "/users/my-account/change-email",
     updatePassword: "/users/my-account/change-password",
+    userComments: "/users/my-account/comments",
+    userDislikes: "/users/my-account/dislikes",
+    userLikes: "/users/my-account/likes",
+    userPosts: "/users/my-account/posts",
+    users: "/users",
   },
   Comments: {
     getComments: (PostId) => {

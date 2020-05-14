@@ -28,5 +28,10 @@ li {
       margin-top: $spacing-large;
       padding-right: $spacing-large;
     }
+    pre {
+      margin-bottom: $spacing-large;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
   }
 }

@@ -73,7 +73,7 @@ const AccountMenu = () => {
             </li>
             <li>
               <Link
-                to="/my-account"
+                to="/settings"
                 className={`account-menu-link ${
                   showAccountMenu && "link-active"
                 }`}

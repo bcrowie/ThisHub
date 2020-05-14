@@ -1,10 +1,9 @@
 @import "../../styles/variables.scss";
 
-.account-container {
+.settings-container {
   display: flex;
-  column-gap: 20px;
 
-  .account-settings {
+  .settings {
     @include default-container;
 
     max-width: 70%;
@@ -48,7 +47,7 @@
       }
     }
   }
-  .account-sidebar {
+  .settings-sidebar {
     @include default-container;
 
     height: 200px;

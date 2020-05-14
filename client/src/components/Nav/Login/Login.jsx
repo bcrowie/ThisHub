@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Users as Utils } from "../../../utils/Users";
-import { UserConst } from "../../../utils/constants";
+import { Constants } from "../../../utils/constants";
 import "./Login.scss";
 
 const Login = (props) => {
-  const [inputs, setInputs] = useState(UserConst.LoginDefault);
-  const [errors, setErrors] = useState(UserConst.LoginDefault);
-
+  const [inputs, setInputs] = useState(Constants.Users.LoginInitial);
+  const [errors, setErrors] = useState(Constants.Users.LoginInitial);
+  console.log(inputs);
   return (
     <div className="modal-content">
       <h2>Login to Thishub</h2>
@@ -25,7 +25,7 @@ const Login = (props) => {
         />
         {errors.Password && <p className="error">{errors.Password}</p>}
         <div className="login-buttons">
-          <button onClick={(e) => Utils.Users.login(e, inputs, setErrors)}>
+          <button onClick={(e) => Utils.login(e, inputs, setErrors)}>
             Submit
           </button>
           <button onClick={props.hideModal}>Close</button>

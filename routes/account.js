@@ -7,8 +7,10 @@ const models = require("../models");
 const validateEmail = require("../validation/email");
 const validatePassword = require("../validation/password");
 const validatePaymentInfo = require("../validation/payment");
+const CommentModel = models.Comment;
 const PaymentModel = models.paymentInfo;
 const PostModel = models.Post;
+const PostDislikeModel = models.PostDislike;
 const PostLikeModel = models.PostLike;
 const UserModel = models.User;
 
@@ -39,15 +41,26 @@ account.get(
   "/likes",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const posts = await PostLikeModel.findAll({
-      where: { userId: req.user.id, liked: true },
-      order: [["createdAt", "DESC"]],
-      limit: 20,
+    const postLikes = await PostLikeModel.findAll({
+      where: { Username: req.user.dataValues.Username },
     });
+    const posts = await PostModel.findAll({
+      where: { Username: req.user.dataValues.Username },
+      order: [["createdAt", "DESC"]],
+    });
+    const result = [];
+    posts.forEach((post) => {
+      postLikes.forEach((like) => {
+        if (post.id === like.PostId) {
+          result.push(post);
+        }
+      });
+    });
+
     if (!posts) {
       return response(res, "Unable to get posts", 400);
     } else {
-      return response(res, posts);
+      return response(res, result);
     }
   }
 );
@@ -57,15 +70,29 @@ account.get(
   "/dislikes",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const posts = await PostLikeModel.findAll({
-      where: { userId: req.user.id, liked: false },
-      order: [["createdAt", "DESC"]],
-      limit: 20,
+    const { Username } = req.user.dataValues;
+    const postDislikes = await PostDislikeModel.findAll({
+      where: { Username },
     });
+    const posts = await PostModel.findAll({
+      where: { Username },
+      order: [["createdAt", "DESC"]],
+    });
+
+    const result = [];
+
+    posts.forEach((post) => {
+      postDislikes.forEach((dislike) => {
+        if (post.id === dislike.PostId) {
+          result.push(post);
+        }
+      });
+    });
+
     if (!posts) {
       return response(res, "Unable to get posts", 400);
     } else {
-      return response(res, posts);
+      return response(res, result);
     }
   }
 );
@@ -76,7 +103,7 @@ account.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const posts = await PostModel.findAll({
-      where: { userId: req.user.id },
+      where: { Username: req.user.dataValues.Username },
       order: [["createdAt", "DESC"]],
       limit: 20,
     });
@@ -93,8 +120,8 @@ account.get(
   "/comments",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const comments = await Comment.findAll({
-      where: { Username: req.user.dataValues.Username, isDeleted: false },
+    const comments = await CommentModel.findAll({
+      where: { Username: req.user.dataValues.Username, IsDeleted: false },
       order: [["createdAt", "DESC"]],
       limit: 20,
     });
@@ -199,7 +226,7 @@ account.get(
   async (req, res) => {
     const userId = req.user.dataValues.id;
     const userExists = await PaymentModel.findOne({ where: { userId } });
-    
+
     if (userExists) {
       response(res, userExists.dataValues);
     } else {
