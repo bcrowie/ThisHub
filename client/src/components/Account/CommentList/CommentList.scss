@@ -1,0 +1,58 @@
+@import "../../../styles/variables.scss";
+
+.comment {
+  border: $thin-border;
+  border-radius: $border-radius;
+  display: flex;
+  flex-direction: column;
+  margin: $spacing-medium;
+  padding: $spacing-large;
+  transition: $default-transition;
+
+  &:hover {
+    border: $thin-border-active;
+  }
+  pre {
+    margin-bottom: $spacing-large;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    a {
+      @include default-link;
+    }
+  }
+  .controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .comment-menu-container {
+      height: 0;
+      position: relative;
+      width: 0;
+
+      .comment-menu {
+        background-color: $background-color;
+        border: none;
+        border-radius: $border-radius;
+        box-shadow: $default-shadow;
+        display: flex;
+        flex-direction: column;
+        left: -120px;
+        padding: $spacing-large;
+        position: absolute;
+        top: 0px;
+        width: 150px;
+
+        a {
+          @include link;
+
+          font-size: $large-font;
+          height: 100%;
+          margin: none;
+          padding: 0.5rem;
+          width: 100%;
+        }
+      }
+    }
+  }
+}

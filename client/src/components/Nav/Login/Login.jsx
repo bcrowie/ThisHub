@@ -7,7 +7,7 @@ import "./Login.scss";
 const Login = (props) => {
   const [inputs, setInputs] = useState(Constants.Users.LoginInitial);
   const [errors, setErrors] = useState(Constants.Users.LoginInitial);
-  console.log(inputs);
+
   return (
     <div className="modal-content">
       <h2>Login to Thishub</h2>
