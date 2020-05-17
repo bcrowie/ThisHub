@@ -1,7 +1,7 @@
 const Validator = require("validator");
 const isEmpty = require("./isEmpty");
 
-const validateLogin = data => {
+const validateLogin = (data) => {
   let errors = {};
   data.Email = !isEmpty(data.Email) ? data.Email : "";
   data.Password = !isEmpty(data.Password) ? data.Password : "";
@@ -18,7 +18,7 @@ const validateLogin = data => {
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };
 

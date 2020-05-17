@@ -130,15 +130,11 @@ comments.post(
     const { Body } = req.body;
 
     const parent = await CommentModel.findOne({ where: { id: ParentId } });
-    let Level = parent.dataValues.Level;
-    Level += 1;
-
     const comment = await CommentModel.create({
       Body,
       Username,
       PostId,
       ParentId,
-      Level,
     });
     await CommentLikeModel.create({
       Username,
