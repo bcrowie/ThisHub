@@ -8,6 +8,19 @@ const PostLikeModel = models.PostLike;
 const PostDislikeModel = models.PostDislike;
 
 module.exports = {
+  filterLikedPosts: (posts, likes) => {
+    const results = [];
+
+    posts.forEach((post) => {
+      likes.forEach((like) => {
+        if (post.id === like.PostId) {
+          results.push(post);
+        }
+      });
+    });
+
+    return results;
+  },
   getPostById: async (id) => {
     return await PostModel.findOne({
       attributes: [

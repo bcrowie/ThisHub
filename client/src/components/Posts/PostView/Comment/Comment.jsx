@@ -34,10 +34,7 @@ const Comment = (props) => {
         <p>{props.comment.Score}</p>
         <button className="mdi mdi-arrow-down-thick dislike-comment"></button>
       </div>
-      <div
-        className="comment-content"
-        style={{ borderLeft: `1px ${styleLevel(props.comment.Level)} solid` }}
-      >
+      <div className="comment-content">
         <pre>
           {props.comment.IsDeleted
             ? Constants.Comments.deleted

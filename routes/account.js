@@ -7,6 +7,7 @@ const models = require("../models");
 const validateEmail = require("../validation/email");
 const validatePassword = require("../validation/password");
 const validatePaymentInfo = require("../validation/payment");
+const { filterLikedPosts } = require("../utils/utils");
 const CommentModel = models.Comment;
 const PaymentModel = models.paymentInfo;
 const PostModel = models.Post;
@@ -41,21 +42,19 @@ account.get(
   "/likes",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const postLikes = await PostLikeModel.findAll({
-      where: { Username: req.user.dataValues.Username },
-    });
-    const posts = await PostModel.findAll({
-      where: { Username: req.user.dataValues.Username },
-      order: [["createdAt", "DESC"]],
-    });
-    const result = [];
-    posts.forEach((post) => {
-      postLikes.forEach((like) => {
-        if (post.id === like.PostId) {
-          result.push(post);
-        }
-      });
-    });
+    const { Username } = req.user.dataValues;
+
+    const [postLikes, posts] = await Promise.all([
+      PostLikeModel.findAll({
+        where: { Username },
+      }),
+      PostModel.findAll({
+        where: { Username },
+        order: [["createdAt", "DESC"]],
+      }),
+    ]);
+
+    const result = filterLikedPosts(posts, postLikes);
 
     if (!posts) {
       return response(res, "Unable to get posts", 400);
@@ -71,23 +70,18 @@ account.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { Username } = req.user.dataValues;
-    const postDislikes = await PostDislikeModel.findAll({
-      where: { Username },
-    });
-    const posts = await PostModel.findAll({
-      where: { Username },
-      order: [["createdAt", "DESC"]],
-    });
 
-    const result = [];
+    const [postDislikes, posts] = await Promise.all([
+      PostDislikeModel.findAll({
+        where: { Username },
+      }),
+      PostModel.findAll({
+        where: { Username },
+        order: [["createdAt", "DESC"]],
+      }),
+    ]);
 
-    posts.forEach((post) => {
-      postDislikes.forEach((dislike) => {
-        if (post.id === dislike.PostId) {
-          result.push(post);
-        }
-      });
-    });
+    const result = filterLikedPosts(posts, postDislikes);
 
     if (!posts) {
       return response(res, "Unable to get posts", 400);
