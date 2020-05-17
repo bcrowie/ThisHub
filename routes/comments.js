@@ -2,84 +2,21 @@ const { Router } = require("express");
 const comments = new Router({ mergeParams: true });
 const passport = require("passport");
 const models = require("../models");
-const sequelize = require("sequelize");
+const { getCommentsForPost, getPostById } = require("../utils/utils");
 const CommentModel = models.Comment;
 const CommentLikeModel = models.CommentLike;
-const CommentDislikeModel = models.CommentDislike;
 const PostModel = models.Post;
-const PostLikeModel = models.PostLike;
-const PostDislikeModel = models.PostDislike;
 
 const response = (res, msg, status = 200) => {
   return res.status(status).json(msg);
 };
 
-// PUBLIC : Get all comments for post
+// PUBLIC : Get Post by Id with Comments
 comments.get("/", async (req, res) => {
   const { PostId } = req.params;
-  const [Post, Comments] = await Promise.all([
-    PostModel.findOne({
-      attributes: [
-        "id",
-        "Username",
-        "Title",
-        "Body",
-        "createdAt",
-        "updatedAt",
-        [sequelize.fn("COUNT", sequelize.col("PostLikes.PostId")), "LikeCount"],
-        [
-          sequelize.fn("COUNT", sequelize.col("PostDislikes.PostId")),
-          "DislikeCount",
-        ],
-      ],
-      include: [
-        {
-          model: PostLikeModel,
-          attributes: [],
-        },
-        {
-          model: PostDislikeModel,
-          attributes: [],
-        },
-      ],
-      group: ["Post.id"],
-      order: [["createdAt", "DESC"]],
-      where: { id: PostId },
-    }),
-    CommentModel.findAll({
-      attributes: [
-        "id",
-        "Username",
-        "PostId",
-        "ParentId",
-        "ChildId",
-        "Body",
-        "IsDeleted",
-        "createdAt",
-        "updatedAt",
-        [
-          sequelize.fn("COUNT", sequelize.col("CommentLikes.CommentId")),
-          "LikeCount",
-        ],
-        [
-          sequelize.fn("COUNT", sequelize.col("CommentDislikes.CommentId")),
-          "DislikeCount",
-        ],
-      ],
-      where: { PostId },
-      include: [
-        {
-          model: CommentLikeModel,
-          attributes: [],
-        },
-        {
-          model: CommentDislikeModel,
-          attributes: [],
-        },
-      ],
-      group: ["Comment.id"],
-      order: [["createdAt", "DESC"]],
-    }),
+  const [Comments, Post] = await Promise.all([
+    getCommentsForPost(PostId),
+    getPostById(PostId),
   ]);
 
   Object.entries(Comments).forEach(([key, value]) => {

@@ -1,8 +1,8 @@
 import React from "react";
 
-const AccountSidebar = (props) => {
+const SettingsSidebar = (props) => {
   return (
-    <div className="account-sidebar">
+    <div className="settings-sidebar">
       <ul>
         <li>
           <a href="#nav">Email</a>
@@ -21,4 +21,4 @@ const AccountSidebar = (props) => {
   );
 };
 
-export default AccountSidebar;
+export default SettingsSidebar;

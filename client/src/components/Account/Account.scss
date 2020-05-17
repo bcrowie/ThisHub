@@ -1,0 +1,42 @@
+@import "../../styles/variables.scss";
+
+.account-container {
+  display: flex;
+  flex-direction: row;
+
+  .account-content {
+    @include default-container;
+    min-width: 75%;
+    padding: $spacing-xlarge;
+
+    h2 {
+      margin: $spacing-xlarge 0;
+    }
+  }
+
+  .account-sidebar {
+    @include default-container;
+
+    height: 200px;
+    margin: 0 $spacing-large;
+    min-width: 25%;
+    padding: $spacing-xlarge;
+    position: sticky;
+    top: 10px;
+
+    ul {
+      list-style-type: none;
+
+      li {
+        margin: $spacing-large 0;
+
+        button {
+          @include default-link;
+          border: none;
+          cursor: pointer;
+          font-size: $large-font;
+        }
+      }
+    }
+  }
+}

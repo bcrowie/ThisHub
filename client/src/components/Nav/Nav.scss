@@ -1,8 +1,4 @@
 @import "../../styles/variables.scss";
-nav {
-  position: sticky;
-  top: 0;
-}
 
 .main-nav {
   @include nav-container;

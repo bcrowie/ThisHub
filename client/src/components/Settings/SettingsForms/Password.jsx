@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Utils } from "../../../utils/utils";
+import { Users as Utils } from "../../../utils/Users";
 import { UserContext } from "../../../App";
 
 const PasswordForm = (props) => {
@@ -34,9 +34,7 @@ const PasswordForm = (props) => {
         />
         {errors.Password2 && <p className="errors">{errors.Password2}</p>}
         <button
-          onClick={(e) =>
-            Utils.Users.updatePassword(e, setErrors, inputs, User)
-          }
+          onClick={(e) => Utils.updatePassword(e, setErrors, inputs, User)}
         >
           Change Password
         </button>

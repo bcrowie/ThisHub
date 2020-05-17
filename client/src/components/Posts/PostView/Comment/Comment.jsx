@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import moment from "moment";
-import { CommentConst } from "../../../../utils/constants";
+import { Constants } from "../../../../utils/constants";
 import { UserContext } from "../../../../App";
-import { Utils } from "../../../../utils/utils";
+import { Comments as Utils } from "../../../../utils/Comments";
 import "./Comment.scss";
 
 const Comment = (props) => {
@@ -34,15 +34,16 @@ const Comment = (props) => {
         <p>{props.comment.Score}</p>
         <button className="mdi mdi-arrow-down-thick dislike-comment"></button>
       </div>
-      <div
-        className="comment-content"
-        style={{ borderLeft: `1px ${styleLevel(props.comment.Level)} solid` }}
-      >
-        {props.comment.IsDeleted ? CommentConst.deleted : props.comment.Body}
+      <div className="comment-content">
+        <pre>
+          {props.comment.IsDeleted
+            ? Constants.Comments.deleted
+            : props.comment.Body}
+        </pre>
         <p>
           {moment(props.comment.createdAt).fromNow()} by:{" "}
           {props.comment.IsDeleted
-            ? CommentConst.deleted
+            ? Constants.Comments.deleted
             : props.comment.Username}
         </p>
         <div>
@@ -51,10 +52,10 @@ const Comment = (props) => {
             <>
               <button
                 onClick={(e) =>
-                  Utils.Comments.delete(
+                  Utils.delete(
                     props.comment,
                     props.comments,
-                    props.post,
+                    props.post.id,
                     props.setComments,
                     User
                   )

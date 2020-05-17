@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../App";
-import { Utils } from "../../utils/utils";
+import { Posts as Utils } from "../../utils/Posts";
 import Login from "../Nav/Login/Login";
 import "./NewPost.scss";
 
@@ -35,7 +35,7 @@ const NewPost = () => {
             <div className="buttons">
               <button
                 onClick={(e) =>
-                  Utils.Posts.create(e, User.Token, inputs, history, setErrors)
+                  Utils.create(e, User.Token, inputs, history, setErrors)
                 }
               >
                 Submit

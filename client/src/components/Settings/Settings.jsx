@@ -1,5 +1,5 @@
 import React from "react";
-import AccountSidebar from "./Sidebar/SettingsSidebar";
+import SettingsSidebar from "./Sidebar/SettingsSidebar";
 import EmailForm from "./SettingsForms/Email";
 import PasswordForm from "./SettingsForms/Password";
 import PremiumForm from "./SettingsForms/Premium";
@@ -8,10 +8,10 @@ import "./Settings.scss";
 
 const Settings = (props) => {
   return (
-    <div className="account-container">
-      <AccountSidebar />
-      <div className="account-settings">
-        <h2>My Account</h2>
+    <div className="settings-container">
+      <SettingsSidebar />
+      <div className="settings">
+        <h2>Account Settings</h2>
         <EmailForm />
         <PasswordForm />
         <PremiumForm />
