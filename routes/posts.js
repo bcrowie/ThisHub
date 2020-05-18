@@ -15,6 +15,19 @@ const response = (res, msg, status = 200) => {
   return res.status(status).json(msg);
 };
 
+// PUBLIC : Get random
+posts.get("/random", async (req, res, next) => {
+  const posts = await PostModel.findAll({
+    order: [sequelize.fn("RANDOM")],
+    limit: 4,
+  });
+  if (posts) {
+    return response(res, posts);
+  } else {
+    return response(res, { msg: "Something went wrong" });
+  }
+});
+
 // PUBLIC : GET All
 posts.get("/", async (req, res, next) => {
   const posts = await PostModel.findAll({
@@ -56,17 +69,6 @@ posts.get("/", async (req, res, next) => {
   return response(res, { msg: "Something went wrong" }, 400);
 });
 
-// PUBLIC : GET one by ID
-posts.get("/:id", async (req, res, next) => {
-  const { id } = req.params;
-  const post = await PostModel.findOne({ where: { id } });
-  if (post) {
-    return response(res, post);
-  } else {
-    return response(res, { msg: "Post not found" }, 404);
-  }
-});
-
 // PRIVATE : Create new post
 posts.post(
   "/",
@@ -98,6 +100,17 @@ posts.post(
     return response(res, { msg: "Something went wrong." }, 400);
   }
 );
+
+// PUBLIC : GET one by ID
+posts.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const post = await PostModel.findOne({ where: { id } });
+  if (post) {
+    return response(res, post);
+  } else {
+    return response(res, { msg: "Post not found" }, 404);
+  }
+});
 
 // PRIVATE : Delete Post
 posts.delete(

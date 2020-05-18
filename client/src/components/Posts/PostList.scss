@@ -1,109 +1,12 @@
 @import "../../styles/variables.scss";
 
-.post-list {
-  list-style: none;
-  margin: auto;
+.posts {
+  display: flex;
 
-  li {
-    border: $thin-border;
-    border-radius: $border-radius;
-    display: flex;
-    flex-direction: column;
-    margin: $spacing-medium;
-    padding: $spacing-large;
-    transition: $default-transition;
-
-    &:hover {
-      border: $thin-border-active;
-    }
-
-    button {
-      background-color: $background-color;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: bold;
-      padding: $spacing-medium;
-    }
-
-    .post-info {
-      display: flex;
-      p {
-        font-size: $small-font;
-        margin-top: $spacing-medium;
-      }
-      p:first-child {
-        margin-right: $spacing-large;
-      }
-    }
-
-    .post-title {
-      @include link;
-      font-weight: bold;
-
-      &:hover {
-        color: $primary-color;
-      }
-    }
-
-    .post-controls {
-      align-items: baseline;
-      color: $dark-grey;
-      display: flex;
-      justify-content: space-between;
-
-      div {
-        display: flex;
-      }
-
-      .likes {
-        color: $dark-grey;
-        font-size: $small-font;
-        margin: $spacing-medium $spacing-large $spacing-medium 0;
-      }
-
-      button {
-        color: $dark-grey;
-      }
-
-      .menu-button {
-        transition: $default-transition;
-
-        &:hover {
-          color: $primary-color;
-        }
-      }
-
-      .like-post {
-        transition: $default-transition;
-      }
-      .like-post:hover,
-      .like-post.active {
-        color: $like-color;
-      }
-      .dislike-post {
-        transition: $default-transition;
-      }
-      .dislike-post:hover,
-      .dislike-post.active {
-        color: $dislike-color;
-      }
-
-      .comments {
-        align-self: center;
-        color: $dark-grey;
-        font-size: $small-font;
-        font-weight: bold;
-        text-decoration: none;
-        &:hover {
-          color: $primary-color;
-        }
-      }
-    }
-  }
-
-  .owner {
-    border: 1px $secondary-color solid;
+  .post-list {
+    list-style: none;
+    margin: 0 $spacing-medium;
+    width: 65%;
   }
 }
 
@@ -119,19 +22,21 @@
     box-shadow: $default-shadow;
     display: flex;
     flex-direction: column;
-    left: -160px;
-    padding: $spacing-large;
+    left: -24px;
+    padding: 2px;
     position: absolute;
-    top: 35px;
-    width: 150px;
+    top: 13px;
+    width: 100px;
 
     a {
       @include link;
-
-      margin: none;
+      font-size: $small-font;
       padding: 0.5rem;
       width: 100%;
       height: 100%;
+      &:hover {
+        background-color: rgb(220, 220, 220);
+      }
     }
   }
 }

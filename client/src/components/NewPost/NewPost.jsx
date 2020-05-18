@@ -9,7 +9,7 @@ const NewPost = () => {
   const [inputs, setInputs] = useState({ Title: null, Body: null });
   const [errors, setErrors] = useState({ Title: " ", Body: " " });
   const User = useContext(UserContext);
-  const history = useHistory();
+  const History = useHistory();
 
   return (
     <>
@@ -35,12 +35,12 @@ const NewPost = () => {
             <div className="buttons">
               <button
                 onClick={(e) =>
-                  Utils.create(e, User.Token, inputs, history, setErrors)
+                  Utils.create(e, User.Token, inputs, History, setErrors)
                 }
               >
                 Submit
               </button>
-              <button onClick={() => history.push("/")}>Close</button>
+              <button onClick={() => History.push("/")}>Close</button>
             </div>
           </form>
         </div>
@@ -55,7 +55,7 @@ const NewPost = () => {
       </div>
       {!User.Username && (
         <div className="login-modal">
-          <Login hideModal={() => history.push("/")} />
+          <Login hideModal={() => History.push("/")} />
         </div>
       )}
     </>

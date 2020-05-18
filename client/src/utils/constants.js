@@ -27,6 +27,7 @@ export const Constants = {
 export const Routes = {
   Posts: {
     posts: "/posts",
+    random: "/posts/random",
     getPostWithId: (PostId) => {
       return `/posts/${PostId}`;
     },

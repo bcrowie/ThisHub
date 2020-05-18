@@ -6,7 +6,7 @@ import "./Register.scss";
 const Register = (props) => {
   const [inputs, setInputs] = useState({});
   const [errors, setErrors] = useState({});
-  const history = useHistory();
+  const History = useHistory();
 
   return (
     <div className="register-modal">
@@ -49,10 +49,12 @@ const Register = (props) => {
             <input type="checkbox" /> I agree to be absolutely awesome!
           </label>
           <div>
-            <button onClick={(e) => Utils.register(e, inputs, setErrors)}>
+            <button
+              onClick={(e) => Utils.register(e, inputs, setErrors, History)}
+            >
               Submit
             </button>
-            <button onClick={() => history.push("/")}>Close</button>
+            <button onClick={() => History.push("/")}>Close</button>
           </div>
         </form>
       </div>

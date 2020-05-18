@@ -30,9 +30,11 @@ export const Users = {
     }, []);
     return auth;
   },
-  login: async (event, data, setErrors) => {
-    event.preventDefault();
-    console.log(data);
+  login: async (event, data, setErrors, History) => {
+    if (event) {
+      event.preventDefault();
+    }
+
     let { Email, Password } = data;
     Email = Email || "";
     Password = Password || "";
@@ -57,7 +59,7 @@ export const Users = {
     localStorage.removeItem("thishub.user");
     window.location.reload();
   },
-  register: async (event, data, setErrors) => {
+  register: async (event, data, setErrors, History) => {
     event.preventDefault();
     let { Username, Email, Email2, Password, Password2 } = data;
     Username = Username || "";
@@ -73,9 +75,8 @@ export const Users = {
         Password,
         Password2,
       })
-      .then(() => {
-        const data = { Email, Password };
-        this.login(data);
+      .then(async () => {
+        History.push("/");
       })
       .catch((err) => {
         const {

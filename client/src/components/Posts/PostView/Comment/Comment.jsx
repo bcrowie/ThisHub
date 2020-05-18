@@ -8,27 +8,8 @@ import "./Comment.scss";
 const Comment = (props) => {
   const User = useContext(UserContext);
 
-  const styleLevel = (level) => {
-    // Needs more cowbell
-    switch (level) {
-      case 1:
-        return "blue";
-      case 2:
-        return "red";
-      default:
-        return "rgb(204, 204, 204)";
-    }
-  };
-
   return (
-    <li
-      key={props.comment.id}
-      style={
-        props.comment.ParentId && {
-          marginLeft: `${props.comment.Level}rem`,
-        }
-      }
-    >
+    <li key={props.comment.id}>
       <div className="controls">
         <button className="mdi mdi-arrow-up-thick like-comment"></button>
         <p>{props.comment.Score}</p>
