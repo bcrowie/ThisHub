@@ -4,8 +4,6 @@ import { Routes, Constants } from "../utils/constants";
 
 export const Comments = {
   create: async (Args) => {
-    event.preventDefault();
-
     const {
       Comments,
       Input,
