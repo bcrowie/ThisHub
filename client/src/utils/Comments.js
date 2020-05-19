@@ -3,7 +3,7 @@ import axios from "axios";
 import { Routes, Constants } from "../utils/constants";
 
 export const Comments = {
-  create: async (event, Args) => {
+  create: async (Args) => {
     event.preventDefault();
 
     const {

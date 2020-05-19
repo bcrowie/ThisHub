@@ -34,7 +34,10 @@ const PasswordForm = (props) => {
         />
         {errors.Password2 && <p className="errors">{errors.Password2}</p>}
         <button
-          onClick={(e) => Utils.updatePassword(e, setErrors, inputs, User)}
+          onClick={(e) => {
+            e.preventDefault();
+            Utils.updatePassword(setErrors, inputs, User);
+          }}
         >
           Change Password
         </button>

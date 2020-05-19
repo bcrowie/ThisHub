@@ -50,7 +50,10 @@ const Register = (props) => {
           </label>
           <div>
             <button
-              onClick={(e) => Utils.register(e, inputs, setErrors, History)}
+              onClick={(e) => {
+                e.preventDefault();
+                Utils.register(inputs, setErrors, History);
+              }}
             >
               Submit
             </button>

@@ -14,15 +14,13 @@ const Sidebar = (props) => {
           <p>Today's Top Posts</p>
         </div>
         <ol className="top-posts" type="1">
-          {posts.map((post) => {
-            return (
-              <li key={post.id} className="top-posts-items">
-                <Link to={`/posts/${post.id}`} className="post-title">
-                  {post.Title}
-                </Link>
-              </li>
-            );
-          })}
+          {posts.map((post) => (
+            <li key={post.id} className="top-posts-items">
+              <Link to={`/posts/${post.id}`} className="post-title">
+                {post.Title}
+              </Link>
+            </li>
+          ))}
         </ol>
       </div>
       <div className="info-sidebar">

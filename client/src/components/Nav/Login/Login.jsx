@@ -25,7 +25,12 @@ const Login = (props) => {
         />
         {errors.Password && <p className="error">{errors.Password}</p>}
         <div className="login-buttons">
-          <button onClick={(e) => Utils.login(e, inputs, setErrors)}>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              Utils.login(inputs, setErrors);
+            }}
+          >
             Submit
           </button>
           <button onClick={props.hideModal}>Close</button>

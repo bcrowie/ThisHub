@@ -34,9 +34,10 @@ const NewPost = () => {
             {errors.Body && <p className="error">{errors.Body}</p>}
             <div className="buttons">
               <button
-                onClick={(e) =>
-                  Utils.create(e, User.Token, inputs, History, setErrors)
-                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  Utils.create(User.Token, inputs, History, setErrors);
+                }}
               >
                 Submit
               </button>

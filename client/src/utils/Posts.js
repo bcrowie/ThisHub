@@ -87,9 +87,7 @@ export const Posts = {
       showLogin(true);
     }
   },
-  create: async (event, Authorization, data, history, setErrors) => {
-    event.preventDefault();
-
+  create: async (Authorization, data, history, setErrors) => {
     if (Authorization) {
       const { Title, Body } = data;
       await axios
@@ -107,6 +105,8 @@ export const Posts = {
           const { Title, Body } = err.response;
           setErrors({ Title, Body });
         });
+    } else {
+      setErrors({ Title: "You must be logged in to do that." });
     }
   },
 };
