@@ -17,7 +17,7 @@ const PostList = (props) => {
       <div className="posts">
         <NewPostField />
         <ul className="post-list">
-          <li key="1">
+          <li key="0">
             <p className="post-title">No posts here!</p>
           </li>
         </ul>
