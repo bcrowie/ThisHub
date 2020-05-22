@@ -4,7 +4,6 @@ const users = new Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
-const passport = require("passport");
 const validateRegister = require("../validation/register");
 const validateLogin = require("../validation/login");
 const models = require("../models");

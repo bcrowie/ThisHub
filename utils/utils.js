@@ -21,6 +21,68 @@ module.exports = {
 
     return results;
   },
+  getPosts: async () => {
+    return await PostModel.findAll({
+      attributes: [
+        "id",
+        "Username",
+        "Title",
+        "Body",
+        "createdAt",
+        "updatedAt",
+        [sequelize.fn("COUNT", sequelize.col("PostLikes.PostId")), "LikeCount"],
+        [
+          sequelize.fn("COUNT", sequelize.col("PostDislikes.PostId")),
+          "DislikeCount",
+        ],
+      ],
+      include: [
+        {
+          model: PostLikeModel,
+          attributes: [],
+        },
+        {
+          model: PostDislikeModel,
+          attributes: [],
+        },
+      ],
+      group: ["Post.id"],
+      order: [["createdAt", "DESC"]],
+    });
+  },
+  getPostsWithAuth: async (Username) => {
+    return await PostModel.findAll({
+      attributes: [
+        "id",
+        "Username",
+        "Title",
+        "Body",
+        "createdAt",
+        "updatedAt",
+        [sequelize.fn("COUNT", sequelize.col("PostLikes.PostId")), "LikeCount"],
+        [
+          sequelize.fn("COUNT", sequelize.col("PostDislikes.PostId")),
+          "DislikeCount",
+        ],
+      ],
+      include: [
+        {
+          model: PostLikeModel,
+          attributes: ["Username"],
+          where: { Username },
+          required: false,
+        },
+        {
+          model: PostDislikeModel,
+          attributes: ["Username"],
+          where: { Username },
+          required: false,
+        },
+      ],
+      group: ["Post.id", "PostLikes.id", "PostDislikes.id"],
+      order: [["createdAt", "DESC"]],
+    });
+  },
   getPostById: async (id) => {
     return await PostModel.findOne({
       attributes: [

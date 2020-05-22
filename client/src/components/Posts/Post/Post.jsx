@@ -1,12 +1,15 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import Icon from "@mdi/react";
+import { mdiMicrophoneVariant } from "@mdi/js";
 import { UserContext } from "../../../App";
 import { useEffect } from "react";
 
 const Post = (props) => {
   const [showMenu, setShowMenu] = useState();
   const User = useContext(UserContext);
+  const [owner] = useState(User.Username === props.data.Username);
 
   useEffect(() => {
     window.addEventListener("click", (e) => {
@@ -23,11 +26,11 @@ const Post = (props) => {
   };
 
   return (
-    <li
-      className={`${User.Username === props.data.Username && "owner"}`}
-      key={props.data.id}
-    >
+    <li className={`${owner && "owner"}`} key={props.data.id}>
       <Link to={`/posts/${props.data.id}`} className="post-title">
+        {owner && (
+          <Icon path={mdiMicrophoneVariant} title="Account menu" size={0.8} />
+        )}
         {props.data.Title}
       </Link>
       <div className="post-info">
@@ -36,13 +39,25 @@ const Post = (props) => {
       </div>
       <div className="post-controls">
         <div>
-          <p className="likes"> {props.data.Score} Likes</p>
+          <p
+            className={`likes ${
+              (props.data.PostLikes.length && "liked") ||
+              (props.data.PostDislikes.length && "disliked")
+            }`}
+          >
+            {" "}
+            {props.data.Score} Likes
+          </p>
           <button
-            className="mdi mdi-arrow-up-thick like-post"
+            className={`mdi mdi-arrow-up-thick like-post ${
+              props.data.PostLikes.length > 0 && "liked"
+            }`}
             onClick={props.like}
           ></button>
           <button
-            className="mdi mdi-arrow-down-thick dislike-post"
+            className={`mdi mdi-arrow-down-thick dislike-post ${
+              props.data.PostDislikes.length > 0 && "disliked"
+            }`}
             onClick={props.dislike}
           ></button>
           <Link to={`/posts/${props.data.id}`} className="comments">

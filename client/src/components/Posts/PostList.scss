@@ -77,6 +77,7 @@
       .like-post {
         transition: $default-transition;
       }
+      .liked,
       .like-post:hover,
       .like-post.active {
         color: $like-color;
@@ -84,6 +85,7 @@
       .dislike-post {
         transition: $default-transition;
       }
+      .disliked,
       .dislike-post:hover,
       .dislike-post.active {
         color: $dislike-color;
