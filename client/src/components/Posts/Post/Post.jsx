@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import Icon from "@mdi/react";
+import { mdiMicrophoneVariant } from "@mdi/js";
 import { UserContext } from "../../../App";
 import { useEffect } from "react";
 import "./Post.scss";
@@ -8,7 +10,12 @@ import "./Post.scss";
 const Post = (props) => {
   const [showMenu, setShowMenu] = useState();
   const User = useContext(UserContext);
+  const [owner, setOwner] = useState(false);
 
+  if(User.Username === props.data.Username){
+     setOwner(owner => !owner)
+  }
+  
   useEffect(() => {
     window.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -24,33 +31,40 @@ const Post = (props) => {
   };
 
   return (
-    <li
-      className={`post ${User.Username === props.data.Username && "owner"}`}
-      key={props.data.id}
-    >
-      <div className="votes">
-        <button
-          className="mdi mdi-arrow-up-thick like-post"
-          onClick={props.like}
-        ></button>
-        <p className="likes">{props.data.Score}</p>
-        <button
-          className="mdi mdi-arrow-down-thick dislike-post"
-          onClick={props.dislike}
-        ></button>
+    <li className={`${owner && "owner"}`} key={props.data.id}>
+      <Link to={`/posts/${props.data.id}`} className="post-title">
+        {owner && (
+          <Icon path={mdiMicrophoneVariant} title="Account menu" size={0.8} />
+        )}
+        {props.data.Title}
+      </Link>
+      <div className="post-info">
+        <p>by: {props.data.Username}</p>
+        <p>{moment(props.data.createdAt).fromNow()}</p>
       </div>
-      <div className="post-content">
-        <div className="post-info">
-          <p>
-            Posted by: {props.data.Username}{" "}
-            {moment(props.data.createdAt).fromNow()}
+      <div className="post-controls">
+        <div>
+          <p
+            className={`likes ${
+              (props.data.PostLikes.length && "liked") ||
+              (props.data.PostDislikes.length && "disliked")
+            }`}
+          >
+            {" "}
+            {props.data.Score} Likes
           </p>
-        </div>
-        <Link to={`/posts/${props.data.id}`} className="post-title">
-          {props.data.Title}
-        </Link>
-        <pre className="post-preview">{props.data.Body}</pre>
-        <div className="post-links">
+          <button
+            className={`mdi mdi-arrow-up-thick like-post ${
+              props.data.PostLikes.length > 0 && "liked"
+            }`}
+            onClick={props.like}
+          ></button>
+          <button
+            className={`mdi mdi-arrow-down-thick dislike-post ${
+              props.data.PostDislikes.length > 0 && "disliked"
+            }`}
+            onClick={props.dislike}
+          ></button>
           <Link to={`/posts/${props.data.id}`} className="comments">
             Comments
           </Link>
