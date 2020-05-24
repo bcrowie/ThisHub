@@ -23,7 +23,12 @@ const EmailForm = (props) => {
           onChange={(e) => setInputs({ ...inputs, Email2: e.target.value })}
         />
         {errors.Email2 && <p className="errors">{errors.Email2}</p>}
-        <button onClick={(e) => Utils.updateEmail(e, setErrors, inputs, User)}>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            Utils.updateEmail(setErrors, inputs, User);
+          }}
+        >
           Change Email
         </button>
       </form>

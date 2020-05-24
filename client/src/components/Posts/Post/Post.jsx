@@ -5,12 +5,17 @@ import Icon from "@mdi/react";
 import { mdiMicrophoneVariant } from "@mdi/js";
 import { UserContext } from "../../../App";
 import { useEffect } from "react";
+import "./Post.scss";
 
 const Post = (props) => {
   const [showMenu, setShowMenu] = useState();
   const User = useContext(UserContext);
-  const [owner] = useState(User.Username === props.data.Username);
+  const [owner, setOwner] = useState(false);
 
+  if(User.Username === props.data.Username){
+     setOwner(owner => !owner)
+  }
+  
   useEffect(() => {
     window.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -63,8 +68,6 @@ const Post = (props) => {
           <Link to={`/posts/${props.data.id}`} className="comments">
             Comments
           </Link>
-        </div>
-        <div>
           <button
             className="mdi mdi-dots-vertical menu-button"
             onClick={(e) => togglePostMenu(e)}

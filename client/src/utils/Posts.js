@@ -98,13 +98,12 @@ export const Posts = {
       showLogin(true);
     }
   },
-  create: async (event, Authorization, data, history, setErrors) => {
-    event.preventDefault();
+  create: async (Authorization, data, history, setErrors) => {
     if (Authorization) {
       const { Title, Body } = data;
       await axios
         .post(
-          Routes.Posts.getPosts,
+          "/posts",
           { Title, Body },
           {
             headers: { Authorization },
@@ -114,9 +113,11 @@ export const Posts = {
           history.push(`/posts/${res.response.id}`);
         })
         .catch((err) => {
-          const { Title, Body } = err.response.data;
+          const { Title, Body } = err.response;
           setErrors({ Title, Body });
         });
+    } else {
+      setErrors({ Title: "You must be logged in to do that." });
     }
   },
 };

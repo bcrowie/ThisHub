@@ -32,7 +32,14 @@ const CommentForm = (props) => {
       </form>
       {error && <p className="error">{error}</p>}
       <div>
-        <button onClick={(e) => Utils.create(e, Args)}>Submit</button>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            Utils.create(Args);
+          }}
+        >
+          Submit
+        </button>
         <button onClick={props.showForm}>Cancel</button>
       </div>
     </div>
