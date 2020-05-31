@@ -1,31 +1,44 @@
-# Fullstack Web App Spec
+# Simple Reddit Clone
 
-## Intro
+## About
 
-We want to create a fullstack web app using the exact same technologies you would find in a
-production application at a silicon valley tech company. The actual product can be anything you'd
-like, but we have a number of requirements regarding technology that we want to adhere to.
+This is a simple reddit clone written in Javascript with Express to provide RESTful API and React for the front-end. It it built using functional components in React and uses PostgreSQL as backend database, with Sequelize ORM for back-end data storage.
 
-## Product Requirements
+## Requirements
 
-- Users should be able to create an account and log in using a username and password
-- The application must be reasonable intuitive to use, styled nicely, and provide some utility
+- PostgreSQL: Database must be created and database name, username and password must be entered into ./config/database.js and ./config/config.json:
 
-## Technical Requirements
+### database.js
 
-- The application should have a frontend and a backend component, communicating via REST endpoints
-- The frontend should use [Create React App](https://reactjs.org/docs/create-a-new-react-app.html)
-  and use modern React for the UI layer. This means SFCs + hooks.
-- The backend should use Node and [Express](https://www.npmjs.com/package/express) as a web server
-- The backend should also use [Sequelize](https://sequelize.org/) as an ORM layer on top of Postres.
-  It may be useful to install [Postico](https://eggerapps.at/postico/) or it's Window's equivalent
-  to make interacting with the database easier.
-- You may use any additional utility libraries you find useful
-- The data model should have at least 3 tables, with at least 1 1-1 relation ship, and one 1-many or
-  many-many relationship between rows in associated tables. For example, a User could have a 1-1
-  relationship with BillingDetail, and a 1-many relationship with comments.
-- The database should be maintained using incremental migrations.
-- `npm run migrations` should execute all database migrations.
-- `npm start` should start up the whole app, assuming Postgres is running and migrated. Bonus points
-  if you create a script that starts Postgres, runs migrations if they haven't already, and runs the
-  app.
+```
+module.exports = new Sequelize("thishub", "hubadmin", "password1234", {
+  host: "localhost",
+  dialect: "postgres"
+});
+```
+### config.json
+
+```
+    "username": "hubadmin",
+    "password": "password1234",
+    "database": "thishub",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": false
+```
+
+## Usage
+
+- After configuring database variables above, run npx run migrations to build database models and tables. 
+- Run server in root of project with node server.
+- Finally, start the React development environment with npm start.
+
+## Features
+
+- User registration and login with validation.
+- Users that have registered and logged in have permissions to create new posts, comment and upvote and downvote posts and comments.
+- If a user has not registered and logged in, they will be prompted to do so.
+- Posts are scored just as with Reddit. Upvoting adds one point. Downvoting subtracts one point.
+- Each user has an account activity page where they can see all posts they have Upvoted, Downvoted, as well as posts and comments they have personally made.
+- Settings page with forms to change email, password and to delete account with validations is available.
+
