@@ -2,11 +2,11 @@
 
 ## About
 
-This is a simple reddit clone written in Javascript with Express to provide RESTful API and React for the front-end. It it built using functional components in React and uses PostgreSQL as backend database, with Sequelize ORM for back-end data storage.
+This is a simple reddit clone written in Javascript with Express to provide RESTful API and React for the front-end. It it built using functional components in React and uses PostgreSQL as backend database.
 
 ## Requirements
 
-- PostgreSQL: Database must be created and database name, username and password must be entered into ./config/database.js and ./config/config.json:
+- PostgreSQL: Database must be created and database name, username and password must be entered into ./config/database.js and ./config/config.json to configure Sequelize:
 
 ### database.js
 
