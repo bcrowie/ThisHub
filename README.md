@@ -11,7 +11,7 @@ This is a simple reddit clone written in Javascript with Express to provide REST
 ### database.js
 
 ```
-module.exports = new Sequelize("thishub", "hubadmin", "password1234", {
+module.exports = new Sequelize("DATABASE NAME", "USERNAME", "PASSWORD", {
   host: "localhost",
   dialect: "postgres"
 });
@@ -19,9 +19,9 @@ module.exports = new Sequelize("thishub", "hubadmin", "password1234", {
 ### config.json
 
 ```
-    "username": "hubadmin",
-    "password": "password1234",
-    "database": "thishub",
+    "username": "",
+    "password": "",
+    "database": "",
     "host": "localhost",
     "dialect": "postgres",
     "operatorsAliases": false
