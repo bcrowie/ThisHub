@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "hubadmin",
-    "password": "password1234",
-    "database": "thishub",
-    "host": "localhost",
+    "username": "tzgmfvuahxnyzk",
+    "password": "d085c58018a785701f45be87ee50e15b315bbfc091b4a6c75f084fb999745c04",
+    "database": "de60sg5gt318oc",
+    "host": "ec2-35-169-254-43.compute-1.amazonaws.com",
     "dialect": "postgres",
     "operatorsAliases": false
   },
@@ -16,11 +16,11 @@
     "operatorsAliases": false
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
+    "username": "tzgmfvuahxnyzk",
+    "password": "d085c58018a785701f45be87ee50e15b315bbfc091b4a6c75f084fb999745c04",
+    "database": "de60sg5gt318oc",
+    "host": "ec2-35-169-254-43.compute-1.amazonaws.com",
+    "dialect": "postgres",
     "operatorsAliases": false
   }
 }
