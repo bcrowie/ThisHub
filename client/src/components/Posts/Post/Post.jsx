@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { UserContext } from "../../../App";
 import { useEffect } from "react";
+import "./Post.scss";
 
 const Post = (props) => {
   const [showMenu, setShowMenu] = useState();
@@ -24,32 +25,35 @@ const Post = (props) => {
 
   return (
     <li
-      className={`${User.Username === props.data.Username && "owner"}`}
+      className={`post ${User.Username === props.data.Username && "owner"}`}
       key={props.data.id}
     >
-      <Link to={`/posts/${props.data.id}`} className="post-title">
-        {props.data.Title}
-      </Link>
-      <div className="post-info">
-        <p>by: {props.data.Username}</p>
-        <p>{moment(props.data.createdAt).fromNow()}</p>
+      <div className="votes">
+        <button
+          className="mdi mdi-arrow-up-thick like-post"
+          onClick={props.like}
+        ></button>
+        <p className="likes">{props.data.Score}</p>
+        <button
+          className="mdi mdi-arrow-down-thick dislike-post"
+          onClick={props.dislike}
+        ></button>
       </div>
-      <div className="post-controls">
-        <div>
-          <p className="likes"> {props.data.Score} Likes</p>
-          <button
-            className="mdi mdi-arrow-up-thick like-post"
-            onClick={props.like}
-          ></button>
-          <button
-            className="mdi mdi-arrow-down-thick dislike-post"
-            onClick={props.dislike}
-          ></button>
+      <div className="post-content">
+        <div className="post-info">
+          <p>
+            Posted by: {props.data.Username}{" "}
+            {moment(props.data.createdAt).fromNow()}
+          </p>
+        </div>
+        <Link to={`/posts/${props.data.id}`} className="post-title">
+          {props.data.Title}
+        </Link>
+        <pre className="post-preview">{props.data.Body}</pre>
+        <div className="post-links">
           <Link to={`/posts/${props.data.id}`} className="comments">
             Comments
           </Link>
-        </div>
-        <div>
           <button
             className="mdi mdi-dots-vertical menu-button"
             onClick={(e) => togglePostMenu(e)}

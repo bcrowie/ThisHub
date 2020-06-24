@@ -1,0 +1,21 @@
+@import "../../../styles/variables.scss";
+
+.new-post-form {
+  @include default-container;
+
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin: 0 $spacing-medium;
+  padding: $spacing-large;
+
+  svg {
+    margin-right: $spacing-medium;
+  }
+
+  input {
+    @include input;
+
+    width: 100%;
+  }
+}

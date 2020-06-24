@@ -1,0 +1,56 @@
+@import "../../../styles/variables.scss";
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+
+  .post-sidebar {
+    @include sidebar-container;
+
+    margin-bottom: $spacing-large;
+    padding: 0;
+
+    .sidebar-header {
+      background: linear-gradient(
+        to bottom,
+        $primary-color,
+        rgba(25, 25, 25, 0.85)
+      );
+      border-radius: $border-radius $border-radius 0 0;
+      display: flex;
+      padding: $spacing-xlarge;
+      width: 100%;
+
+      p {
+        background-color: transparent;
+        color: white;
+        font-weight: $bold-font;
+        padding: none;
+      }
+    }
+
+    .top-posts {
+      margin: $spacing-large;
+
+      .top-posts-items {
+        border: none;
+
+        a {
+          @include link;
+          font-size: $medium-font;
+          font-weight: bold;
+          margin-bottom: $spacing-medium;
+        }
+      }
+    }
+  }
+
+  .info-sidebar {
+    @include sidebar-container;
+
+    p {
+      font-size: $small-font;
+    }
+  }
+}

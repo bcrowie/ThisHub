@@ -3,16 +3,20 @@ import axios from "axios";
 import { Routes, Constants } from "../utils/constants";
 
 export const Posts = {
-  useFetchPosts: (route, auth = null) => {
-    // Add authorization for fetching posts with
-    // like/dislike info attached
+  useFetchPosts: (route, auth) => {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
       const fetchPosts = async () => {
-        const response = await axios.get(route, {
-          headers: { Authorization: auth },
-        });
-        setPosts(response.data);
+        let posts;
+
+        if (auth && (auth.Token || auth.Username)) {
+          posts = await axios.get(route, {
+            headers: { Authorization: auth.Token, Username: auth.Username },
+          });
+        } else {
+          posts = await axios.get(route);
+        }
+        setPosts(posts.data);
       };
       fetchPosts();
     }, [route, auth]);
@@ -41,10 +45,14 @@ export const Posts = {
           const { msg } = res.data;
           if (msg === Constants.Posts.Votes.like) {
             post.Score += 1;
+            post.PostLikes.push("");
           } else if (msg === Constants.Posts.Votes.likedDisliked) {
             post.Score += 2;
+            post.PostDislikes.pop();
+            post.PostLikes.push("");
           } else if (msg === Constants.Posts.Votes.removedLike) {
             post.Score -= 1;
+            post.PostLikes.pop();
           }
           setPosts(
             posts.map((orig) => {
@@ -69,10 +77,14 @@ export const Posts = {
           const { msg } = res.data;
           if (msg === Constants.Posts.Votes.dislike) {
             post.Score -= 1;
+            post.PostDislikes.push("");
           } else if (msg === Constants.Posts.Votes.dislikedLiked) {
             post.Score -= 2;
+            post.PostLikes.pop();
+            post.PostDislikes.push("");
           } else if (msg === Constants.Posts.Votes.removedDislike) {
             post.Score += 1;
+            post.PostDislikes.pop();
           }
           setPosts(
             posts.map((orig) => {
@@ -87,25 +99,27 @@ export const Posts = {
       showLogin(true);
     }
   },
-  create: async (event, Authorization, data, history, setErrors) => {
-    event.preventDefault();
+  create: async (Authorization, data, history, setErrors) => {
     if (Authorization) {
       const { Title, Body } = data;
       await axios
         .post(
-          Routes.Posts.posts,
+          "/posts",
+
           { Title, Body },
           {
             headers: { Authorization },
           }
         )
         .then((res) => {
-          history.push(`/posts/${res.data.id}`);
+          history.push(`/posts/${res.response.id}`);
         })
         .catch((err) => {
-          const { Title, Body } = err.response.data;
+          const { Title, Body } = err.response;
           setErrors({ Title, Body });
         });
+    } else {
+      setErrors({ Title: "You must be logged in to do that." });
     }
   },
 };

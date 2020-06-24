@@ -6,7 +6,6 @@ import Settings from "./components/Settings/Settings";
 import Login from "./components/Nav/Login/Login";
 import Nav from "./components/Nav/Nav";
 import PostList from "./components/Posts/PostList";
-import PostNav from "./components/Nav/PostNav/PostNav";
 import PostView from "./components/Posts/PostView/PostView";
 import Register from "./components/Register/Register";
 import NewPost from "./components/NewPost/NewPost";
@@ -32,7 +31,6 @@ const App = () => {
             </div>
           )}
           <Nav />
-          <PostNav />
           <Switch>
             <div className="main-container">
               <Route path="/posts/:postId" component={PostView} />

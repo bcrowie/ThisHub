@@ -26,13 +26,13 @@ export const Users = {
 
       if (Token && Username) {
         fetchAuth();
+      } else {
+        return auth;
       }
     }, []);
     return auth;
   },
-  login: async (event, data, setErrors) => {
-    event.preventDefault();
-    console.log(data);
+  login: async (data, setErrors, History) => {
     let { Email, Password } = data;
     Email = Email || "";
     Password = Password || "";
@@ -57,8 +57,7 @@ export const Users = {
     localStorage.removeItem("thishub.user");
     window.location.reload();
   },
-  register: async (event, data, setErrors) => {
-    event.preventDefault();
+  register: async (data, setErrors, History) => {
     let { Username, Email, Email2, Password, Password2 } = data;
     Username = Username || "";
     Email = Email || "";
@@ -73,9 +72,8 @@ export const Users = {
         Password,
         Password2,
       })
-      .then(() => {
-        const data = { Email, Password };
-        this.login(data);
+      .then(async () => {
+        History.push("/");
       })
       .catch((err) => {
         const {
@@ -88,9 +86,7 @@ export const Users = {
         setErrors({ Username, Email, Email2, Password, Password2 });
       });
   },
-  updateEmail: async (event, setErrors, inputs, User) => {
-    event.preventDefault();
-
+  updateEmail: async (setErrors, inputs, User) => {
     await axios
       .post(Routes.Users.updateEmail, inputs, {
         headers: { Authorization: User.Token },
@@ -103,9 +99,7 @@ export const Users = {
         setErrors({ Email, Email2 });
       });
   },
-  updatePassword: async (event, setErrors, inputs, User) => {
-    event.preventDefault();
-
+  updatePassword: async (setErrors, inputs, User) => {
     await axios
       .post(Routes.Users.updatePassword, inputs, {
         headers: { Authorization: User.Token },
@@ -119,8 +113,6 @@ export const Users = {
       });
   },
   deleteAccount: async (event, setErrors, inputs, User) => {
-    event.preventDefault();
-
     await axios
       .delete(Routes.Users.myAccount, {
         headers: { Authorization: User.Token },

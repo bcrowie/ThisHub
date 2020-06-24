@@ -1,13 +1,15 @@
 const { Router } = require("express");
-const sequelize = require("sequelize");
+const jwt = require("jsonwebtoken");
+const keys = require("../config/keys");
 const posts = new Router();
 const passport = require("passport");
 const validatePost = require("../validation/post");
 const models = require("../models");
+const comments = require("./comments");
+const { getPosts, getPostsWithAuth } = require("../utils/utils");
 const PostModel = models.Post;
 const PostLikeModel = models.PostLike;
 const PostDislikeModel = models.PostDislike;
-const comments = require("./comments");
 
 posts.use("/:PostId/comments", comments);
 
@@ -15,55 +17,49 @@ const response = (res, msg, status = 200) => {
   return res.status(status).json(msg);
 };
 
+// PUBLIC : Get random
+posts.get("/random", async (req, res, next) => {
+  const posts = await PostModel.findAll({
+    order: [sequelize.fn("RANDOM")],
+    limit: 4,
+  });
+  if (posts) {
+    return response(res, posts);
+  } else {
+    return response(res, { msg: "Something went wrong" });
+  }
+});
+
 // PUBLIC : GET All
 posts.get("/", async (req, res, next) => {
-  const posts = await PostModel.findAll({
-    attributes: [
-      "id",
-      "Username",
-      "Title",
-      "Body",
-      "createdAt",
-      "updatedAt",
-      [sequelize.fn("COUNT", sequelize.col("PostLikes.PostId")), "LikeCount"],
-      [
-        sequelize.fn("COUNT", sequelize.col("PostDislikes.PostId")),
-        "DislikeCount",
-      ],
-    ],
-    include: [
-      {
-        model: PostLikeModel,
-        attributes: [],
-      },
-      {
-        model: PostDislikeModel,
-        attributes: [],
-      },
-    ],
-    group: ["Post.id"],
-    order: [["createdAt", "DESC"]],
-  });
+  let posts;
+  if (req.headers.authorization) {
+    const { username } = req.headers;
+    const token = req.headers.authorization.split(" ")[1];
+    await jwt.verify(token, keys.secretOrKey, async (err, decoded) => {
+      if (err) {
+        return response(res, "Unauthorized: Invalid token", 401);
+      } else {
+        posts = await getPostsWithAuth(username);
+      }
+    });
+  } else {
+    posts = await getPosts();
+  }
 
   Object.entries(posts).forEach(([key, value]) => {
     value.dataValues.Score =
       value.dataValues.LikeCount - value.dataValues.DislikeCount;
+    if (!value.dataValues.PostDislikes || !value.dataValues.PostDislikes) {
+      value.dataValues.PostDislikes = [];
+      value.dataValues.PostLikes = [];
+    }
   });
 
   if (posts) {
     return response(res, posts);
-  }
-  return response(res, { msg: "Something went wrong" }, 400);
-});
-
-// PUBLIC : GET one by ID
-posts.get("/:id", async (req, res, next) => {
-  const { id } = req.params;
-  const post = await PostModel.findOne({ where: { id } });
-  if (post) {
-    return response(res, post);
   } else {
-    return response(res, { msg: "Post not found" }, 404);
+    return response(res, { msg: "Something went wrong" }, 400);
   }
 });
 
@@ -98,6 +94,17 @@ posts.post(
     return response(res, { msg: "Something went wrong." }, 400);
   }
 );
+
+// PUBLIC : GET one by ID
+posts.get("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  const post = await PostModel.findOne({ where: { id } });
+  if (post) {
+    return response(res, post);
+  } else {
+    return response(res, { msg: "Post not found" }, 404);
+  }
+});
 
 // PRIVATE : Delete Post
 posts.delete(

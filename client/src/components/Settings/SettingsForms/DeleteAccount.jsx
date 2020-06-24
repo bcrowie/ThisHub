@@ -28,7 +28,10 @@ const DeleteAccount = (props) => {
         />
         {errors.Password && <p className="errors">{errors.Password}</p>}
         <button
-          onClick={(e) => Utils.deleteAccount(e, setErrors, inputs, User)}
+          onClick={(e) => {
+            e.preventDefault();
+            Utils.deleteAccount(setErrors, inputs, User);
+          }}
         >
           Delete Account
         </button>
