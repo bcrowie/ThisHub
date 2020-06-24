@@ -1,11 +1,21 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+const path = require("path");
 const db = require("./config/database");
 const models = require("./models");
 const app = express();
 const cors = require("cors");
-const port = process.env.port || 5000;
+const port = 5000;
+
+const dev = app.get("env") !== "production";
+
+if (!dev) {
+  app.use(express.static(path.resolve(__dirname, "build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "build", "index.html"));
+  });
+}
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

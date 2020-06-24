@@ -27,7 +27,8 @@
     "test": "jest",
     "start": "node server.js",
     "server": "nodemon server.js",
-    "migrations": "npx sequelize db:migrate"
+    "migrations": "npx sequelize db:migrate",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {
     "type": "git",
