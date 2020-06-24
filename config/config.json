@@ -1,18 +1,18 @@
 {
   "development": {
+    "username": "hubadmin",
+    "password": "password1234",
+    "database": "thishub",
+    "host": "localhost",
+    "dialect": "postgres",
+    "operatorsAliases": false
+  },
+  "test": {
     "username": "blgmtauhottfis",
     "password": "32725cabbb89b831e6b8f11d846df98531d71e6d6c5d6cd16026ef9069c96c63",
     "database": "dj1hjp9pufe4",
     "host": "ec2-34-206-31-217.compute-1.amazonaws.com",
     "dialect": "postgres",
-    "operatorsAliases": false
-  },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
     "operatorsAliases": false
   },
   "production": {

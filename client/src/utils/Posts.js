@@ -93,15 +93,14 @@ export const Posts = {
       const { Title, Body } = data;
       await axios
         .post(
-          Routes.Posts.getPosts,
+          Routes.Posts.posts,
           { Title, Body },
           {
             headers: { Authorization },
           }
         )
         .then((res) => {
-          // send to new post page
-          history.push(`/posts/${res.response.id}`);
+          history.push(`/posts/${res.data.id}`);
         })
         .catch((err) => {
           const { Title, Body } = err.response.data;
