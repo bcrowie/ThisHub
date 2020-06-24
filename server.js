@@ -8,10 +8,7 @@ const app = express();
 const cors = require("cors");
 const port = 5000;
 
-app.use(express.static(path.resolve(__dirname, "client/build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname + "/client/build/index.html"));
-});
+app.use(express.static(path.join(__dirname, "client/build")));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -31,6 +28,10 @@ app.use(cors());
 
 app.use("/users", require("./routes/users"));
 app.use("/posts", require("./routes/posts"));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
 
 app.use((err, req, res, next) => {
   res.json(err);
