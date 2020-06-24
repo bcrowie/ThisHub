@@ -1,4 +1,4 @@
-// const { Sequelize } = require("sequelize");
+const { Sequelize } = require("sequelize");
 // module.exports = new Sequelize("thishub", "hubadmin", "password1234", {
 //   host: "localhost",
 //   dialect: "postgres",
@@ -12,5 +12,3 @@ module.exports = new Sequelize(
     dialect: "postgres",
   }
 );
-
-// comment
