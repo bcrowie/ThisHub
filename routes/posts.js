@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
+const sequelize = require("sequelize");
 const posts = new Router();
 const passport = require("passport");
 const validatePost = require("../validation/post");
