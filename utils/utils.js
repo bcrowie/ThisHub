@@ -121,7 +121,6 @@ module.exports = {
         "PostId",
         "ParentId",
         "ChildId",
-        "Level",
         "Body",
         "IsDeleted",
         "createdAt",
@@ -147,10 +146,7 @@ module.exports = {
         },
       ],
       group: ["Comment.id"],
-      order: [
-        ["Level", "ASC"],
-        ["createdAt", "DESC"],
-      ],
+      order: [["createdAt", "DESC"]],
     });
   },
 };
