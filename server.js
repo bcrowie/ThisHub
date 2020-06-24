@@ -8,14 +8,10 @@ const app = express();
 const cors = require("cors");
 const port = 5000;
 
-const dev = app.get("env") !== "production";
-
-if (!dev) {
-  app.use(express.static(path.resolve(__dirname, "build")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "build", "index.html"));
-  });
-}
+app.use(express.static(path.resolve(__dirname, "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "build", "index.html"));
+});
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
