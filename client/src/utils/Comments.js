@@ -66,6 +66,19 @@ export const Comments = {
     }, [route, auth]);
     return [comments, setComments];
   },
+  reply: async (auth, comment, post, input) => {
+    await axios.post(
+      Routes.Comments.getCommentById(post.id, comment.id),
+      {
+        Body: input,
+      },
+      {
+        headers: {
+          Authorization: auth.Token,
+        },
+      }
+    );
+  },
   like: async () => {},
   dislike: async () => {},
 };

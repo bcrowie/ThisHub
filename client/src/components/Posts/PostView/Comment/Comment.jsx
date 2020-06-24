@@ -1,5 +1,9 @@
-import React, { useContext, useState } from "react";
-import moment from "moment";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import Age from "./Age/Age";
+import Controls from "./Controls/Controls";
+import Edit from "./Edit/Edit";
+import Reply from "./Reply/Reply";
+import Vote from "./Vote/Vote";
 import { Constants } from "../../../../utils/constants";
 import { UserContext } from "../../../../App";
 import { Comments as Utils } from "../../../../utils/Comments";
@@ -7,62 +11,67 @@ import "./Comment.scss";
 
 const Comment = ({ comment, comments, post, setComments }) => {
   const User = useContext(UserContext);
+  const editRef = useRef(null);
+  const [editing, setEditing] = useState(false);
+  const [input, setInput] = useState();
   const [replyOpen, setReplyOpen] = useState(false);
-  const { createdAt, id, Score, IsDeleted, Body, Username } = comment;
+  let { createdAt, id, Score, IsDeleted, Body, Username } = comment;
+
+  useEffect(() => {
+    if (editing) {
+      editRef.current.focus();
+    }
+  }, [editing]);
+
+  const handleEdit = () => {
+    editRef.current.innerHTML = input;
+    setEditing(() => !editing);
+  };
 
   return (
     <li key={id}>
-      <div className="controls">
-        <button className="mdi mdi-arrow-up-thick like-comment"></button>
-        <p>{Score}</p>
-        <button className="mdi mdi-arrow-down-thick dislike-comment"></button>
-      </div>
+      <Vote Score={Score} />
       <div className="comment-content">
-        <pre>{IsDeleted ? Constants.Comments.deleted : Body}</pre>
-        <p>
-          {moment(createdAt).fromNow()} by:{" "}
-          {IsDeleted ? Constants.Comments.deleted : Username}
-        </p>
+        {editing ? (
+          <Edit
+            editRef={editRef}
+            Body={Body}
+            editing={editing}
+            setEditing={setEditing}
+            handleEdit={handleEdit}
+            setInput={setInput}
+          />
+        ) : (
+          <pre>{IsDeleted ? Constants.Comments.deleted : Body}</pre>
+        )}
+        <Age createdAt={createdAt} IsDeleted={IsDeleted} Username={Username} />
         <div>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setReplyOpen(() => !replyOpen);
-            }}
-          >
-            Reply
-          </button>
-          {User.Username === Username && (
-            <>
-              <button
-                onClick={(e) =>
-                  Utils.delete(comment, comments, post.id, setComments, User)
-                }
-              >
-                Delete
-              </button>
-              <button>Edit</button>
-            </>
+          {!IsDeleted && (
+            <Controls
+              User={User}
+              Username={Username}
+              setReplyOpen={setReplyOpen}
+              replyOpen={replyOpen}
+              comment={Comment}
+              setEditing={setEditing}
+              editing={editing}
+              handleDelete={() => {
+                Utils.delete(comment, comments, post.id, setComments, User);
+              }}
+            />
           )}
         </div>
         {replyOpen && (
-          <div className="comment-reply">
-            <textarea
-              name="comment-reply"
-              id="comment-reply"
-              cols="30"
-              rows="10"
-            ></textarea>
-            <button>Submit</button>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setReplyOpen(() => !replyOpen);
-              }}
-            >
-              Cancel
-            </button>
-          </div>
+          <Reply
+            handleReply={(replyInput) => {
+              console.log(replyInput);
+              Utils.reply(User, comment, post, replyInput);
+            }}
+            input={input}
+            setInput={input}
+            replyOpen={replyOpen}
+            setReplyOpen={setReplyOpen}
+          />
         )}
       </div>
     </li>

@@ -88,7 +88,34 @@ comments.get("/:id", async (req, res) => {
     return response(res, { msg: "Comment not found" }, 404);
   }
 });
+// PRIVATE : New comment reply
+comments.post(
+  "/:ParentId",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    console.log(req);
+    const { PostId, ParentId } = req.params;
+    const { Username } = req.user.dataValues;
+    const { Body } = req.body;
 
+    const parent = await CommentModel.findOne({ where: { id: ParentId } });
+    const comment = await CommentModel.create({
+      Body,
+      Username,
+      PostId,
+      ParentId,
+    });
+    await CommentLikeModel.create({
+      Username,
+      CommentId: comment.dataValues.id,
+      Liked: true,
+    }).catch((err) => {
+      return response(res, err, 400);
+    });
+    parent.update({ ChildId: comment.dataValues.id });
+    return response(res, { msg: "Comment reply added", comment });
+  }
+);
 //  PRIVATE : New comment
 comments.post(
   "/",
@@ -117,34 +144,6 @@ comments.post(
         return response(res, "Something went wrong");
       }
     }
-  }
-);
-
-// PRIVATE : New comment reply
-comments.post(
-  "/:ParentId",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const { PostId, ParentId } = req.params;
-    const { Username } = req.user.dataValues;
-    const { Body } = req.body;
-
-    const parent = await CommentModel.findOne({ where: { id: ParentId } });
-    const comment = await CommentModel.create({
-      Body,
-      Username,
-      PostId,
-      ParentId,
-    });
-    await CommentLikeModel.create({
-      Username,
-      CommentId: comment.dataValues.id,
-      Liked: true,
-    }).catch((err) => {
-      return response(res, err, 400);
-    });
-    parent.update({ ChildId: comment.dataValues.id });
-    return response(res, { msg: "Comment reply added", comment });
   }
 );
 
