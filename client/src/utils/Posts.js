@@ -105,7 +105,6 @@ export const Posts = {
       await axios
         .post(
           "/posts",
-
           { Title, Body },
           {
             headers: { Authorization },
@@ -120,6 +119,19 @@ export const Posts = {
         });
     } else {
       setErrors({ Title: "You must be logged in to do that." });
+    }
+  },
+  edit: async (auth, data) => {
+    if (auth) {
+      const Body = data.data;
+      const Post = data.post;
+      await axios.put(
+        `/posts/${Post.id}`,
+        { Body },
+        { headers: { Authorization: auth.Token } }
+      );
+    } else {
+      return false;
     }
   },
 };

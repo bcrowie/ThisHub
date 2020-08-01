@@ -52,5 +52,8 @@ export const Routes = {
     getCommentById: (PostId, CommentId) => {
       return `/posts/${PostId}/comments/${CommentId}`;
     },
+    likeComment: (PostId, CommentId, Like) => {
+      return `/posts/${PostId}/comments/${CommentId}/${Like === true ? 1 : 0}`;
+    },
   },
 };

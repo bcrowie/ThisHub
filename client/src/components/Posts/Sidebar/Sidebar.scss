@@ -1,6 +1,7 @@
 @import "../../../styles/variables.scss";
 
 .sidebar {
+  align-items: flex-end;
   display: flex;
   flex-direction: column;
   width: 30%;
@@ -32,7 +33,7 @@
 
     .top-posts {
       margin: $spacing-large;
-
+      list-style-type: none;
       .top-posts-items {
         border: none;
 

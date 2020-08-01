@@ -4,11 +4,13 @@ import Comment from "./Comment/Comment";
 import PostContent from "./PostContent/PostContent";
 import "./PostView.scss";
 import CommentForm from "./CommentForm/CommentForm";
+import EditForm from "../EditForm/EditForm";
 
 const PostView = ({ match, location }) => {
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const [showCommentForm, setShowCommentForm] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
 
   const {
     params: { postId },
@@ -26,7 +28,11 @@ const PostView = ({ match, location }) => {
 
   return (
     <div className="post-container">
-      <PostContent post={post} showForm={() => setShowCommentForm(true)} />
+      <PostContent
+        post={post}
+        showEdit={() => setShowEdit(true)}
+        showForm={() => setShowCommentForm(true)}
+      />
       {showCommentForm && (
         <CommentForm
           showForm={() => setShowCommentForm(false)}
@@ -35,6 +41,7 @@ const PostView = ({ match, location }) => {
           setComments={setComments}
         />
       )}
+      {showEdit && <EditForm showEdit={() => setShowEdit(!showEdit)} />}
       <p className="comments">Comments:</p>
       <ul className="comments-list">
         {comments.length > 0 ? (

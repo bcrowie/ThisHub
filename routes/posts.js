@@ -134,6 +134,7 @@ posts.put(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
+    console.log(req);
     const { id } = req.params;
     const updated = await PostModel.update(
       { Body: req.body.Body },
@@ -171,13 +172,12 @@ posts.post(
       let confirmDestroy = null;
 
       if (Like == 1) {
-        const confirmLike = await PostLikeModel.create({
-          PostId,
-          Username,
-        });
-
         if (PostAlreadyDisliked) {
           confirmDestroy = await PostAlreadyDisliked.destroy();
+          await PostLikeModel.create({
+            PostId,
+            Username,
+          });
           if (confirmDestroy) {
             return response(res, { msg: "Liked and Disliked" });
           }
@@ -187,18 +187,20 @@ posts.post(
             return response(res, { msg: "Removed Like" });
           }
         }
-
+        const confirmLike = await PostLikeModel.create({
+          PostId,
+          Username,
+        });
         if (confirmLike) {
           return response(res, { msg: "Liked" });
         }
       } else if (Like == 0) {
-        const confirmDislike = await PostDislikeModel.create({
-          PostId,
-          Username,
-        });
-
         if (PostAlreadyLiked) {
           confirmDestroy = await PostAlreadyLiked.destroy();
+          await PostDislikeModel.create({
+            PostId,
+            Username,
+          });
           if (confirmDestroy) {
             return response(res, { msg: "Disliked and Liked" });
           }
@@ -208,7 +210,10 @@ posts.post(
             return response(res, { msg: "Removed Dislike" });
           }
         }
-
+        const confirmDislike = await PostDislikeModel.create({
+          PostId,
+          Username,
+        });
         if (confirmDislike) {
           return response(res, { msg: "Disliked" });
         }

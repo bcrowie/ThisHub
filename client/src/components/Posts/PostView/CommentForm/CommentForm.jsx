@@ -3,18 +3,18 @@ import { UserContext } from "../../../../App";
 import { Comments as Utils } from "../../../../utils/Comments";
 import "./CommentForm.scss";
 
-const CommentForm = (props) => {
-  const [Input, setInput] = useState();
+const CommentForm = ({ comments, post, setComments, showForm }) => {
+  const [input, setInput] = useState();
   const [error, setError] = useState();
   const User = useContext(UserContext);
 
-  const Args = {
-    Comments: props.comments,
-    Input,
-    Post: props.post,
-    setComments: props.setComments,
+  const params = {
+    comments,
+    input,
+    post,
+    setComments,
     setError,
-    showForm: props.showForm,
+    showForm,
     User,
   };
 
@@ -35,12 +35,12 @@ const CommentForm = (props) => {
         <button
           onClick={(e) => {
             e.preventDefault();
-            Utils.create(Args);
+            Utils.create(params);
           }}
         >
           Submit
         </button>
-        <button onClick={props.showForm}>Cancel</button>
+        <button onClick={showForm}>Cancel</button>
       </div>
     </div>
   );

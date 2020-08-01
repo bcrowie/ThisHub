@@ -2,12 +2,12 @@
 
 .post {
   border: $thin-border;
-  border-radius: 6px;
+  border-radius: $border-radius;
   display: flex;
   padding: 1px;
   margin: $spacing-medium;
   transition: $default-transition;
-
+  min-width: 100%;
   &:hover {
     border: $thin-border-active;
   }
@@ -39,7 +39,6 @@
     }
     .like-post:hover,
     .like-post.active {
-      background-color: $button-hightlight;
       color: $like-color;
     }
     .dislike-post {
@@ -49,12 +48,12 @@
     .dislike-post:hover,
     .dislike-post.active {
       color: $dislike-color;
-      background-color: $button-hightlight;
     }
   }
   .post-content {
     padding: $spacing-large;
     max-height: 400px;
+
     .post-info {
       display: flex;
       p {
@@ -103,7 +102,6 @@
         transition: $default-transition;
 
         &:hover {
-          background-color: $button-hightlight;
           color: $primary-color;
         }
       }
@@ -117,7 +115,6 @@
         text-decoration: none;
         &:hover {
           color: $primary-color;
-          background-color: $button-hightlight;
         }
       }
     }

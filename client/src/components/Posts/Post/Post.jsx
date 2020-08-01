@@ -5,7 +5,7 @@ import { UserContext } from "../../../App";
 import { useEffect } from "react";
 import "./Post.scss";
 
-const Post = (props) => {
+const Post = ({ key, data, deletePost, like, dislike }) => {
   const [showMenu, setShowMenu] = useState();
   const User = useContext(UserContext);
 
@@ -25,33 +25,32 @@ const Post = (props) => {
 
   return (
     <li
-      className={`post ${User.Username === props.data.Username && "owner"}`}
-      key={props.data.id}
+      className={`post ${User.Username === data.Username && "owner"}`}
+      key={data.id}
     >
       <div className="votes">
         <button
           className="mdi mdi-arrow-up-thick like-post"
-          onClick={props.like}
+          onClick={like}
         ></button>
-        <p className="likes">{props.data.Score}</p>
+        <p className="likes">{data.Score}</p>
         <button
           className="mdi mdi-arrow-down-thick dislike-post"
-          onClick={props.dislike}
+          onClick={dislike}
         ></button>
       </div>
       <div className="post-content">
         <div className="post-info">
           <p>
-            Posted by: {props.data.Username}{" "}
-            {moment(props.data.createdAt).fromNow()}
+            Posted by: {data.Username} {moment(data.createdAt).fromNow()}
           </p>
         </div>
-        <Link to={`/posts/${props.data.id}`} className="post-title">
-          {props.data.Title}
+        <Link to={`/posts/${data.id}`} className="post-title">
+          {data.Title}
         </Link>
-        <pre className="post-preview">{props.data.Body}</pre>
+        <pre className="post-preview">{data.Body}</pre>
         <div className="post-links">
-          <Link to={`/posts/${props.data.id}`} className="comments">
+          <Link to={`/posts/${data.id}`} className="comments">
             Comments
           </Link>
           <button
@@ -62,9 +61,8 @@ const Post = (props) => {
             <div className="post-menu-container">
               <div className="post-menu">
                 <Link>View Profile</Link>
-                <Link>Report</Link>
-                {props.data.Username === User.Username && (
-                  <Link onClick={props.delete}>Delete Post</Link>
+                {data.Username === User.Username && (
+                  <Link onClick={deletePost}>Delete Post</Link>
                 )}
               </div>
             </div>

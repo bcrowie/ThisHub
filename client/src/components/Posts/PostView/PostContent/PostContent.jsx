@@ -1,12 +1,39 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import moment from "moment";
+import EditForm from "./EditForm/EditForm";
 import { LoginContext } from "../../../../App";
 import { UserContext } from "../../../../App";
+import { Posts as Utils } from "../../../../utils/Posts";
 import "./PostContent.scss";
 
-const PostContent = (props) => {
+const PostContent = ({ post, showForm }) => {
   const { showLogin, setShowLogin } = useContext(LoginContext);
+  const [edited, setEdited] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [input, setInput] = useState();
+  const [postBody, setPostBody] = useState();
+  const editRef = useRef(null);
   const User = useContext(UserContext);
+
+  useEffect(() => {
+    setPostBody(post.Body);
+    if (edited) {
+      setPostBody(() => input);
+    }
+
+    if (editing) {
+      editRef.current.focus();
+      editRef.current.select();
+    }
+  }, [edited, editing, input, post.Body]);
+
+  const submitEdit = (data) => {
+    post.Body = data;
+    setInput(data);
+    setEditing(false);
+    setEdited(true);
+    Utils.edit(User, { post, data });
+  };
 
   return (
     <div className="post-main">
@@ -15,38 +42,47 @@ const PostContent = (props) => {
           className="mdi mdi-arrow-up-thick like-post"
           onClick={() => setShowLogin((showLogin) => !showLogin)}
         ></button>
-        <p className="score">{props.post.Score}</p>
+        <p className="score">{post.Score}</p>
         <button
           className="mdi mdi-arrow-down-thick dislike-post"
           onClick={() => setShowLogin((showLogin) => !showLogin)}
         ></button>
       </div>
       <div className="post-content">
-        <h3>{props.post.Title}</h3>
+        <h3>{post.Title}</h3>
         <p>
-          {moment(props.post.createdAt).fromNow()} by {props.post.Username}
+          {moment(post.createdAt).fromNow()} by {post.Username}
         </p>
-        <pre>{props.post.Body}</pre>
+        {editing ? (
+          <EditForm
+            editRef={editRef}
+            submitEdit={submitEdit}
+            input={input}
+            postBody={postBody}
+            setEditing={setEditing}
+            setInput={setInput}
+          />
+        ) : (
+          <pre>{postBody}</pre>
+        )}
         <div>
           <button
             onClick={
-              User.Username
-                ? props.showForm
-                : () => setShowLogin((showLogin) => !showLogin)
+              User.Username ? showForm : () => setShowLogin(() => !showLogin)
             }
           >
-            New Comment
+            Reply
           </button>
-          {User.Username === props.post.Username && (
+          {User.Username === post.Username && (
             <button
-              onClick={props.showForm}
-              title={props.post.Title}
-              body={props.post.Body}
+              onClick={() => setEditing(!editing)}
+              title={post.Title}
+              body={post.Body}
             >
               Edit
             </button>
           )}
-          {User.Username === props.post.Username && <button>Delete</button>}
+          {User.Username === post.Username && <button>Delete</button>}
         </div>
       </div>
     </div>

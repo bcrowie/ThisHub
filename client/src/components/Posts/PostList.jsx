@@ -15,12 +15,14 @@ const PostList = (props) => {
   if (!posts.length) {
     return (
       <div className="posts">
-        <NewPostField />
-        <ul className="post-list">
-          <li key="0">
-            <p className="post-title">No posts here!</p>
-          </li>
-        </ul>
+        <div className="posts-main">
+          <NewPostField />
+          <ul className="post-list">
+            <li key="0" className="no-post">
+              <p className="post-title">No posts here!</p>
+            </li>
+          </ul>
+        </div>
         <Sidebar />
       </div>
     );
@@ -33,7 +35,7 @@ const PostList = (props) => {
             <Post
               key={post.id}
               data={post}
-              delete={() =>
+              deletePost={() =>
                 Utils.delete(User.Token, props.showLogin, setPosts, post, posts)
               }
               like={() =>

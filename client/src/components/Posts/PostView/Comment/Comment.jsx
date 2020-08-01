@@ -1,80 +1,98 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import Age from "./Age/Age";
-import Controls from "./Controls/Controls";
-import Edit from "./Edit/Edit";
-import Reply from "./Reply/Reply";
-import Vote from "./Vote/Vote";
+import Author from "./Author";
+import Controls from "./Controls";
+import Edit from "./Edit";
 import { Constants } from "../../../../utils/constants";
 import { UserContext } from "../../../../App";
 import { Comments as Utils } from "../../../../utils/Comments";
 import "./Comment.scss";
 
-const Comment = ({ comment, comments, post, setComments }) => {
+const Comment = ({ comment, post }) => {
   const User = useContext(UserContext);
   const editRef = useRef(null);
+  const [commentBody, setCommentBody] = useState();
   const [editing, setEditing] = useState(false);
+  const [edited, setEdited] = useState(false);
   const [input, setInput] = useState();
-  const [replyOpen, setReplyOpen] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   let { createdAt, id, Score, IsDeleted, Body, Username } = comment;
+  const params = {
+    comment,
+    post,
+    User,
+    input,
+  };
 
   useEffect(() => {
+    setCommentBody(Body);
+    if (edited) {
+      setCommentBody(() => input);
+    }
+
     if (editing) {
       editRef.current.focus();
+      editRef.current.select();
     }
-  }, [editing]);
+
+    if (IsDeleted) {
+      setDeleted(true);
+    }
+  }, [deleted, editing, IsDeleted]);
 
   const handleEdit = () => {
-    editRef.current.innerHTML = input;
+    Body = input;
     setEditing(() => !editing);
+    setEdited(true);
+    Utils.edit(params);
+  };
+
+  const handleDelete = () => {
+    setDeleted(true);
+    Utils.delete(params);
   };
 
   return (
-    <li key={id}>
-      <Vote Score={Score} />
-      <div className="comment-content">
-        {editing ? (
-          <Edit
-            editRef={editRef}
-            Body={Body}
-            editing={editing}
-            setEditing={setEditing}
-            handleEdit={handleEdit}
-            setInput={setInput}
-          />
-        ) : (
-          <pre>{IsDeleted ? Constants.Comments.deleted : Body}</pre>
-        )}
-        <Age createdAt={createdAt} IsDeleted={IsDeleted} Username={Username} />
-        <div>
-          {!IsDeleted && (
-            <Controls
-              User={User}
-              Username={Username}
-              setReplyOpen={setReplyOpen}
-              replyOpen={replyOpen}
-              comment={Comment}
-              setEditing={setEditing}
-              editing={editing}
-              handleDelete={() => {
-                Utils.delete(comment, comments, post.id, setComments, User);
-              }}
-            />
-          )}
+    <>
+      <li className="comment-item" key={id}>
+        <div className="votes">
+          <button
+            className="mdi mdi-arrow-up-thick like-post"
+            onClick={() => Utils.like(params)}
+          ></button>
+          <button
+            className="mdi mdi-arrow-down-thick dislike-post"
+            onClick={() => Utils.dislike(params)}
+          ></button>
         </div>
-        {replyOpen && (
-          <Reply
-            handleReply={(replyInput) => {
-              console.log(replyInput);
-              Utils.reply(User, comment, post, replyInput);
-            }}
-            input={input}
-            setInput={input}
-            replyOpen={replyOpen}
-            setReplyOpen={setReplyOpen}
+        <div className="comment-content">
+          <Author
+            createdAt={createdAt}
+            IsDeleted={deleted}
+            Score={Score}
+            Username={Username}
           />
-        )}
-      </div>
-    </li>
+          {editing ? (
+            <Edit
+              commentBody={commentBody}
+              editRef={editRef}
+              editing={editing}
+              handleEdit={handleEdit}
+              setEditing={setEditing}
+              setInput={setInput}
+            />
+          ) : (
+            <pre>{deleted ? Constants.Comments.deleted : commentBody}</pre>
+          )}
+          <Controls
+            deleted={deleted}
+            editing={editing}
+            handleDelete={handleDelete}
+            setEditing={setEditing}
+            Username={Username}
+          />
+        </div>
+      </li>
+    </>
   );
 };
 export default Comment;

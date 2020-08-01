@@ -5,6 +5,7 @@ const models = require("../models");
 const { getCommentsForPost, getPostById } = require("../utils/utils");
 const CommentModel = models.Comment;
 const CommentLikeModel = models.CommentLike;
+const CommentDislikeModel = models.CommentDislike;
 const PostModel = models.Post;
 
 const response = (res, msg, status = 200) => {
@@ -18,11 +19,6 @@ comments.get("/", async (req, res) => {
     getCommentsForPost(PostId),
     getPostById(PostId),
   ]);
-
-  Object.entries(Comments).forEach(([key, value]) => {
-    value.dataValues.Score =
-      value.dataValues.LikeCount - value.dataValues.DislikeCount;
-  });
 
   Post.dataValues.Score =
     Post.dataValues.LikeCount - Post.dataValues.DislikeCount;
@@ -93,7 +89,6 @@ comments.post(
   "/:ParentId",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    console.log(req);
     const { PostId, ParentId } = req.params;
     const { Username } = req.user.dataValues;
     const { Body } = req.body;
@@ -121,6 +116,7 @@ comments.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
+    console.log("hitting new");
     const { PostId } = req.params;
     const { Body } = req.body;
     const { Username } = req.user.dataValues;
@@ -191,11 +187,69 @@ comments.post(
     const Liked = Like == 1 ? true : false;
     const comment = await CommentModel.findOne({ where: { id: CommentId } });
 
-    if (!comment) return response(res, "Comment not found", 404);
-    else {
-      const userExists = await CommentLikeModel.findOne({
-        where: { Username },
-      });
+    if (!comment) {
+      return response(res, "Comment not found", 404);
+    } else {
+      const [CommentAlreadyLiked, CommentAlreadyDisliked] = await Promise.all([
+        CommentLikeModel.findOne({
+          where: { Username, CommentId },
+        }),
+        CommentDislikeModel.findOne({
+          where: { Username, CommentId },
+        }),
+      ]);
+      let confirmDestroy = null;
+
+      if (Liked) {
+        if (CommentAlreadyDisliked) {
+          confirmDestroy = await CommentAlreadyDisliked.destroy();
+          if (confirmDestroy) {
+            await CommentLikeModel.create({
+              CommentId,
+              Username,
+            });
+            return response(res, { msg: "Liked and Disliked" });
+          }
+        } else if (CommentAlreadyLiked) {
+          confirmDestroy = await CommentAlreadyLiked.destroy();
+          if (confirmDestroy) {
+            return response(res, { msg: "Removed Like" });
+          }
+        }
+        const confirmLike = await CommentLikeModel.create({
+          CommentId,
+          Username,
+        });
+
+        if (confirmLike) {
+          return response(res, { msg: "Liked" });
+        }
+      } else if (!Liked) {
+        if (CommentAlreadyLiked) {
+          confirmDestroy = await CommentAlreadyLiked.destroy();
+          await CommentDislikeModel.create({
+            CommentId,
+            Username,
+          });
+          if (confirmDestroy) {
+            return response(res, { msg: "Disliked and Liked" });
+          }
+        } else if (CommentAlreadyDisliked) {
+          confirmDestroy = await CommentAlreadyDisliked.destroy();
+          if (confirmDestroy) {
+            return response(res, { msg: "Removed Dislike" });
+          }
+        }
+        const confirmDislike = await CommentDislikeModel.create({
+          CommentId,
+          Username,
+        });
+        if (confirmDislike) {
+          return response(res, { msg: "Disliked" });
+        }
+      }
+      return response(res, { msg: "Something went wrong" });
+
       if (userExists) {
         const userLiked = userExists.dataValues.Liked;
         if (

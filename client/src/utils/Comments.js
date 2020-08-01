@@ -3,26 +3,26 @@ import axios from "axios";
 import { Routes, Constants } from "../utils/constants";
 
 export const Comments = {
-  create: async (Args) => {
+  create: async (data) => {
     const {
-      Comments,
-      Input,
-      Post,
+      comments,
+      input,
+      post,
       setComments,
       setError,
       showForm,
       User,
-    } = Args;
+    } = data;
 
-    if (!Input) {
+    if (!input) {
       setError("Comment must contain atleast 1 character");
     }
 
     await axios
       .post(
-        Routes.Comments.getComments(Post.id),
+        Routes.Comments.getComments(post.id),
         {
-          Body: Input,
+          Body: input,
         },
         {
           headers: { Authorization: User.Token },
@@ -30,28 +30,15 @@ export const Comments = {
       )
       .then((res) => {
         // Change Comment route to add Score
-        setComments([res.data.comment, ...Comments]);
+        setComments([res.data.comment, ...comments]);
         showForm();
       });
   },
-  delete: async (comment, comments, postId, setComments, User) => {
-    comment.Body = Constants.Comments.deleted;
-    comment.Username = Constants.Comments.deleted;
-
-    await axios
-      .delete(Routes.Comments.getCommentById(postId, comment.id), {
-        headers: { Authorization: User.Token },
-      })
-      .then(() => {
-        setComments(
-          comments.map((orig) => {
-            if (orig.id !== comment.id) {
-              return orig;
-            }
-            return { ...orig, comment };
-          })
-        );
-      });
+  delete: async (data) => {
+    const { comment, postId, User } = data;
+    await axios.delete(Routes.Comments.getCommentById(postId, comment.id), {
+      headers: { Authorization: User.Token },
+    });
   },
   useFetchComments: (route, auth = null) => {
     const [comments, setComments] = useState([]);
@@ -79,6 +66,42 @@ export const Comments = {
       }
     );
   },
-  like: async () => {},
-  dislike: async () => {},
+  like: async (params) => {
+    const { User, post, comment } = params;
+    await axios.post(
+      Routes.Comments.likeComment(post.id, comment.id, true),
+      {},
+      {
+        headers: {
+          Authorization: User.Token,
+        },
+      }
+    );
+  },
+  dislike: async (params) => {
+    const { User, post, comment } = params;
+    await axios.post(
+      Routes.Comments.likeComment(post.id, comment.id, false),
+      {},
+      {
+        headers: {
+          Authorization: User.Token,
+        },
+      }
+    );
+  },
+  edit: async (params) => {
+    const { User, post, comment, input } = params;
+    await axios.put(
+      Routes.Comments.getCommentById(post.id, comment.id),
+      {
+        Body: input,
+      },
+      {
+        headers: {
+          Authorization: User.Token,
+        },
+      }
+    );
+  },
 };

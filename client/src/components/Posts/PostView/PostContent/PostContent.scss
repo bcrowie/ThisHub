@@ -3,10 +3,10 @@
 .post-main {
   display: flex;
   margin: 0 $spacing-small;
-  margin-bottom: $spacing-large;
+  margin-bottom: $spacing-small;
 
   .post-content {
-    margin: $spacing-large 0 $spacing-large $spacing-large;
+    margin: $spacing-large 0 0 $spacing-large;
     padding: $spacing-large 0;
     width: 100%;
 
@@ -36,6 +36,24 @@
       margin-bottom: $spacing-large;
       white-space: pre-wrap;
       word-wrap: break-word;
+    }
+
+    .edit-form {
+      width: 100%;
+      textarea {
+        border: $thick-border;
+        border-radius: $border-radius;
+        resize: none;
+        padding: $spacing-small;
+      }
+      div {
+        display: flex;
+        flex-direction: row;
+
+        button {
+          @include default-button;
+        }
+      }
     }
   }
 

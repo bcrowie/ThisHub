@@ -114,25 +114,15 @@ module.exports = {
     });
   },
   getCommentsForPost: async (PostId) => {
-    return await CommentModel.findAll({
+    const comments = await CommentModel.findAll({
       attributes: [
         "id",
         "Username",
         "PostId",
-        "ParentId",
-        "ChildId",
         "Body",
         "IsDeleted",
         "createdAt",
         "updatedAt",
-        [
-          sequelize.fn("COUNT", sequelize.col("CommentLikes.CommentId")),
-          "LikeCount",
-        ],
-        [
-          sequelize.fn("COUNT", sequelize.col("CommentDislikes.CommentId")),
-          "DislikeCount",
-        ],
       ],
       where: { PostId },
       include: [
@@ -148,5 +138,18 @@ module.exports = {
       group: ["Comment.id"],
       order: [["createdAt", "DESC"]],
     });
+
+    for (let key of comments) {
+      const likes = await CommentLikeModel.findAll({
+        where: { CommentId: key.dataValues.id },
+      });
+      const dislikes = await CommentDislikeModel.findAll({
+        where: { CommentId: key.dataValues.id },
+      });
+
+      key.dataValues.Score = likes.length - dislikes.length;
+    }
+
+    return comments;
   },
 };

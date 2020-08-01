@@ -2,11 +2,22 @@
 
 .posts {
   display: flex;
+  flex-direction: row;
+  border: solid red 1px;
 
-  .post-list {
-    list-style: none;
-    margin: 0 $spacing-medium;
-    width: 65%;
+  .posts-main {
+    display: flex;
+    flex-direction: column;
+    // width: 100%;
+
+    .post-list {
+      list-style: none;
+      margin: 0 $spacing-medium;
+
+      .no-post {
+        margin-top: $spacing-medium;
+      }
+    }
   }
 }
 
@@ -31,7 +42,7 @@
     a {
       @include link;
       font-size: $small-font;
-      padding: 0.5rem;
+      padding: $spacing-medium;
       width: 100%;
       height: 100%;
       &:hover {

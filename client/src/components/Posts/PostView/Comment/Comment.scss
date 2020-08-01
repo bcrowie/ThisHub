@@ -1,15 +1,11 @@
 @import "../../../../styles/variables.scss";
 
-li {
+.comment-item {
   display: flex;
 
   .controls {
-    @include controls(comment);
-
-    align-items: center;
     cursor: default;
     font-size: $small-font;
-    margin: 0 $spacing-small;
   }
 
   .comment-content {
@@ -31,40 +27,68 @@ li {
     }
 
     pre {
-      margin-bottom: $spacing-large;
+      margin-top: $spacing-large;
       white-space: pre-wrap;
       word-wrap: break-word;
     }
 
     .age {
-      font-size: $spacing-large;
-    }
-    form {
-      .editing {
-        border: none;
-        width: 100%;
-        height: 4em;
-        resize: none;
-      }
-      button {
-        @include default-button;
-        margin-right: $spacing-large;
-      }
+      font-size: $small-font;
+      margin-bottom: $spacing-small;
     }
 
-    .comment-reply {
-      margin-top: $spacing-large;
 
-      textarea {
-        height: 5em;
-        resize: none;
-        width: 100%;
+      .comment-edit {
+        textarea{
+          border: none;
+          width: 100%;
+          height: auto;
+          resize: none;
+        }
+        button {
+          @include default-button;
+          padding: $spacing-small;
+          margin-right: $spacing-large;
+        }
       }
+      
+    
+  }
 
-      button {
-        @include default-button;
-        margin-right: $spacing-large;
-      }
+  .votes {
+    background-color: $secondary-background;
+    display: flex;
+    flex-direction: column;
+    padding: $spacing-large;
+
+    button {
+      background-color: $secondary-background;
+      border: none;
+      cursor: pointer;
+      font-weight: $bold-font;
+      margin-bottom: $spacing-medium;
+    }
+    .likes {
+      color: $dark-grey;
+      font-size: $small-font;
+      align-self: center;
+      margin: $spacing-medium;
+    }
+    .like-post {
+      font-size: $large-font;
+      transition: $default-transition;
+    }
+    .like-post:hover,
+    .like-post.active {
+      color: $like-color;
+    }
+    .dislike-post {
+      font-size: $large-font;
+      transition: $default-transition;
+    }
+    .dislike-post:hover,
+    .dislike-post.active {
+      color: $dislike-color;
     }
   }
 }
