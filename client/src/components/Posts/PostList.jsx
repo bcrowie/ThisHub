@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { UserContext } from "../../App";
 import { Posts as Utils } from "../../utils/Posts";
 import NewPostField from "./NewPostField/NewPostField";
@@ -15,14 +15,15 @@ const PostList = (props) => {
   if (!posts.length) {
     return (
       <div className="posts">
-        <div className="posts-main">
+        <ul className="post-list">
           <NewPostField />
-          <ul className="post-list">
-            <li key="0" className="no-post">
-              <p className="post-title">No posts here!</p>
-            </li>
-          </ul>
-        </div>
+          <li key="0" className="no-post">
+            <p className="post-title">
+              No posts here! <Link to="/new-post">Create one!</Link>
+            </p>
+          </li>
+        </ul>
+
         <Sidebar />
       </div>
     );
