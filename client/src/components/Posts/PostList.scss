@@ -3,12 +3,11 @@
 .posts {
   display: flex;
   flex-direction: row;
-  border: solid red 1px;
 
   .posts-main {
     display: flex;
     flex-direction: column;
-    // width: 100%;
+    width: 100%;
 
     .post-list {
       list-style: none;
