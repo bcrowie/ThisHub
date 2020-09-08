@@ -11,6 +11,12 @@ const NewPost = () => {
   const User = useContext(UserContext);
   const History = useHistory();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const returnLink = await Utils.create(User.Token, inputs, setErrors);
+    History.push(returnLink);
+  };
+
   return (
     <>
       <div className="new-post">
@@ -33,14 +39,7 @@ const NewPost = () => {
             ></textarea>
             {errors.Body && <p className="error">{errors.Body}</p>}
             <div className="buttons">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  Utils.create(User.Token, inputs, History, setErrors);
-                }}
-              >
-                Submit
-              </button>
+              <button onClick={(e) => handleSubmit(e)}>Submit</button>
               <button onClick={() => History.push("/")}>Close</button>
             </div>
           </form>

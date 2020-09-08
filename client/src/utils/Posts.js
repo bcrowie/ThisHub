@@ -99,9 +99,10 @@ export const Posts = {
       showLogin(true);
     }
   },
-  create: async (Authorization, data, history, setErrors) => {
+  create: async (Authorization, data, setErrors) => {
     if (Authorization) {
       const { Title, Body } = data;
+      let returnLink;
       await axios
         .post(
           "/posts",
@@ -111,12 +112,13 @@ export const Posts = {
           }
         )
         .then((res) => {
-          history.push(`/posts/${res.response.id}`);
+          returnLink = `/posts/${res.data.post.id}`;
         })
         .catch((err) => {
           const { Title, Body } = err.response;
           setErrors({ Title, Body });
         });
+      return returnLink;
     } else {
       setErrors({ Title: "You must be logged in to do that." });
     }
