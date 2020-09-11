@@ -4,9 +4,11 @@
   @include default-container;
   border-radius: $border-radius;
   margin: 0 $spacing-medium;
+
   .comments {
     margin: $spacing-large;
   }
+
   .comments-list {
     list-style-type: none;
   }

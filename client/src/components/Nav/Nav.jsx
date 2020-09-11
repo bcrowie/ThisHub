@@ -5,7 +5,7 @@ import { UserContext } from "../../App";
 import AccountMenu from "./AccountMenu/AccountMenu";
 import "./Nav.scss";
 
-const Nav = (props) => {
+const Nav = () => {
   const User = useContext(UserContext);
   const { showLogin, setShowLogin } = useContext(LoginContext);
 
@@ -14,7 +14,7 @@ const Nav = (props) => {
       <div id="nav" className="main-nav">
         <div className="nav-buttons">
           <Link id="logo" to="/">
-            Thishub
+            ThisHub
           </Link>
         </div>
         <div className="nav-buttons account">

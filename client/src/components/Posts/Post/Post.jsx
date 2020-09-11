@@ -23,6 +23,16 @@ const Post = ({ key, data, deletePost, like, dislike }) => {
     setShowMenu((showMenu) => !showMenu);
   };
 
+  const truncateTitle = (content) => {
+    console.log(content.length);
+    if (content.length > 300) {
+      console.log(content.substring(0, 200));
+      return content.substring(0, 300).concat("...");
+    } else {
+      return content;
+    }
+  };
+
   return (
     <li
       className={`post ${User.Username === data.Username && "owner"}`}
@@ -48,7 +58,7 @@ const Post = ({ key, data, deletePost, like, dislike }) => {
         <Link to={`/posts/${data.id}`} className="post-title">
           {data.Title}
         </Link>
-        <pre className="post-preview">{data.Body}</pre>
+        <p className="post-preview">{truncateTitle(data.Body)}</p>
         <div className="post-links">
           <Link to={`/posts/${data.id}`} className="comments">
             Comments

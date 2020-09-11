@@ -34,7 +34,7 @@ $medium-font: 0.85rem;
 $large-font: 1rem;
 
 /* Transitions */
-$default-transition: 85ms ease-in;
+$default-transition: 85ms ease-in all;
 
 /* Mixins */
 @mixin controls($property) {
@@ -169,6 +169,15 @@ $default-transition: 85ms ease-in;
     position: fixed;
     right: 0;
     width: 50%;
+
+    .link {
+      color: $primary-color;
+      transition: $default-transition;
+
+      &:hover {
+        color: $secondary-color;
+      }
+    }
   }
 }
 

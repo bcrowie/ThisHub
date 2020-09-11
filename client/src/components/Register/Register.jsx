@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Users as Utils } from "../../utils/Users";
 import "./Register.scss";
 
-const Register = (props) => {
+const Register = () => {
   const [inputs, setInputs] = useState({});
   const [errors, setErrors] = useState({});
   const History = useHistory();
@@ -60,7 +60,16 @@ const Register = (props) => {
             <button onClick={() => History.push("/")}>Close</button>
           </div>
         </form>
+        <div className="greeting">
+          <h1>ThisHub</h1>
+          <ul>
+            <li>Awesome content...</li>
+            <li>Friendly neighbors...</li>
+            <li>Funny cats!</li>
+          </ul>
+        </div>
       </div>
+      <p className="trademark">Thishub © 2020. All Rights Reserved</p>
     </div>
   );
 };

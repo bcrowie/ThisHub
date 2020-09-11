@@ -53,6 +53,8 @@
   .post-content {
     padding: $spacing-large;
     max-height: 400px;
+    max-width: 90%;
+    overflow-wrap: break-word;
 
     .post-info {
       display: flex;
@@ -64,13 +66,10 @@
         margin-right: $spacing-large;
       }
     }
+
     .post-preview {
       font-size: $medium-font;
-      max-height: 75%;
-      overflow: hidden;
       position: inherit;
-      text-overflow: ellipsis;
-      white-space: pre-wrap;
     }
 
     .post-title {

@@ -3,12 +3,11 @@
 .posts {
   display: flex;
   flex-direction: row;
-  width: 100%;
 
   .post-list {
     list-style: none;
     margin: 0 $spacing-medium;
-    width: 100%;
+    width: 70%;
 
     .no-post {
       border: $thin-border;

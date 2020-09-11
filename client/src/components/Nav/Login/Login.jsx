@@ -36,7 +36,9 @@ const Login = (props) => {
           <button onClick={props.hideModal}>Close</button>
         </div>
       </form>
-      <Link to="/register">Register for an account!</Link>
+      <Link className="link" to="/register">
+        Register for an account!
+      </Link>
     </div>
   );
 };

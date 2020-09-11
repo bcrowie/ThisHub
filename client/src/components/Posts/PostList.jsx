@@ -18,9 +18,9 @@ const PostList = (props) => {
         <ul className="post-list">
           <NewPostField />
           <li key="0" className="no-post">
-            <p className="post-title">
+            <pre className="post-title">
               No posts here! <Link to="/new-post">Create one!</Link>
-            </p>
+            </pre>
           </li>
         </ul>
 

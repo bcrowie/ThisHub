@@ -2,23 +2,34 @@
 
 .main-nav {
   @include nav-container;
+  align-items: center;
 
   .nav-buttons {
     margin: $spacing-large;
+
     #logo {
-      @include default-button;
-      color: $background-color;
-      background-color: $primary-color;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: $primary-color;
+      text-decoration: none;
+      transition: $default-transition;
+
+      &:hover {
+        color: $secondary-color;
+      }
     }
   }
+
   .nav-buttons .account-link {
     @include default-button;
     margin: auto $spacing-xlarge;
   }
+
   .register {
     @include default-button;
     background-color: $primary-color;
     color: $background-color;
+
     &:hover {
       background-color: $background-color;
       border: $thick-border $secondary-color;
