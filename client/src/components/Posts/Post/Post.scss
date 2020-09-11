@@ -70,6 +70,13 @@
     .post-preview {
       font-size: $medium-font;
       position: inherit;
+      color: black;
+      text-decoration: none;
+      transition: $default-transition;
+
+      &:hover {
+        color: $primary-color;
+      }
     }
 
     .post-title {

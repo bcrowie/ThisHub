@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Users as Utils } from "../../../utils/Users";
 import { Constants } from "../../../utils/constants";
-import "./Login.scss";
 import { useEffect } from "react";
 import { useRef } from "react";
+import "./Login.scss";
 
 const Login = (props) => {
   const [inputs, setInputs] = useState(Constants.Users.LoginInitial);

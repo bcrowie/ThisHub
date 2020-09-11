@@ -58,7 +58,9 @@ const Post = ({ key, data, deletePost, like, dislike }) => {
         <Link to={`/posts/${data.id}`} className="post-title">
           {data.Title}
         </Link>
-        <p className="post-preview">{truncateTitle(data.Body)}</p>
+        <Link to={`/posts/${data.id}`} className="post-preview">
+          {truncateTitle(data.Body)}
+        </Link>
         <div className="post-links">
           <Link to={`/posts/${data.id}`} className="comments">
             Comments
