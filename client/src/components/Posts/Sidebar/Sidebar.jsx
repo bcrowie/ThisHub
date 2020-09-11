@@ -7,6 +7,14 @@ import "./Sidebar.scss";
 const Sidebar = (props) => {
   const [posts] = Utils.useFetchPosts(Routes.Posts.random);
 
+  const truncateTitle = (title) => {
+    if (title.length > 35) {
+      return title.substring(0, 35).concat("...");
+    } else {
+      return title;
+    }
+  };
+
   return (
     <div className="sidebar">
       <div className="post-sidebar">
@@ -17,7 +25,7 @@ const Sidebar = (props) => {
           {posts.map((post) => (
             <li key={post.id} className="top-posts-items">
               <Link to={`/posts/${post.id}`} className="post-title">
-                {post.Title}
+                {truncateTitle(post.Title)}
               </Link>
             </li>
           ))}

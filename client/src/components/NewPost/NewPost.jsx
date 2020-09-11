@@ -4,18 +4,25 @@ import { UserContext } from "../../App";
 import { Posts as Utils } from "../../utils/Posts";
 import Login from "../Nav/Login/Login";
 import "./NewPost.scss";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 const NewPost = () => {
   const [inputs, setInputs] = useState({ Title: null, Body: null });
   const [errors, setErrors] = useState({ Title: " ", Body: " " });
   const User = useContext(UserContext);
   const History = useHistory();
+  const inputRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const returnLink = await Utils.create(User.Token, inputs, setErrors);
     History.push(returnLink);
   };
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [inputRef]);
 
   return (
     <>
@@ -25,6 +32,7 @@ const NewPost = () => {
           <form>
             <label htmlFor="title">Title:</label>
             <input
+              ref={inputRef}
               type="text"
               onChange={(e) => setInputs({ ...inputs, Title: e.target.value })}
             />

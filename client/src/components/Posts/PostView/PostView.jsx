@@ -5,6 +5,7 @@ import PostContent from "./PostContent/PostContent";
 import "./PostView.scss";
 import CommentForm from "./CommentForm/CommentForm";
 import EditForm from "../EditForm/EditForm";
+import GoBack from "../../goBack";
 
 const PostView = ({ match }) => {
   const [post, setPost] = useState({});
@@ -28,6 +29,7 @@ const PostView = ({ match }) => {
 
   return (
     <div className="post-container">
+      <GoBack />
       <PostContent
         post={post}
         showEdit={() => setShowEdit(true)}

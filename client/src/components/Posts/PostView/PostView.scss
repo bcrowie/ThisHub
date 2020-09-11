@@ -2,8 +2,13 @@
 
 .post-container {
   @include default-container;
+
   border-radius: $border-radius;
   margin: 0 $spacing-medium;
+
+  .back {
+    @include back;
+  }
 
   .comments {
     margin: $spacing-large 0 $spacing-large 2.8rem;

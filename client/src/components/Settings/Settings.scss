@@ -3,6 +3,10 @@
 .settings-container {
   display: flex;
 
+  .back {
+    @include back;
+  }
+
   .settings {
     @include default-container;
 

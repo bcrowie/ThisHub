@@ -37,6 +37,7 @@
 
       .top-posts-items {
         border: none;
+        margin-bottom: $spacing-large;
 
         a {
           @include link;

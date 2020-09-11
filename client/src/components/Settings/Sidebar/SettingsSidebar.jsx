@@ -1,6 +1,6 @@
 import React from "react";
 
-const SettingsSidebar = (props) => {
+const SettingsSidebar = () => {
   return (
     <div className="settings-sidebar">
       <ul>

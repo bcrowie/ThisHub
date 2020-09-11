@@ -6,6 +6,7 @@ import PostList from "../Posts/PostList";
 import "./Account.scss";
 import { Routes } from "../../utils/constants";
 import { useState } from "react";
+import GoBack from "../goBack";
 
 const Account = () => {
   const [route, setRoute] = useState(Routes.Users.userPosts);
@@ -14,6 +15,7 @@ const Account = () => {
   if (User.Token) {
     return (
       <div className="account-container">
+        <GoBack />
         <AccountSidebar setRoute={setRoute} />
         <div className="account-content">
           <h2>{User.Username}'s Activity</h2>

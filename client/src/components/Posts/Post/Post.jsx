@@ -24,9 +24,7 @@ const Post = ({ key, data, deletePost, like, dislike }) => {
   };
 
   const truncateTitle = (content) => {
-    console.log(content.length);
     if (content.length > 300) {
-      console.log(content.substring(0, 200));
       return content.substring(0, 300).concat("...");
     } else {
       return content;

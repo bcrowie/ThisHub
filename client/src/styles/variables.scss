@@ -37,6 +37,15 @@ $large-font: 1rem;
 $default-transition: 85ms ease-in all;
 
 /* Mixins */
+@mixin back() {
+  button {
+    border: none;
+    color: $primary-color;
+    cursor: pointer;
+    font-weight: bold;
+  }
+}
+
 @mixin controls($property) {
   display: flex;
   flex-direction: column;

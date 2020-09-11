@@ -9,8 +9,8 @@ import PostList from "./components/Posts/PostList";
 import PostView from "./components/Posts/PostView/PostView";
 import Register from "./components/Register/Register";
 import NewPost from "./components/NewPost/NewPost";
-import "./App.scss";
 import Account from "./components/Account/Account";
+import "./App.scss";
 
 export const UserContext = createContext();
 export const LoginContext = createContext();

@@ -17,6 +17,14 @@
   max-width: 1000px;
 }
 
+.back {
+  border: none;
+  color: $primary-color;
+  cursor: pointer;
+  position: absolute;
+  left: 10px;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
