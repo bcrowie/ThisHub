@@ -4,12 +4,12 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  padding: $spacing-xlarge;
 
   .form-container {
     border: $thin-border;
     border-radius: $border-radius;
     padding: $spacing-large;
+    margin: 0 $spacing-medium;
     width: 70%;
     &:hover {
       border: $thin-border-active;
@@ -54,10 +54,17 @@
   }
 
   .side-bar {
-    width: 20%;
+    width: 30%;
     border: $thin-border;
     border-radius: $border-radius;
-    padding: $spacing-large;
+
+    .rules {
+      padding: $spacing-large;
+    }
+    .sidebar-header {
+      @include sidebar-header;
+    }
+
     &:hover {
       border: $thin-border-active;
     }

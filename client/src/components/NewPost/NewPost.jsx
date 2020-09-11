@@ -2,10 +2,11 @@ import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../App";
 import { Posts as Utils } from "../../utils/Posts";
-import Login from "../Nav/Login/Login";
-import "./NewPost.scss";
 import { useRef } from "react";
 import { useEffect } from "react";
+import { Constants } from "../../utils/constants";
+import Login from "../Nav/Login/Login";
+import "./NewPost.scss";
 
 const NewPost = () => {
   const [inputs, setInputs] = useState({ Title: null, Body: null });
@@ -37,7 +38,7 @@ const NewPost = () => {
               onChange={(e) => setInputs({ ...inputs, Title: e.target.value })}
             />
             {errors.Title && <p className="error">{errors.Title}</p>}
-            <label htmlFor="body">Self text:</label>
+            <label htmlFor="body">Text:</label>
             <textarea
               name="body"
               id="body"
@@ -53,12 +54,10 @@ const NewPost = () => {
           </form>
         </div>
         <div className="side-bar">
-          <p>
-            Sidebar: Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Soluta ipsam quos ducimus labore, temporibus officia? Reiciendis
-            officia quasi, nesciunt exercitationem similique tenetur, vitae
-            ipsum ducimus quos officiis dolorem, iste id!
-          </p>
+          <div className="sidebar-header">
+            <p>Rules:</p>
+          </div>
+          <div className="rules">{Constants.Posts.rules}</div>
         </div>
       </div>
       {!User.Username && (

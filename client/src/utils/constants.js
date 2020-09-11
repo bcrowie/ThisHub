@@ -8,6 +8,10 @@ export const Constants = {
       removedLike: "Removed Like",
       removedDislike: "Removed Dislike",
     },
+    rules: `Really, there are no rules. This site is for demonstration purposes
+    only. You can post with an account no problemo, however please keep
+    in mind this is to show off my abilities as an aspiring programmer.
+    So have fun!`,
   },
   Users: {
     Storage: {

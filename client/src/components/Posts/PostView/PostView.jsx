@@ -59,7 +59,9 @@ const PostView = ({ match }) => {
           })
         ) : (
           <li key={0}>
-            <p style={{ margin: "2rem auto" }}>There are no comments...</p>
+            <p style={{ margin: "2rem 0 2rem 2.8rem" }}>
+              There are no comments...
+            </p>
           </li>
         )}
       </ul>
