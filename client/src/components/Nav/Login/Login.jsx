@@ -3,18 +3,36 @@ import { Link } from "react-router-dom";
 import { Users as Utils } from "../../../utils/Users";
 import { Constants } from "../../../utils/constants";
 import "./Login.scss";
+import { useEffect } from "react";
+import { useRef } from "react";
 
 const Login = (props) => {
   const [inputs, setInputs] = useState(Constants.Users.LoginInitial);
   const [errors, setErrors] = useState(Constants.Users.LoginInitial);
+  const inputRef = useRef(null);
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+
+    const handleOutsideClick = (e) => {
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
+        props.hideModal();
+        document.removeEventListener("mousedown", handleOutsideClick);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+  }, [inputRef, modalRef]);
 
   return (
-    <div className="modal-content">
+    <div className="modal-content" ref={modalRef}>
       <h2>Login to Thishub</h2>
       <form className="login-form">
         <label htmlFor="Email">Email:</label>
         <input
           type="text"
+          ref={inputRef}
           onChange={(e) => setInputs({ ...inputs, Email: e.target.value })}
         />
         {errors.Email && <p className="error">{errors.Email}</p>}

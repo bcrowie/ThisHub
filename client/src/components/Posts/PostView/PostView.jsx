@@ -6,7 +6,7 @@ import "./PostView.scss";
 import CommentForm from "./CommentForm/CommentForm";
 import EditForm from "../EditForm/EditForm";
 
-const PostView = ({ match, location }) => {
+const PostView = ({ match }) => {
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const [showCommentForm, setShowCommentForm] = useState(false);

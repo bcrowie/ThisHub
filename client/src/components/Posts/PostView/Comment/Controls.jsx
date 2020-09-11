@@ -6,7 +6,6 @@ const Controls = ({ editing, handleDelete, deleted, setEditing, Username }) => {
 
   return (
     <div className="controls">
-      {!deleted && <button>Save</button>}
       {User.Username === Username && !deleted && (
         <>
           <button onClick={() => setEditing(() => !editing)}>Edit</button>

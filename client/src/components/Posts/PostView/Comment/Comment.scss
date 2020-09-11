@@ -12,6 +12,7 @@
     font-size: 0.85em;
     margin: 0 $spacing-small;
     padding: $spacing-large;
+    padding-left: 0;
     border-bottom: $thin-border;
     width: 100%;
 
@@ -37,22 +38,19 @@
       margin-bottom: $spacing-small;
     }
 
-
-      .comment-edit {
-        textarea{
-          border: none;
-          width: 100%;
-          height: auto;
-          resize: none;
-        }
-        button {
-          @include default-button;
-          padding: $spacing-small;
-          margin-right: $spacing-large;
-        }
+    .comment-edit {
+      textarea {
+        border: none;
+        width: 100%;
+        height: auto;
+        resize: none;
       }
-      
-    
+      button {
+        @include default-button;
+        padding: $spacing-small;
+        margin-right: $spacing-large;
+      }
+    }
   }
 
   .votes {

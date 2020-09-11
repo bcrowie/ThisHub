@@ -50,7 +50,7 @@ const PostContent = ({ post, showForm }) => {
       </div>
       <div className="post-content">
         <h3>{post.Title}</h3>
-        <p>
+        <p className="moment">
           {moment(post.createdAt).fromNow()} by {post.Username}
         </p>
         {editing ? (
@@ -63,7 +63,7 @@ const PostContent = ({ post, showForm }) => {
             setInput={setInput}
           />
         ) : (
-          <pre>{postBody}</pre>
+          <p className="body">{postBody}</p>
         )}
         <div>
           <button

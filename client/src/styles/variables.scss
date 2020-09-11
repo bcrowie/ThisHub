@@ -185,6 +185,7 @@ $default-transition: 85ms ease-in all;
   display: flex;
   padding: $spacing-medium;
   justify-content: space-between;
+  align-items: center;
   border-bottom: $thin-border;
   transition: $default-transition;
   &:hover {
