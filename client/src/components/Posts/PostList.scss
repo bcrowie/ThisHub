@@ -7,7 +7,7 @@
   .post-list {
     list-style: none;
     margin: 0 $spacing-medium;
-    width: 70%;
+    min-width: 70%;
 
     .no-post {
       border: $thin-border;

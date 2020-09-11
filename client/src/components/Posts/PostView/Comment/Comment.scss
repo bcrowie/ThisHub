@@ -88,5 +88,10 @@
     .dislike-post.active {
       color: $dislike-color;
     }
+    .score {
+      font-size: $small-font;
+      align-self: center;
+      margin-bottom: $spacing-medium;
+    }
   }
 }

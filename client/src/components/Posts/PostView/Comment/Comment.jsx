@@ -59,6 +59,7 @@ const Comment = ({ comment, post }) => {
             className="mdi mdi-arrow-up-thick like-post"
             onClick={() => Utils.like(params)}
           ></button>
+          <p className="score">{Score}</p>
           <button
             className="mdi mdi-arrow-down-thick dislike-post"
             onClick={() => Utils.dislike(params)}

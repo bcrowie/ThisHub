@@ -1,16 +1,53 @@
 import React, { useContext } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { UserContext } from "../../App";
-import { Posts as Utils } from "../../utils/Posts";
+import { UserContext, LoginContext } from "../../App";
+import { Posts as PostUtils } from "../../utils/Posts";
+import { userLoggedIn } from "../../utils/Utils";
 import NewPostField from "./NewPostField/NewPostField";
 import Post from "./Post/Post";
 import Sidebar from "./Sidebar/Sidebar";
 import "./PostList.scss";
 
-const PostList = (props) => {
+const PostList = ({ route }) => {
   const Location = useLocation();
   const User = useContext(UserContext);
-  const [posts, setPosts] = Utils.useFetchPosts(props.route, User);
+  const { showLogin, setShowLogin } = useContext(LoginContext);
+  const [posts, setPosts] = PostUtils.useFetchPosts(route, User);
+
+  const updateScore = (newPost) => {
+    setPosts(
+      posts.map((orig) => {
+        if (orig.id !== newPost.id) {
+          return orig;
+        }
+        return { ...orig, newPost };
+      })
+    );
+  };
+
+  const handleDelete = async (post) => {
+    if (userLoggedIn(User)) {
+      const deleted = await PostUtils.delete(User.Token, post);
+      console.log(deleted);
+      if (deleted) {
+        setPosts(posts.filter((toDelete) => toDelete.id !== post.id));
+      }
+    } else {
+      setShowLogin(!showLogin);
+    }
+  };
+
+  const handleLike = async (post) => {
+    userLoggedIn(User)
+      ? updateScore(await PostUtils.like(User.Token, post))
+      : setShowLogin(!showLogin);
+  };
+
+  const handleDislike = async (post) => {
+    userLoggedIn(User)
+      ? updateScore(await PostUtils.dislike(User.Token, post))
+      : setShowLogin(!showLogin);
+  };
 
   if (!posts.length) {
     return (
@@ -23,7 +60,6 @@ const PostList = (props) => {
             </pre>
           </li>
         </ul>
-
         <Sidebar />
       </div>
     );
@@ -36,21 +72,9 @@ const PostList = (props) => {
             <Post
               key={post.id}
               data={post}
-              deletePost={() =>
-                Utils.delete(User.Token, props.showLogin, setPosts, post, posts)
-              }
-              like={() =>
-                Utils.like(User.Token, props.showLogin, setPosts, post, posts)
-              }
-              dislike={() =>
-                Utils.dislike(
-                  User.Token,
-                  props.showLogin,
-                  setPosts,
-                  post,
-                  posts
-                )
-              }
+              deletePost={handleDelete}
+              like={handleLike}
+              dislike={handleDislike}
             />
           ))}
         </ul>

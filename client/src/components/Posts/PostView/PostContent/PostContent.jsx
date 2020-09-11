@@ -3,20 +3,24 @@ import moment from "moment";
 import EditForm from "./EditForm/EditForm";
 import { LoginContext } from "../../../../App";
 import { UserContext } from "../../../../App";
-import { Posts as Utils } from "../../../../utils/Posts";
+import { Posts as PostUtils } from "../../../../utils/Posts";
+import { userLoggedIn } from "../../../../utils/Utils";
 import "./PostContent.scss";
 
-const PostContent = ({ post, showForm }) => {
+const PostContent = ({ post, setPost, showForm }) => {
   const { showLogin, setShowLogin } = useContext(LoginContext);
   const [edited, setEdited] = useState(false);
   const [editing, setEditing] = useState(false);
   const [input, setInput] = useState();
   const [postBody, setPostBody] = useState();
+  const [postScore, setPostScore] = useState();
+  const [voted, setVoted] = useState();
   const editRef = useRef(null);
   const User = useContext(UserContext);
 
   useEffect(() => {
     setPostBody(post.Body);
+    setPostScore(post.Score);
     if (edited) {
       setPostBody(() => input);
     }
@@ -27,12 +31,30 @@ const PostContent = ({ post, showForm }) => {
     }
   }, [edited, editing, input, post.Body]);
 
-  const submitEdit = (data) => {
+  const submitEdit = async (data) => {
     post.Body = data;
     setInput(data);
     setEditing(false);
     setEdited(true);
-    Utils.edit(User, { post, data });
+    await PostUtils.edit(User, { post, data });
+  };
+
+  const handleLike = async () => {
+    if (userLoggedIn(User)) {
+      const newPost = await PostUtils.like(User.Token, post);
+      setPostScore(newPost.Score);
+    } else {
+      setShowLogin(!showLogin);
+    }
+  };
+
+  const handleDislike = async () => {
+    if (userLoggedIn(User)) {
+      const newPost = await PostUtils.dislike(User.Token, post);
+      setPostScore(newPost.Score);
+    } else {
+      setShowLogin(!showLogin);
+    }
   };
 
   return (
@@ -40,12 +62,12 @@ const PostContent = ({ post, showForm }) => {
       <div className="post-controls">
         <button
           className="mdi mdi-arrow-up-thick like-post"
-          onClick={() => setShowLogin((showLogin) => !showLogin)}
+          onClick={handleLike}
         ></button>
-        <p className="score">{post.Score}</p>
+        <p className="score">{postScore}</p>
         <button
           className="mdi mdi-arrow-down-thick dislike-post"
-          onClick={() => setShowLogin((showLogin) => !showLogin)}
+          onClick={handleDislike}
         ></button>
       </div>
       <div className="post-content">

@@ -18,13 +18,12 @@ const PostView = ({ match }) => {
   } = match;
 
   useEffect(() => {
-    const fetchPost = async () => {
+    (async () => {
       await axios.get(`/posts/${postId}/comments`).then((res) => {
         setPost(res.data.Post);
         setComments(res.data.Comments);
       });
-    };
-    fetchPost();
+    })();
   }, [postId]);
 
   return (
@@ -32,7 +31,7 @@ const PostView = ({ match }) => {
       <GoBack />
       <PostContent
         post={post}
-        showEdit={() => setShowEdit(true)}
+        setPost={setPost}
         showForm={() => setShowCommentForm(true)}
       />
       {showCommentForm && (

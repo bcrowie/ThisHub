@@ -5,7 +5,7 @@ import { UserContext } from "../../../App";
 import { useEffect } from "react";
 import "./Post.scss";
 
-const Post = ({ key, data, deletePost, like, dislike }) => {
+const Post = ({ data, deletePost, like, dislike }) => {
   const [showMenu, setShowMenu] = useState();
   const User = useContext(UserContext);
 
@@ -39,12 +39,12 @@ const Post = ({ key, data, deletePost, like, dislike }) => {
       <div className="votes">
         <button
           className="mdi mdi-arrow-up-thick like-post"
-          onClick={like}
+          onClick={() => like(data)}
         ></button>
         <p className="likes">{data.Score}</p>
         <button
           className="mdi mdi-arrow-down-thick dislike-post"
-          onClick={dislike}
+          onClick={() => dislike(data)}
         ></button>
       </div>
       <div className="post-content">
@@ -72,7 +72,7 @@ const Post = ({ key, data, deletePost, like, dislike }) => {
               <div className="post-menu">
                 <Link>View Profile</Link>
                 {data.Username === User.Username && (
-                  <Link onClick={deletePost}>Delete Post</Link>
+                  <Link onClick={() => deletePost(data)}>Delete Post</Link>
                 )}
               </div>
             </div>
