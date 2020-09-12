@@ -24,7 +24,7 @@ const PostView = ({ match }) => {
         setComments(res.data.Comments);
       });
     })();
-  }, [postId]);
+  }, [postId, comments, setPost]);
 
   return (
     <div className="post-container">

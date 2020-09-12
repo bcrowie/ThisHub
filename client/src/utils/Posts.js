@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Routes, Constants } from "../utils/constants";
+import { Routes } from "../utils/constants";
 import { calculateLike, calculateDislike } from "./Utils";
 
 export const Posts = {
@@ -48,29 +48,22 @@ export const Posts = {
         return calculateDislike(msg, post);
       });
   },
-  create: async (Authorization, data, setErrors) => {
-    if (Authorization) {
-      const { Title, Body } = data;
-      let returnLink;
-      await axios
-        .post(
-          "/posts",
-          { Title, Body },
-          {
-            headers: { Authorization },
-          }
-        )
-        .then((res) => {
-          returnLink = `/posts/${res.data.post.id}`;
-        })
-        .catch((err) => {
-          const { Title, Body } = err.response;
-          setErrors({ Title, Body });
-        });
-      return returnLink;
-    } else {
-      setErrors({ Title: "You must be logged in to do that." });
-    }
+  create: async (Authorization, data) => {
+    const { Title, Body } = data;
+    return await axios
+      .post(
+        "/posts",
+        { Title, Body },
+        {
+          headers: { Authorization },
+        }
+      )
+      .then((res) => {
+        return `/posts/${res.data.post.id}`;
+      })
+      .catch((err) => {
+        return new Error(err.response);
+      });
   },
   edit: async (auth, data) => {
     if (auth) {

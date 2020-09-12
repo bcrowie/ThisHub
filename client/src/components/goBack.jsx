@@ -5,7 +5,7 @@ const GoBack = () => {
   const History = useHistory();
 
   const handleBack = () => {
-    History.goBack();
+    History.push("/");
   };
   return (
     <div className="back">

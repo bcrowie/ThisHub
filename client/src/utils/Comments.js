@@ -4,21 +4,8 @@ import { Routes, Constants } from "../utils/constants";
 
 export const Comments = {
   create: async (data) => {
-    const {
-      comments,
-      input,
-      post,
-      setComments,
-      setError,
-      showForm,
-      User,
-    } = data;
-
-    if (!input) {
-      setError("Comment must contain atleast 1 character");
-    }
-
-    await axios
+    const { User, input, post } = data;
+    return await axios
       .post(
         Routes.Comments.getComments(post.id),
         {
@@ -28,11 +15,7 @@ export const Comments = {
           headers: { Authorization: User.Token },
         }
       )
-      .then((res) => {
-        // Change Comment route to add Score
-        setComments([res.data.comment, ...comments]);
-        showForm();
-      });
+      .then((res) => res.data.comment);
   },
   delete: async (data) => {
     const { comment, postId, User } = data;

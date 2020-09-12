@@ -7,14 +7,13 @@ import { Posts as PostUtils } from "../../../../utils/Posts";
 import { userLoggedIn } from "../../../../utils/Utils";
 import "./PostContent.scss";
 
-const PostContent = ({ post, setPost, showForm }) => {
+const PostContent = ({ post, showForm }) => {
   const { showLogin, setShowLogin } = useContext(LoginContext);
   const [edited, setEdited] = useState(false);
   const [editing, setEditing] = useState(false);
   const [input, setInput] = useState();
   const [postBody, setPostBody] = useState();
   const [postScore, setPostScore] = useState();
-  const [voted, setVoted] = useState();
   const editRef = useRef(null);
   const User = useContext(UserContext);
 

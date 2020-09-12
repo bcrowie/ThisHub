@@ -1,21 +1,35 @@
 import React, { useContext, useState } from "react";
-import { UserContext } from "../../../../App";
-import { Comments as Utils } from "../../../../utils/Comments";
+import { UserContext, LoginContext } from "../../../../App";
+import { Comments as CommentUtils } from "../../../../utils/Comments";
+import { userLoggedIn } from "../../../../utils/Utils";
 import "./CommentForm.scss";
 
 const CommentForm = ({ comments, post, setComments, showForm }) => {
+  const { showLogin, setShowLogin } = useContext(LoginContext);
   const [input, setInput] = useState();
   const [error, setError] = useState();
   const User = useContext(UserContext);
 
   const params = {
-    comments,
+    User,
     input,
     post,
-    setComments,
-    setError,
-    showForm,
-    User,
+  };
+
+  const handleCreate = async () => {
+    if (userLoggedIn(User)) {
+      if (!input) {
+        setError("Comment must contain atleast 1 character");
+      } else {
+        const newComment = await CommentUtils.create(params);
+        newComment.Score = 1;
+        const newComments = comments.unshift(newComment);
+        setComments(newComments);
+        showForm();
+      }
+    } else {
+      setShowLogin(!showLogin);
+    }
   };
 
   return (
@@ -32,14 +46,7 @@ const CommentForm = ({ comments, post, setComments, showForm }) => {
       </form>
       {error && <p className="error">{error}</p>}
       <div>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            Utils.create(params);
-          }}
-        >
-          Submit
-        </button>
+        <button onClick={handleCreate}>Submit</button>
         <button onClick={showForm}>Cancel</button>
       </div>
     </div>

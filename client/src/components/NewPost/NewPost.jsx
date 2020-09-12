@@ -5,6 +5,7 @@ import { Posts as Utils } from "../../utils/Posts";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { Constants } from "../../utils/constants";
+import { userLoggedIn } from "../../utils/Utils";
 import Login from "../Nav/Login/Login";
 import "./NewPost.scss";
 
@@ -17,8 +18,16 @@ const NewPost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const returnLink = await Utils.create(User.Token, inputs, setErrors);
-    History.push(returnLink);
+    if (userLoggedIn(User)) {
+      const returnLink = await Utils.create(User.Token, inputs, setErrors);
+      if (returnLink) {
+        History.push(returnLink);
+      } else {
+        setErrors(returnLink);
+      }
+    } else {
+      setErrors({ Title: "You must be logged in to do that" });
+    }
   };
 
   useEffect(() => {
