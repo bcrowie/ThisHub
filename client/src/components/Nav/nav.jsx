@@ -1,9 +1,8 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { LoginContext } from "../../App";
-import { UserContext } from "../../App";
-import AccountMenu from "./AccountMenu/AccountMenu";
-import "./Nav.scss";
+import { LoginContext, UserContext } from "../../App";
+import AccountMenu from "./account_menu";
+import "./Styles/nav.scss";
 
 const Nav = () => {
   const User = useContext(UserContext);

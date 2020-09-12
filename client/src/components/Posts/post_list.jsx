@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { UserContext, LoginContext } from "../../App";
 import { Posts as PostUtils } from "../../utils/Posts";
 import { userLoggedIn } from "../../utils/Utils";
-import NewPostField from "./NewPostField/NewPostField";
-import Post from "./Post/Post";
-import Sidebar from "./Sidebar/Sidebar";
-import "./PostList.scss";
+import NewPostField from "./new_post_field";
+import Post from "./post";
+import Sidebar from "./sidebar";
+import "./Styles/post_list.scss";
 
 const PostList = ({ route }) => {
-  const Location = useLocation();
   const User = useContext(UserContext);
   const { showLogin, setShowLogin } = useContext(LoginContext);
   const [posts, setPosts] = PostUtils.useFetchPosts(route, User);
@@ -78,7 +77,7 @@ const PostList = ({ route }) => {
             />
           ))}
         </ul>
-        {Location.pathname !== "/my-account" && <Sidebar />}
+        <Sidebar />
       </div>
     );
   }

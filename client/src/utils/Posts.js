@@ -7,9 +7,8 @@ export const Posts = {
   useFetchPosts: (route, auth) => {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
-      const fetchPosts = async () => {
+      (async () => {
         let posts;
-
         if (auth && (auth.Token || auth.Username)) {
           posts = await axios.get(route, {
             headers: { Authorization: auth.Token, Username: auth.Username },
@@ -18,8 +17,7 @@ export const Posts = {
           posts = await axios.get(route);
         }
         setPosts(posts.data);
-      };
-      fetchPosts();
+      })();
     }, [route, auth]);
     return [posts, setPosts];
   },

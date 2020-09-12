@@ -6,8 +6,8 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { Constants } from "../../utils/constants";
 import { userLoggedIn } from "../../utils/Utils";
-import Login from "../Nav/Login/Login";
-import "./NewPost.scss";
+import Login from "../Nav/login";
+import "./Styles/new_post.scss";
 
 const NewPost = () => {
   const [inputs, setInputs] = useState({ Title: null, Body: null });

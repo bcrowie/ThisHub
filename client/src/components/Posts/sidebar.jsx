@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Posts as Utils } from "../../../utils/Posts";
-import { Routes } from "../../../utils/constants";
-import "./Sidebar.scss";
+import { Posts as Utils } from "../../utils/Posts";
+import { Routes } from "../../utils/constants";
+import "./Styles/sidebar.scss";
 
-const Sidebar = (props) => {
+const Sidebar = () => {
   const [posts] = Utils.useFetchPosts(Routes.Posts.random);
 
   const truncateTitle = (title) => {

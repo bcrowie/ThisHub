@@ -4,8 +4,8 @@ import Comment from "./Comment/Comment";
 import PostContent from "./PostContent/PostContent";
 import "./PostView.scss";
 import CommentForm from "./CommentForm/CommentForm";
-import EditForm from "../EditForm/EditForm";
-import GoBack from "../../goBack";
+import EditForm from "../edit_form";
+import GoBack from "../../go_back";
 
 const PostView = ({ match }) => {
   const [post, setPost] = useState({});

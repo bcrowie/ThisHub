@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
-import { UserContext } from "../../../App";
+import { UserContext } from "../../App";
 import { useEffect } from "react";
-import "./Post.scss";
+import "./Styles/post.scss";
 
 const Post = ({ data, deletePost, like, dislike }) => {
+  const Location = useLocation();
   const [showMenu, setShowMenu] = useState();
   const User = useContext(UserContext);
 
@@ -36,17 +37,19 @@ const Post = ({ data, deletePost, like, dislike }) => {
       className={`post ${User.Username === data.Username && "owner"}`}
       key={data.id}
     >
-      <div className="votes">
-        <button
-          className="mdi mdi-arrow-up-thick like-post"
-          onClick={() => like(data)}
-        ></button>
-        <p className="likes">{data.Score}</p>
-        <button
-          className="mdi mdi-arrow-down-thick dislike-post"
-          onClick={() => dislike(data)}
-        ></button>
-      </div>
+      {!Location.pathname.includes("/my-account") && (
+        <div className="votes">
+          <button
+            className="mdi mdi-arrow-up-thick like-post"
+            onClick={() => like(data)}
+          ></button>
+          <p className="likes">{data.Score}</p>
+          <button
+            className="mdi mdi-arrow-down-thick dislike-post"
+            onClick={() => dislike(data)}
+          ></button>
+        </div>
+      )}
       <div className="post-content">
         <div className="post-info">
           <p>

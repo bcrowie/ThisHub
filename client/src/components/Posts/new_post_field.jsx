@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import Icon from "@mdi/react";
 import { mdiAccount } from "@mdi/js";
-import "./NewPostField.scss";
+import "./Styles/new_post_field.scss";
 
 const NewPostField = () => {
   const History = useHistory();

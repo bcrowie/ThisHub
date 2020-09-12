@@ -1,11 +1,11 @@
 import React from "react";
-import SettingsSidebar from "./Sidebar/SettingsSidebar";
-import EmailForm from "./SettingsForms/Email";
-import PasswordForm from "./SettingsForms/Password";
-import PremiumForm from "./SettingsForms/Premium";
-import DeleteAccount from "./SettingsForms/DeleteAccount";
-import GoBack from "../goBack";
-import "./Settings.scss";
+import SettingsSidebar from "./settings_sidebar";
+import EmailForm from "./SettingsForms/email";
+import PasswordForm from "./SettingsForms/password";
+import PremiumForm from "./SettingsForms/premium";
+import DeleteAccount from "./SettingsForms/delete_account";
+import GoBack from "../go_back";
+import "./Styles/settings.scss";
 
 const Settings = () => {
   return (

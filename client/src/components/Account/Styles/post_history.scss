@@ -1,0 +1,9 @@
+@import "../../../styles/variables.scss";
+
+.post-list {
+  list-style: none;
+  margin: none;
+  .post {
+    border: $thin-border;
+  }
+}

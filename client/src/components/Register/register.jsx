@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Users as Utils } from "../../utils/Users";
-import "./Register.scss";
+import "./Styles/register.scss";
 
 const Register = () => {
   const [inputs, setInputs] = useState({});

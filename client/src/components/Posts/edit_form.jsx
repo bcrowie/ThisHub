@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./EditForm.scss";
+import "./Styles/edit_form.scss";
 
 const EditForm = ({ setInput, showEdit }) => {
   const [error, setError] = useState();

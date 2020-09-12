@@ -3,11 +3,15 @@ import { UserContext, LoginContext } from "../../../../App";
 import { Comments as CommentUtils } from "../../../../utils/Comments";
 import { userLoggedIn } from "../../../../utils/Utils";
 import "./CommentForm.scss";
+import { useEffect } from "react";
+import { useRef } from "react";
+import { createRef } from "react";
 
 const CommentForm = ({ comments, post, setComments, showForm }) => {
   const { showLogin, setShowLogin } = useContext(LoginContext);
   const [input, setInput] = useState();
   const [error, setError] = useState();
+  const inputRef = createRef(null);
   const User = useContext(UserContext);
 
   const params = {
@@ -15,6 +19,10 @@ const CommentForm = ({ comments, post, setComments, showForm }) => {
     input,
     post,
   };
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const handleCreate = async () => {
     if (userLoggedIn(User)) {
@@ -37,6 +45,7 @@ const CommentForm = ({ comments, post, setComments, showForm }) => {
       <form>
         <label htmlFor="comment">Comment:</label>
         <textarea
+          ref={inputRef}
           name="comment"
           id="comment"
           cols="30"

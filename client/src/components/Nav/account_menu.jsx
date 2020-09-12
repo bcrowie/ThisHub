@@ -9,9 +9,9 @@ import {
   mdiHome,
   mdiLogout,
 } from "@mdi/js";
-import { UserContext } from "../../../App";
-import { Users as Utils } from "../../../utils/Users";
-import "./AccountMenu.scss";
+import { UserContext } from "../../App";
+import { Users as Utils } from "../../utils/Users";
+import "./Styles/account_menu.scss";
 
 const AccountMenu = () => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);

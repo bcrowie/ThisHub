@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { UserContext } from "../../../../App";
-import { Routes } from "../../../../utils/constants";
-import { Comments as Utils } from "../../../../utils/Comments";
+import { UserContext } from "../../App";
+import { Routes } from "../../utils/constants";
+import { Comments as Utils } from "../../utils/Comments";
 
 const Comment = (props) => {
   const [showMenu, setShowMenu] = useState();

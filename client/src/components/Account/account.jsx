@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../../App";
-import AccountSidebar from "./AccountSidebar";
-import CommentList from "./CommentList/CommentList";
-import PostList from "../Posts/PostList";
-import "./Account.scss";
+import AccountSidebar from "./account_sidebar";
+import CommentList from "./comment_list";
+import PostList from "../Posts/post_list";
+import PostHistory from "./post_history";
+import "./Styles/account.scss";
 import { Routes } from "../../utils/constants";
-import { useState } from "react";
-import GoBack from "../goBack";
+import GoBack from "../go_back";
 
 const Account = () => {
   const [route, setRoute] = useState(Routes.Users.userPosts);
@@ -22,7 +22,7 @@ const Account = () => {
           {route === Routes.Users.userPosts && (
             <>
               <h3>Posts</h3>
-              <PostList route={route} />
+              <PostHistory />
             </>
           )}
           {route === Routes.Users.userComments && (
