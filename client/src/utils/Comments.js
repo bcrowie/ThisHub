@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Routes, Constants } from "../utils/constants";
+import { Routes } from "./constants";
 
 export const Comments = {
   create: async (data) => {

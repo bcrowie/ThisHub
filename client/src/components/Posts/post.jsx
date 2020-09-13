@@ -1,8 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
+import { togglePostMenu, truncateBody } from "./utils";
 import { UserContext } from "../../App";
-import { useEffect } from "react";
 import "./Styles/post.scss";
 
 const Post = ({ data, deletePost, like, dislike }) => {
@@ -18,19 +18,6 @@ const Post = ({ data, deletePost, like, dislike }) => {
       }
     });
   }, [showMenu]);
-
-  const togglePostMenu = (e) => {
-    e.stopPropagation();
-    setShowMenu((showMenu) => !showMenu);
-  };
-
-  const truncateTitle = (content) => {
-    if (content.length > 300) {
-      return content.substring(0, 300).concat("...");
-    } else {
-      return content;
-    }
-  };
 
   return (
     <li
@@ -60,7 +47,7 @@ const Post = ({ data, deletePost, like, dislike }) => {
           {data.Title}
         </Link>
         <Link to={`/posts/${data.id}`} className="post-preview">
-          {truncateTitle(data.Body)}
+          {truncateBody(data.Body)}
         </Link>
         <div className="post-links">
           <Link to={`/posts/${data.id}`} className="comments">
@@ -68,7 +55,7 @@ const Post = ({ data, deletePost, like, dislike }) => {
           </Link>
           <button
             className="mdi mdi-dots-vertical menu-button"
-            onClick={(e) => togglePostMenu(e)}
+            onClick={(e) => togglePostMenu({ e, showMenu, setShowMenu })}
           ></button>
           {showMenu && (
             <div className="post-menu-container">

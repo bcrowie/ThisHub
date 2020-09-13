@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext, LoginContext } from "../../App";
 import { Posts as PostUtils } from "../../utils/Posts";
-import { userLoggedIn } from "../../utils/Utils";
+import { handleDelete, handleDislike, handleLike } from "./utils";
 import NewPostField from "./new_post_field";
 import Post from "./post";
 import Sidebar from "./sidebar";
@@ -13,39 +13,15 @@ const PostList = ({ route }) => {
   const { showLogin, setShowLogin } = useContext(LoginContext);
   const [posts, setPosts] = PostUtils.useFetchPosts(route, User);
 
-  const updateScore = (newPost) => {
-    setPosts(
-      posts.map((orig) => {
-        if (orig.id !== newPost.id) {
-          return orig;
-        }
-        return { ...orig, newPost };
-      })
-    );
-  };
-
-  const handleDelete = async (post) => {
-    if (userLoggedIn(User)) {
-      const deleted = await PostUtils.delete(User.Token, post);
-      console.log(deleted);
-      if (deleted) {
-        setPosts(posts.filter((toDelete) => toDelete.id !== post.id));
-      }
-    } else {
-      setShowLogin(!showLogin);
-    }
-  };
-
-  const handleLike = async (post) => {
-    userLoggedIn(User)
-      ? updateScore(await PostUtils.like(User.Token, post))
-      : setShowLogin(!showLogin);
-  };
-
-  const handleDislike = async (post) => {
-    userLoggedIn(User)
-      ? updateScore(await PostUtils.dislike(User.Token, post))
-      : setShowLogin(!showLogin);
+  const genArgs = (post) => {
+    return {
+      post,
+      posts,
+      setPosts,
+      showLogin,
+      setShowLogin,
+      User,
+    };
   };
 
   if (!posts.length) {
@@ -71,9 +47,9 @@ const PostList = ({ route }) => {
             <Post
               key={post.id}
               data={post}
-              deletePost={handleDelete}
-              like={handleLike}
-              dislike={handleDislike}
+              deletePost={() => handleDelete(genArgs(post))}
+              like={() => handleLike(genArgs(post))}
+              dislike={() => handleDislike(genArgs(post))}
             />
           ))}
         </ul>

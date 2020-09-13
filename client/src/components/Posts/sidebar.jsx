@@ -1,19 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Posts as Utils } from "../../utils/Posts";
+import { truncateTitle } from "./utils";
 import { Routes } from "../../utils/constants";
 import "./Styles/sidebar.scss";
 
 const Sidebar = () => {
   const [posts] = Utils.useFetchPosts(Routes.Posts.random);
-
-  const truncateTitle = (title) => {
-    if (title.length > 35) {
-      return title.substring(0, 35).concat("...");
-    } else {
-      return title;
-    }
-  };
 
   return (
     <div className="sidebar">
