@@ -1,11 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../App";
-import { Posts as Utils } from "../../utils/Posts";
-import { useRef } from "react";
-import { useEffect } from "react";
+import { handleSubmit } from "./utils";
 import { Constants } from "../../utils/constants";
-import { userLoggedIn } from "../../utils/Utils";
 import Login from "../Nav/login";
 import "./Styles/new_post.scss";
 
@@ -16,18 +13,14 @@ const NewPost = () => {
   const History = useHistory();
   const inputRef = useRef(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (userLoggedIn(User)) {
-      const returnLink = await Utils.create(User.Token, inputs, setErrors);
-      if (returnLink) {
-        History.push(returnLink);
-      } else {
-        setErrors(returnLink);
-      }
-    } else {
-      setErrors({ Title: "You must be logged in to do that" });
-    }
+  const genArgs = (e) => {
+    return {
+      e,
+      inputs,
+      History,
+      setErrors,
+      User,
+    };
   };
 
   useEffect(() => {
@@ -57,7 +50,7 @@ const NewPost = () => {
             ></textarea>
             {errors.Body && <p className="error">{errors.Body}</p>}
             <div className="buttons">
-              <button onClick={(e) => handleSubmit(e)}>Submit</button>
+              <button onClick={(e) => handleSubmit(genArgs(e))}>Submit</button>
               <button onClick={() => History.push("/")}>Close</button>
             </div>
           </form>
