@@ -19,7 +19,7 @@
     "validator": "^12.2.0"
   },
   "devDependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "eslint-plugin-sequelize": "github:tebriel/eslint-plugin-sequelize",
     "nodemon": "^2.0.2"
   },
